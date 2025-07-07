@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  keyword: one
+  slug: MyString
+  meta_title: MyText
+  meta_description: MyText
+  headline: MyText
+  subheading: MyText
+  content: MyText
+
+two:
+  keyword: two
+  slug: MyString
+  meta_title: MyText
+  meta_description: MyText
+  headline: MyText
+  subheading: MyText
+  content: MyText

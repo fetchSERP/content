@@ -1,0 +1,106 @@
+<%= content_for :title, @page.meta_title %>
+<%= content_for :description, @page.meta_description %>
+<%= content_for :keywords, @page.keyword %>
+
+<div class="min-h-screen bg-[#0F172A] text-white">
+
+  <main>
+    <section class="py-12 md:pt-16 relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="flex flex-col md:flex-row items-center">
+          <div class="md:w-1/2 mb-10 md:mb-0">
+            <div class="inline-block mb-6 px-4 py-2 bg-yellow-500/10 rounded-full border border-yellow-500/20">
+              <span class="text-yellow-400 font-semibold">SERP API Made Simple</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fadeIn bg-clip-text text-transparent bg-gradient-to-r from-white via-yellow-100 to-white">
+              <%= @page.headline %>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300 max-w-xl">
+              <%= @page.subheading %>
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <%= link_to "/app", class: "text-center group px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] relative overflow-hidden" do %>
+                <span class="relative z-10">Get API Key</span>
+                <div class="absolute inset-0 bg-gradient-to-r from-red-500 to-yellow-500 transition-transform duration-200 translate-x-full group-hover:translate-x-0"></div>
+              <% end %>
+              <%= link_to "Go to Documentation", "https://docs.fetchserp.com", class: "text-center px-6 py-3 bg-transparent border-2 border-yellow-500/30 rounded-md font-semibold transition-all duration-200 hover:border-yellow-500/60 hover:bg-yellow-500/10" %>
+            </div>
+          </div>
+          
+          <div class="md:w-1/2 relative">
+            <div class="relative z-10 bg-[#1E293B]/80 backdrop-blur-sm rounded-lg p-6 text-white border border-yellow-500/20 transform transition-transform hover:scale-105 duration-500 max-w-md mx-auto shadow-[0_0_30px_rgba(234,179,8,0.1)] px-8">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center text-yellow-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="m18 16 4-4-4-4"></path>
+                    <path d="m6 8-4 4 4 4"></path>
+                    <path d="m14.5 4-5 16"></path>
+                  </svg>
+                  <span class="font-mono text-sm">SERP API Example</span>
+                </div>
+                <div class="flex space-x-2">
+                  <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+              </div>
+              <pre class="bg-[#0F172A] p-5 rounded-md text-sm font-mono overflow-x-auto border border-gray-800 shadow-inner"><code><div class="-mt-5">
+<span class="text-blue-400">const</span><span class="text-gray-300"> response = </span><span class="text-yellow-400">await</span><span class="text-blue-400"> fetch</span><span class="text-purple-400">(</span>
+  <span class="text-green-400">'https://www.fetchserp.com/api/v1/serp?'</span><span class="text-gray-300"> + </span>
+  <span class="text-blue-400">new</span><span class="text-yellow-400"> URLSearchParams</span><span class="text-purple-400">({</span>
+    <span class="text-orange-400">search_engine</span><span class="text-gray-300">: </span><span class="text-green-400">'google'</span><span class="text-gray-300">,</span>
+    <span class="text-orange-400">country</span><span class="text-gray-300">: </span><span class="text-green-400">'us'</span><span class="text-gray-300">,</span>
+    <span class="text-orange-400">pages_number</span><span class="text-gray-300">: </span><span class="text-green-400">'1'</span><span class="text-gray-300">,</span>
+    <span class="text-orange-400">query</span><span class="text-gray-300">: </span><span class="text-green-400">'serp+api'</span>
+  <span class="text-purple-400">})</span><span class="text-gray-300">, {</span>
+    <span class="text-orange-400">method</span><span class="text-gray-300">: </span><span class="text-green-400">'GET'</span><span class="text-gray-300">,</span>
+    <span class="text-orange-400">headers</span><span class="text-gray-300">: {</span>
+      <span class="text-orange-400">'accept'</span><span class="text-gray-300">: </span><span class="text-green-400">'application/json'</span><span class="text-gray-300">,</span>
+      <span class="text-orange-400">'authorization'</span><span class="text-gray-300">: </span><span class="text-green-400">'Bearer TOKEN'</span>
+    <span class="text-gray-300">}</span>
+<span class="text-gray-300">});</span>
+
+<span class="text-blue-400">const</span><span class="text-gray-300"> data = </span><span class="text-yellow-400">await</span><span class="text-gray-300"> response.</span><span class="text-blue-400">json</span><span class="text-purple-400">()</span><span class="text-gray-300">;</span>
+<span class="text-gray-300">console.</span><span class="text-blue-400">dir</span><span class="text-purple-400">(</span><span class="text-gray-300">data, { </span><span class="text-orange-400">depth</span><span class="text-gray-300">: </span><span class="text-blue-400">null</span><span class="text-gray-300"> }</span><span class="text-gray-300">);</span>
+</div></code></pre>
+              <div class="mt-4 flex items-center justify-between text-sm border-t border-gray-700/50 pt-4">
+                <div class="flex items-center space-x-3">
+                  <span class="flex items-center px-2 py-1 rounded-md bg-green-500/10 border border-green-500/20">
+                    <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                    <span class="text-green-400">Connected</span>
+                  </span>
+                  <span class="text-gray-400">200 OK</span>
+                </div>
+                <div class="flex items-center text-yellow-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                  </svg>
+                  <span>SERP Results</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="py-8 bg-[#0F172A] text-gray-100" id="understanding-api-search">
+      <div class="container mx-auto px-4">
+        <div class="relative z-10">
+          <div class="prose prose-lg font-sans text-base md:text-lg text-gray-300 bg-[#0F172A] rounded-lgleading-relaxed">
+            <p><%= @page.content.html_safe %></p>
+          </div>
+          <div class="mt-6 text-center border-t border-gray-600 py-12">
+            <%= link_to "/app", class: "group relative px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden inline-block" do %>
+              <span class="relative z-10">Get Started with 250 Free Credits</span>
+              <span class="absolute inset-0 bg-gradient-to-r from-red-500 to-yellow-500 transition-transform duration-200 translate-x-full group-hover:translate-x-0"></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

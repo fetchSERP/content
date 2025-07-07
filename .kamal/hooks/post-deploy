@@ -11,4 +11,6 @@
 # KAMAL_DESTINATION (if set)
 # KAMAL_RUNTIME
 
-echo "$KAMAL_PERFORMER deployed $KAMAL_VERSION to $KAMAL_DESTINATION in $KAMAL_RUNTIME seconds"
+# echo "$KAMAL_PERFORMER deployed $KAMAL_VERSION to $KAMAL_DESTINATION in $KAMAL_RUNTIME seconds"
+
+Kamal app exec bin/rails sitemap:refresh --reuse

@@ -1,4 +1,4 @@
-class CreateSeoPageJob < ApplicationJob
+class CreatePageJob < ApplicationJob
   queue_as :default
 
   def perform(keyword)

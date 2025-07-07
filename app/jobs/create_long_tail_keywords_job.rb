@@ -1,4 +1,4 @@
-class CreateSeoKeywordsJob < ApplicationJob
+class CreateLongTailKeywordsJob < ApplicationJob
   queue_as :default
 
   def perform(keyword)

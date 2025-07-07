@@ -12,10 +12,10 @@ class Keyword < ApplicationRecord
   private
 
   def create_seo_page
-    CreateSeoPageJob.perform_later(self)
+    CreatePageJob.perform_later(self)
   end
 
   def create_long_tail_keywords
-    CreateSeoKeywordsJob.perform_later(self)
+    CreateLongTailKeywordsJob.perform_later(self)
   end
 end

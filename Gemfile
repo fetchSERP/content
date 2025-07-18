@@ -21,9 +21,19 @@ gem "jbuilder"
 
 gem "openai"
 gem "sitemap_generator"
+gem "recaptcha"
+
+gem "omniauth"
+gem "omniauth-rails_csrf_protection"
+gem "omniauth-linkedin-openid"
+gem "omniauth-twitter2"
+gem "x"
+
+gem "pry"
+gem "pry-rails"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]

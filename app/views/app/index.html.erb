@@ -1,0 +1,112 @@
+<div class="min-h-screen bg-[#0F172A]">
+  <main>
+    <!-- Payment History Section -->
+    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="max-w-6xl mx-auto">
+          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+            <div class="flex justify-between items-center mb-8">
+              <div>
+                <h1 class="font-bold text-3xl text-gray-100">Payment History</h1>
+                <p class="text-base text-gray-400 mt-2">
+                  View all your credit purchases and payment status.
+                </p>
+              </div>
+              <%= link_to "Buy More Credits", new_app_payment_path, class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" %>
+            </div>
+
+            <div class="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 via-red-500/10 to-yellow-500/10 border border-yellow-500/40 rounded-lg backdrop-blur-sm">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 text-yellow-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
+                <p class="text-gray-300">Current balance: <strong class="text-yellow-400"><%= number_with_delimiter(Current.user.api_credit) %> credits</strong></p>
+              </div>
+            </div>
+
+            <% if @payments.any? %>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead>
+                    <tr class="border-b border-gray-600">
+                      <th class="text-left py-3 px-4 text-gray-300 font-semibold">Date</th>
+                      <th class="text-left py-3 px-4 text-gray-300 font-semibold">Amount</th>
+                      <th class="text-left py-3 px-4 text-gray-300 font-semibold">Credits</th>
+                      <th class="text-left py-3 px-4 text-gray-300 font-semibold">Status</th>
+                      <th class="text-left py-3 px-4 text-gray-300 font-semibold">Payment ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @payments.each do |payment| %>
+                      <tr class="border-b border-gray-700 hover:bg-gray-700/30">
+                        <td class="py-4 px-4 text-gray-300">
+                          <%= payment.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+                        </td>
+                        <td class="py-4 px-4 text-gray-300 font-semibold">
+                          $<%= payment.amount_dollars %>
+                        </td>
+                        <td class="py-4 px-4 text-gray-300">
+                          <%= number_with_delimiter(payment.credits) %>
+                        </td>
+                        <td class="py-4 px-4">
+                          <% case payment.status %>
+                          <% when 'succeeded' %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/50 text-green-300 border border-green-600/50">
+                              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                              </svg>
+                              Completed
+                            </span>
+                          <% when 'pending' %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-900/50 text-yellow-300 border border-yellow-600/50">
+                              <svg class="w-3 h-3 mr-1 animate-spin" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                              </svg>
+                              Processing
+                            </span>
+                          <% when 'failed' %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/50 text-red-300 border border-red-600/50">
+                              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                              </svg>
+                              Failed
+                            </span>
+                          <% when 'canceled' %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-700 text-gray-300 border border-gray-600">
+                              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                              </svg>
+                              Canceled
+                            </span>
+                          <% end %>
+                        </td>
+                        <td class="py-4 px-4 text-gray-400 font-mono text-sm">
+                          <%= payment.stripe_payment_intent_id.first(20) %>...
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            <% else %>
+              <div class="text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-300">No payments yet</h3>
+                <p class="mt-1 text-sm text-gray-500">Start by purchasing your first credits.</p>
+                <div class="mt-6">
+                  <%= link_to "Buy API Credits with Stripe", new_app_payment_path, class: "group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="mt-8 text-center">
+              <%= link_to "Back to Dashboard", app_root_path, class: "text-gray-400 hover:text-gray-300 transition-colors" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div> 

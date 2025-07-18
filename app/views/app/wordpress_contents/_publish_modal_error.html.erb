@@ -1,0 +1,43 @@
+<div class="fixed inset-0 backdrop-blur-sm bg-gray-900/30 flex items-center justify-center z-50">
+  <%= form_with url: close_modal_app_wordpress_contents_path, method: :get, local: false, 
+      data: { turbo_stream: true }, id: "close-modal-form", style: "display: none;" do |form| %>
+  <% end %>
+  <div onclick="document.getElementById('close-modal-form').submit()" 
+       class="absolute inset-0 cursor-pointer"></div>
+  <div class="bg-[#1E293B] rounded-xl p-6 max-w-lg w-full mx-4 border border-red-500/20 shadow-2xl relative z-10">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-gray-100">Publishing Error</h3>
+      <%= form_with url: close_modal_app_wordpress_contents_path, method: :get, local: false, 
+          data: { turbo_stream: true }, class: "inline" do |form| %>
+        <%= form.button type: "submit", class: "text-gray-400 hover:text-gray-300" do %>
+          <i data-lucide="x" class="h-5 w-5"></i>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+      <div class="flex items-center">
+        <i data-lucide="alert-triangle" class="h-5 w-5 text-red-400 mr-3 flex-shrink-0"></i>
+        <p class="text-red-300"><%= error %></p>
+      </div>
+    </div>
+    
+    <div class="flex space-x-3">
+      <%= link_to publish_modal_app_wordpress_content_path(@wordpress_content), 
+          class: "flex-1 px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center",
+          data: { turbo_stream: true } do %>
+        Try Again
+      <% end %>
+      <%= form_with url: close_modal_app_wordpress_contents_path, method: :get, local: false, 
+          data: { turbo_stream: true }, class: "inline" do |form| %>
+        <%= form.submit "Close", 
+            class: "px-4 py-2 bg-transparent border-2 border-gray-500/30 rounded-lg font-semibold transition-all duration-200 hover:border-gray-500/60 hover:bg-gray-500/10 text-white" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+// Initialize Lucide icons
+if (window.lucide) lucide.createIcons();
+</script> 

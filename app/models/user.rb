@@ -3,6 +3,8 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :authentication_providers, dependent: :destroy
   has_many :wordpress_websites, dependent: :destroy
+  has_many :wordpress_contents, dependent: :destroy
+  has_many :prompts, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 end

@@ -4,7 +4,7 @@ class Ai::Openai::ChatGptService < BaseService
   end
 
   def call(user_prompt:, system_prompt:, response_schema:)
-    client = OpenAI::Client.new(api_key: Rails.application.credentials.openai_api_key)
+    client = OpenAI::Client.new(api_key: Rails.application.credentials.openrouter_api_key, base_url: "https://openrouter.ai/api/v1")
     raw_resp = client.chat.completions.create(
       model: @model,
       response_format: {

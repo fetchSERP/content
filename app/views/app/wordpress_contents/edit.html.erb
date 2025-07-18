@@ -1,0 +1,130 @@
+<div class="min-h-screen bg-[#0F172A]">
+  <main>
+    <!-- Edit WordPress Content Section -->
+    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="max-w-4xl mx-auto">
+          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+            <div class="flex justify-between items-start mb-6">
+              <div>
+                <h1 class="text-2xl font-bold text-gray-100">Edit WordPress Content</h1>
+                <p class="text-sm text-gray-400 mt-1">Update your title and content before publishing</p>
+              </div>
+              <%= link_to app_wordpress_contents_path, 
+                  class: "text-gray-400 hover:text-gray-300 transition-colors" do %>
+                <i data-lucide="x" class="h-5 w-5"></i>
+              <% end %>
+            </div>
+
+            <!-- Flash Messages -->
+            <div id="flash">
+              <%= render "shared/flash" if flash[:notice] || flash[:alert] %>
+            </div>
+
+            <!-- Content Metadata -->
+            <div class="mb-6 p-4 bg-[#0F172A]/50 border border-yellow-500/20 rounded-lg">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <span class="text-gray-400">Keyword:</span>
+                  <span class="text-green-400 font-medium ml-2"><%= @wordpress_content.keyword %></span>
+                </div>
+                <div>
+                  <span class="text-gray-400">Status:</span>
+                  <% if @wordpress_content.status == 'publish' %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-900/50 text-green-300 border border-green-600/50 ml-2">
+                      <i data-lucide="check-circle" class="h-3 w-3 mr-1"></i>Published
+                    </span>
+                  <% else %>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-900/50 text-yellow-300 border border-yellow-600/50 ml-2">
+                      <i data-lucide="edit-3" class="h-3 w-3 mr-1"></i>Draft
+                    </span>
+                  <% end %>
+                </div>
+                <div>
+                  <span class="text-gray-400">Word Count:</span>
+                  <span class="text-purple-400 font-medium ml-2"><%= @wordpress_content.content ? @wordpress_content.content.split.size : 0 %> words</span>
+                </div>
+              </div>
+            </div>
+
+            <% if @wordpress_content.errors.any? %>
+              <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+                <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
+                <ul class="list-disc list-inside text-red-300 space-y-1">
+                  <% @wordpress_content.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <%= form_with model: [:app, @wordpress_content], class: "space-y-6", data: { turbo: false } do |form| %>
+              <!-- Title Field -->
+              <div>
+                <%= form.label :title, "Title", class: "block text-sm font-medium text-blue-400 mb-2" %>
+                <%= form.text_field :title, required: true, 
+                    class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/50 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" %>
+                <p class="mt-1 text-xs text-gray-400">Update the title to make it more compelling and SEO-friendly.</p>
+              </div>
+              
+              <!-- Content Field -->
+              <div>
+                <%= form.label :content, "Content", class: "block text-sm font-medium text-green-400 mb-2" %>
+                <%= form.text_area :content, required: true, rows: 20, 
+                    class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/50 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-y font-mono text-sm leading-relaxed" %>
+                <p class="mt-1 text-xs text-gray-400">Edit the generated content. Make sure to keep SEO best practices in mind.</p>
+              </div>
+
+              <!-- SEO Tips -->
+              <div class="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+                <div class="flex items-start">
+                  <i data-lucide="search" class="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0"></i>
+                  <div class="text-sm text-blue-300">
+                    <p class="font-medium mb-1">SEO Editing Tips</p>
+                    <ul class="space-y-1 text-blue-200">
+                      <li>• Keep your target keyword "<strong><%= @wordpress_content.keyword %></strong>" naturally integrated</li>
+                      <li>• Use headings (H2, H3) to structure your content</li>
+                      <li>• Include your keyword in the first 100 words</li>
+                      <li>• Add internal and external links where relevant</li>
+                      <li>• Maintain a conversational, engaging tone</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="flex items-center justify-between pt-4">
+                <div class="flex space-x-3">
+                  <%= form.submit "Update Content", class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]" %>
+                  <%= link_to "Cancel", app_wordpress_content_path(@wordpress_content), class: "px-6 py-3 bg-transparent border-2 border-gray-500/30 rounded-md font-semibold transition-all duration-200 hover:border-gray-500/60 hover:bg-gray-500/10 text-white" %>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex space-x-3">
+                  <% if @wordpress_content.status == 'draft' %>
+                    <button type="button"
+                        class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm inline-flex items-center"
+                        data-controller="modal-opener"
+                        data-action="click->modal-opener#open"
+                        data-modal-opener-url-value="<%= publish_modal_app_wordpress_content_path(@wordpress_content) %>">
+                      <i data-lucide="send" class="h-4 w-4 inline mr-1"></i>Publish
+                    </button>
+                  <% end %>
+                  
+                  <%= link_to app_wordpress_content_path(@wordpress_content), 
+                      class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm" do %>
+                    <i data-lucide="eye" class="h-4 w-4 inline mr-1"></i>Preview
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="mt-6 text-center">
+              <%= link_to "Back to Content List", app_wordpress_contents_path, class: "text-gray-400 hover:text-gray-300 transition-colors text-sm" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div> 

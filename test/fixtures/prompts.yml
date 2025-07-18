@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  target: 1
+  user_prompt: "Create an engaging blog post about [KEYWORD] for [TARGET_AUDIENCE]"
+  system_prompt: "You are an expert content writer with years of experience in SEO and content marketing."
+
+two:
+  user: two
+  target: 1
+  user_prompt: "Write a professional LinkedIn post about [INDUSTRY_TOPIC]"
+  system_prompt: "You are a business professional and thought leader with expertise in corporate communications."

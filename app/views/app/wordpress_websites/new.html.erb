@@ -32,13 +32,13 @@
         <div>
           <%= form.label :username, "Username", class: "block text-sm font-medium text-gray-300 mb-2" %>
           <%= form.text_field :username, required: true, placeholder: "admin", autocomplete: "username", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors" %>
-          <p class="mt-1 text-sm text-gray-400">Your WordPress admin username</p>
+          <p class="mt-1 text-sm text-gray-400">Your WordPress username</p>
         </div>
 
         <div>
           <%= form.label :password, "Password", class: "block text-sm font-medium text-gray-300 mb-2" %>
           <%= form.password_field :password, required: true, placeholder: "Enter your password", autocomplete: "new-password", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors" %>
-          <p class="mt-1 text-sm text-gray-400">Your WordPress admin password</p>
+          <p class="mt-1 text-sm text-gray-400">Your WordPress application password</p>
         </div>
 
         <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
@@ -46,7 +46,7 @@
             <i data-lucide="info" class="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0"></i>
             <div class="text-sm text-blue-300">
               <p class="font-medium mb-1">Security Note</p>
-              <p>Your credentials are stored securely and encrypted. We recommend using application passwords or API keys when available.</p>
+              <p>Application passwords allow authentication via non-interactive systems, such as XML-RPC or the REST API, without providing your actual password. Application passwords can be easily revoked. They cannot be used for traditional logins to your website.</p>
             </div>
           </div>
         </div>

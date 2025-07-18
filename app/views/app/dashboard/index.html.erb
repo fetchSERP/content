@@ -126,6 +126,109 @@
       </div>
     </div>
 
+    <!-- Content Management Section -->
+    <div class="mb-8">
+      <h2 class="font-bold text-xl text-gray-100 mb-6">Content Management</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- WordPress Content -->
+        <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-gray-600 transition-colors">
+          <div class="flex items-center mb-4">
+            <div class="p-3 bg-green-500/20 rounded-lg">
+              <i data-lucide="file-text" class="h-6 w-6 text-green-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-100 ml-3">WordPress Content</h3>
+          </div>
+          <p class="text-gray-400 mb-4">Create, edit, and manage your WordPress posts and pages</p>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">Total Content:</span>
+              <span class="text-green-400 font-medium"><%= Current.user.wordpress_contents.count %></span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">Published:</span>
+              <span class="text-green-400 font-medium"><%= Current.user.wordpress_contents.where(status: 'publish').count %></span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">Drafts:</span>
+              <span class="text-yellow-400 font-medium"><%= Current.user.wordpress_contents.where(status: 'draft').count %></span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2">
+            <%= link_to app_wordpress_contents_path, class: "block w-full px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 hover:bg-green-500/20 transition-colors text-center" do %>
+              <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
+              Manage Content
+            <% end %>
+            <%= link_to new_app_wordpress_content_path, class: "block w-full px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-blue-400 hover:bg-blue-500/20 transition-colors text-center" do %>
+              <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
+              Create New Post
+<% end %>
+          </div>
+        </div>
+
+        <!-- SEO Pages (Placeholder) -->
+        <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-gray-600 transition-colors opacity-75">
+          <div class="flex items-center mb-4">
+            <div class="p-3 bg-purple-500/20 rounded-lg">
+              <i data-lucide="search" class="h-6 w-6 text-purple-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-100 ml-3">SEO Pages</h3>
+          </div>
+          <p class="text-gray-400 mb-4">AI-generated SEO-optimized pages for keywords</p>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">Generated Pages:</span>
+              <span class="text-purple-400 font-medium">0</span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">Keywords:</span>
+              <span class="text-purple-400 font-medium">0</span>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button class="w-full px-4 py-2 bg-gray-500/10 border border-gray-500/30 rounded-lg text-gray-400 cursor-not-allowed text-center">
+              <i data-lucide="lock" class="h-4 w-4 inline mr-2"></i>
+              Coming Soon
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Prompts -->
+        <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-gray-600 transition-colors">
+          <div class="flex items-center mb-4">
+            <div class="p-3 bg-orange-500/20 rounded-lg">
+              <i data-lucide="message-square" class="h-6 w-6 text-orange-400"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-100 ml-3">AI Prompts</h3>
+          </div>
+          <p class="text-gray-400 mb-4">Customize AI prompts for better content generation</p>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">WordPress:</span>
+              <span class="text-blue-400 font-medium"><%= Current.user.prompts.where(target: 'wordpress').count %></span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">X (Twitter):</span>
+              <span class="text-sky-400 font-medium"><%= Current.user.prompts.where(target: 'x').count %></span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-gray-300">LinkedIn:</span>
+              <span class="text-blue-600 font-medium"><%= Current.user.prompts.where(target: 'linkedin').count %></span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2">
+            <%= link_to app_prompts_path, class: "block w-full px-4 py-2 bg-orange-500/10 border border-orange-500/30 rounded-lg text-orange-400 hover:bg-orange-500/20 transition-colors text-center" do %>
+              <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
+              Manage Prompts
+<% end %>
+            <%= link_to new_app_prompt_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
+              <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
+              Create New Prompt
+<% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Quick Stats -->
     <div class="bg-gray-800 px-6 py-8 border border-gray-700 rounded-xl shadow-xl">
       <h2 class="font-bold text-xl text-gray-100 mb-6">Account Overview</h2>
@@ -151,27 +254,6 @@
         </div>
       </div>
 
-      <% if Current.user.authentication_providers.empty? && Current.user.wordpress_websites.empty? %>
-        <div class="mt-8 text-center">
-          <div class="mx-auto w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center mb-4">
-            <i data-lucide="link" class="h-8 w-8 text-gray-400"></i>
-          </div>
-          <p class="text-gray-400 mb-4">Get started by connecting your first account</p>
-          <div class="flex flex-wrap justify-center gap-3">
-            <%= form_tag('/auth/linkedin', method: 'post', data: {turbo: false}, class: 'inline-block') do %>
-              <button type='submit' class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm">
-                Connect LinkedIn
-              </button>
-            <% end %>
-            <%= form_tag('/auth/twitter2', method: 'post', data: {turbo: false}, class: 'inline-block') do %>
-              <button type='submit' class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors text-sm">
-                Connect Twitter
-              </button>
-            <% end %>
-            <%= link_to "Connect WordPress", new_app_wordpress_website_path, class: "px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm" %>
-          </div>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>

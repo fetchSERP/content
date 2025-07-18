@@ -19,7 +19,17 @@ Rails.application.routes.draw do
   namespace :app do
     resources :dashboard, only: [ :index ]
     resources :wordpress_websites, only: [ :index, :new, :create ]
+    resources :wordpress_contents do
+      member do
+        patch :publish
+        get :publish_modal
+      end
+      collection do
+        get :close_modal
+      end
+    end
     resources :authentication_providers, only: [ :destroy ]
+    resources :prompts, only: [ :index, :show, :new, :create, :edit, :update ]
     root "dashboard#index"
   end
 

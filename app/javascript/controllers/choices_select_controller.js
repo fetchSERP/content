@@ -18,12 +18,17 @@ export default class extends Controller {
       searchEnabled: true,
       itemSelectText: "",
       allowHTML: true,
-      searchResultLimit: 100,
+      searchResultLimit: -1,
       shouldSort: true,
-      searchFields: ['label', 'value'],
+      // searchFields: ['label', 'value', 'customProperties', 'groupLabel'],
       fuseOptions: {
-        threshold: 0.0, // Only exact matches
-        keys: ['label', 'value'],
+        threshold: 0.3,
+        keys: [
+          'label',
+          'value',
+          'customProperties',
+          'groupLabel'
+        ],
       }
     })
     this.element._choicesInstance = instance

@@ -1,61 +1,72 @@
-<div class="py-16">
-  <div class="max-w-2xl mx-auto md:w-2/3 w-full px-4">
-    <div class="bg-gray-800 px-6 py-8 border border-gray-700 rounded-xl shadow-xl">
-      <div class="mb-6">
-        <h1 class="font-bold text-2xl text-gray-100">Add WordPress Website</h1>
-        <p class="text-base text-gray-400 mt-2">
-          Add your WordPress website credentials to manage content automatically.
-        </p>
-      </div>
+<div class="min-h-screen bg-[#0F172A]">
+  <main>
+    <!-- Add WordPress Website Section -->
+    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+            <div class="mb-6">
+              <h1 class="font-bold text-2xl text-gray-100">Add WordPress Website</h1>
+              <p class="text-base text-gray-400 mt-2">
+                Add your WordPress website credentials to manage content automatically.
+              </p>
+            </div>
 
-      <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
-      <%= tag.div(flash[:notice], class: "mb-4 text-green-400") if flash[:notice] %>
+            <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
+            <%= tag.div(flash[:notice], class: "mb-4 text-green-400") if flash[:notice] %>
 
-      <% if @wordpress_website.errors.any? %>
-        <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-          <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
-          <ul class="list-disc list-inside text-red-300 space-y-1">
-            <% @wordpress_website.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
+            <% if @wordpress_website.errors.any? %>
+              <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+                <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
+                <ul class="list-disc list-inside text-red-300 space-y-1">
+                  <% @wordpress_website.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
             <% end %>
-          </ul>
-        </div>
-      <% end %>
 
-      <%= form_with model: [:app, @wordpress_website], class: "space-y-6" do |form| %>
-        <div>
-          <%= form.label :url, "Website URL", class: "block text-sm font-medium text-gray-300 mb-2" %>
-          <%= form.url_field :url, required: true, placeholder: "https://yourwordpresssite.com", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors" %>
-          <p class="mt-1 text-sm text-gray-400">Enter the full URL of your WordPress website</p>
-        </div>
+            <%= form_with model: [:app, @wordpress_website], class: "space-y-6" do |form| %>
+              <div>
+                <%= form.label :url, "Website URL", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                <%= form.url_field :url, required: true, placeholder: "https://yourwordpresssite.com", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
+                <p class="mt-1 text-sm text-gray-400">Enter the full URL of your WordPress website</p>
+              </div>
 
-        <div>
-          <%= form.label :username, "Username", class: "block text-sm font-medium text-gray-300 mb-2" %>
-          <%= form.text_field :username, required: true, placeholder: "admin", autocomplete: "username", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors" %>
-          <p class="mt-1 text-sm text-gray-400">Your WordPress username</p>
-        </div>
+              <div>
+                <%= form.label :username, "Username", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                <%= form.text_field :username, required: true, placeholder: "Enter your wordpress username", autocomplete: "username", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
+                <p class="mt-1 text-sm text-gray-400">Your WordPress username</p>
+              </div>
 
-        <div>
-          <%= form.label :password, "Password", class: "block text-sm font-medium text-gray-300 mb-2" %>
-          <%= form.password_field :password, required: true, placeholder: "Enter your password", autocomplete: "new-password", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors" %>
-          <p class="mt-1 text-sm text-gray-400">Your WordPress application password</p>
-        </div>
+              <div>
+                <%= form.label :password, "Password", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                <%= form.password_field :password, required: true, placeholder: "Enter your password", autocomplete: "new-password", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
+                <p class="mt-1 text-sm text-gray-400">Your WordPress application password</p>
+              </div>
 
-        <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
-          <div class="flex items-start">
-            <i data-lucide="info" class="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0"></i>
-            <div class="text-sm text-blue-300">
-              <p class="font-medium mb-1">Security Note</p>
-              <p>Application passwords allow authentication via non-interactive systems, such as XML-RPC or the REST API, without providing your actual password. Application passwords can be easily revoked. They cannot be used for traditional logins to your website.</p>
+              <div class="bg-gradient-to-r from-yellow-500/10 via-red-500/10 to-yellow-500/10 border border-yellow-500/40 rounded-lg backdrop-blur-sm p-4">
+                <div class="flex items-start">
+                  <i data-lucide="info" class="h-5 w-5 text-yellow-400 mt-0.5 mr-3 flex-shrink-0"></i>
+                  <div class="text-sm text-gray-300">
+                    <p class="font-medium mb-1 text-yellow-400">Security Note</p>
+                    <p>Application passwords allow authentication via non-interactive systems, such as XML-RPC or the REST API, without providing your actual password. Application passwords can be easily revoked. They cannot be used for traditional logins to your website.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between pt-4">
+                <%= form.submit "Add Website", class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" %>
+                <%= link_to "Cancel", app_wordpress_websites_path, class: "px-6 py-3 bg-gray-500/10 border border-gray-500/30 rounded-md font-semibold transition-all duration-200 hover:bg-gray-500/20 hover:border-gray-500/50 text-gray-300" %>
+              </div>
+            <% end %>
+
+            <div class="mt-8 text-center">
+              <%= link_to "Back to WordPress Websites", app_wordpress_websites_path, class: "text-gray-400 hover:text-gray-300 transition-colors" %>
             </div>
           </div>
         </div>
-
-        <div class="flex items-center justify-between pt-4">
-          <%= form.submit "Add Website", class: "px-6 py-3 bg-transparent border-2 border-green-500/30 rounded-md font-semibold transition-all duration-200 hover:border-green-500/60 hover:bg-green-500/10 text-white" %>
-          <%= link_to "Cancel", app_wordpress_websites_path, class: "px-6 py-3 bg-transparent border-2 border-gray-500/30 rounded-md font-semibold transition-all duration-200 hover:border-gray-500/60 hover:bg-gray-500/10 text-white" %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+      </div>
+    </section>
+  </main>
 </div> 

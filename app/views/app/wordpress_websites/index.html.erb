@@ -1,67 +1,78 @@
-<div class="py-16">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="bg-gray-800 px-6 py-8 border border-gray-700 rounded-xl shadow-xl">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <h1 class="font-bold text-2xl text-gray-100">WordPress Websites</h1>
-          <p class="text-base text-gray-400 mt-2">
-            Manage your WordPress websites and their credentials.
-          </p>
-        </div>
-        <%= link_to "Add New Website", new_app_wordpress_website_path, class: "px-6 py-3 bg-transparent border-2 border-green-500/30 rounded-md font-semibold transition-all duration-200 hover:border-green-500/60 hover:bg-green-500/10 text-white" %>
-      </div>
+<div class="min-h-screen bg-[#0F172A]">
+  <main>
+    <!-- WordPress Websites Section -->
+    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="max-w-6xl mx-auto">
+          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h1 class="font-bold text-2xl text-gray-100">WordPress Websites</h1>
+                <p class="text-base text-gray-400 mt-2">
+                  Manage your WordPress websites and their credentials.
+                </p>
+              </div>
+              <%= link_to "Add New Website", new_app_wordpress_website_path, class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" %>
+            </div>
 
-      <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
-      <%= tag.div(flash[:notice], class: "mb-4 text-green-400") if flash[:notice] %>
+            <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
+            <%= tag.div(flash[:notice], class: "mb-4 text-green-400") if flash[:notice] %>
 
-      <% if @wordpress_websites.any? %>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-gray-300">
-            <thead class="text-xs text-gray-400 uppercase bg-gray-700/50">
-              <tr>
-                <th scope="col" class="px-6 py-3">Website URL</th>
-                <th scope="col" class="px-6 py-3">Username</th>
-                <th scope="col" class="px-6 py-3">Added</th>
-                <th scope="col" class="px-6 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @wordpress_websites.each do |website| %>
-                <tr class="bg-gray-800/50 border-b border-gray-700 hover:bg-gray-700/50 transition-colors">
-                  <td class="px-6 py-4 font-medium text-gray-100">
-                    <%= link_to website.url, website.url, target: "_blank", class: "text-blue-400 hover:text-blue-300 transition-colors" %>
-                  </td>
-                  <td class="px-6 py-4">
-                    <%= website.username %>
-                  </td>
-                  <td class="px-6 py-4">
-                    <%= website.created_at.strftime("%B %d, %Y") %>
-                  </td>
-                  <td class="px-6 py-4">
-                    <div class="flex space-x-3">
-                      <button class="text-yellow-400 hover:text-yellow-300 transition-colors">
-                        <i data-lucide="edit-3" class="h-4 w-4"></i>
-                      </button>
-                      <button class="text-red-400 hover:text-red-300 transition-colors">
-                        <i data-lucide="trash-2" class="h-4 w-4"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <div class="text-center py-12">
-          <div class="mx-auto w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mb-4">
-            <i data-lucide="globe" class="h-12 w-12 text-gray-400"></i>
+            <% if @wordpress_websites.any? %>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-gray-300">
+                  <thead class="text-xs text-gray-400 uppercase bg-gray-700/50">
+                    <tr>
+                      <th scope="col" class="px-6 py-3">Website URL</th>
+                      <th scope="col" class="px-6 py-3">Username</th>
+                      <th scope="col" class="px-6 py-3">Added</th>
+                      <th scope="col" class="px-6 py-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @wordpress_websites.each do |website| %>
+                      <tr class="bg-gray-800/50 border-b border-gray-700 hover:bg-gray-700/50 transition-colors">
+                        <td class="px-6 py-4 font-medium text-gray-100">
+                          <%= link_to website.url, website.url, target: "_blank", class: "text-yellow-400 hover:text-yellow-300 transition-colors" %>
+                        </td>
+                        <td class="px-6 py-4">
+                          <%= website.username %>
+                        </td>
+                        <td class="px-6 py-4">
+                          <%= website.created_at.strftime("%B %d, %Y") %>
+                        </td>
+                        <td class="px-6 py-4">
+                          <div class="flex space-x-3">
+                            <button class="text-yellow-400 hover:text-yellow-300 transition-colors">
+                              <i data-lucide="edit-3" class="h-4 w-4"></i>
+                            </button>
+                            <button class="text-red-400 hover:text-red-300 transition-colors">
+                              <i data-lucide="trash-2" class="h-4 w-4"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            <% else %>
+              <div class="text-center py-12">
+                <div class="mx-auto w-24 h-24 bg-gradient-to-r from-yellow-500/10 to-red-500/10 border border-yellow-500/20 rounded-full flex items-center justify-center mb-4">
+                  <i data-lucide="globe" class="h-12 w-12 text-yellow-400"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-300 mb-2">No WordPress websites yet</h3>
+                <p class="text-gray-400 mb-6">Get started by adding your first WordPress website.</p>
+                <%= link_to "Add Your First Website", new_app_wordpress_website_path, class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" %>
+              </div>
+            <% end %>
+
+            <div class="mt-8 text-center">
+              <%= link_to "Back to Dashboard", app_root_path, class: "text-gray-400 hover:text-gray-300 transition-colors" %>
+            </div>
           </div>
-          <h3 class="text-lg font-medium text-gray-300 mb-2">No WordPress websites yet</h3>
-          <p class="text-gray-400 mb-6">Get started by adding your first WordPress website.</p>
-          <%= link_to "Add Your First Website", new_app_wordpress_website_path, class: "px-6 py-3 bg-transparent border-2 border-green-500/30 rounded-md font-semibold transition-all duration-200 hover:border-green-500/60 hover:bg-green-500/10 text-white" %>
         </div>
-      <% end %>
-    </div>
-  </div>
+      </div>
+    </section>
+  </main>
 </div> 

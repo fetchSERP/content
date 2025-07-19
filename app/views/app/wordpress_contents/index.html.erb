@@ -75,15 +75,17 @@
                                 title: "Edit" do %>
                               <i data-lucide="edit-3" class="h-4 w-4"></i>
                             <% end %>
-                            <%= button_tag type: "button",
-                                class: "text-purple-400 hover:text-purple-300 transition-colors", 
-                                title: "Publish to WordPress",
-                                data: {
-                                  controller: "modal-opener",
-                                  action: "click->modal-opener#open",
-                                  "modal-opener-url-value": publish_modal_app_wordpress_content_path(content)
-                                } do %>
-                              <i data-lucide="send" class="h-4 w-4"></i>
+                            <% if content.status == 'draft' %>
+                              <%= button_tag type: "button",
+                                  class: "text-purple-400 hover:text-purple-300 transition-colors", 
+                                  title: "Publish to WordPress",
+                                  data: {
+                                    controller: "modal-opener",
+                                    action: "click->modal-opener#open",
+                                    "modal-opener-url-value": publish_modal_app_wordpress_content_path(content)
+                                  } do %>
+                                <i data-lucide="send" class="h-4 w-4"></i>
+                              <% end %>
                             <% end %>
                             <%= link_to app_wordpress_content_path(content), 
                                 method: :delete,

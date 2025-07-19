@@ -7,8 +7,8 @@
           <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
             <div class="flex justify-between items-center mb-6">
               <div>
-                <h1 class="text-2xl font-bold text-gray-100">Edit WordPress Prompt</h1>
-                <p class="text-sm text-gray-400 mt-1">Update your custom prompt for WordPress content generation</p>
+                <h1 class="text-2xl font-bold text-gray-100">Edit AI Prompt</h1>
+                <p class="text-sm text-gray-400 mt-1">Update your custom prompt for content generation</p>
               </div>
               <%= link_to app_prompts_path, 
                   class: "text-gray-400 hover:text-gray-300 transition-colors" do %>
@@ -28,7 +28,73 @@
             <% end %>
 
             <%= form_with model: [:app, @prompt], class: "space-y-6", data: { turbo: false } do |form| %>
-              <%= form.hidden_field :target, value: 'wordpress' %>
+              
+              <!-- Target Selection -->
+              <div>
+                <%= form.label :target, "Platform Target", class: "block text-sm font-medium text-yellow-400 mb-3" %>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <!-- WordPress Option -->
+                  <label class="relative flex items-center p-4 border border-yellow-500/30 rounded-lg cursor-pointer hover:border-yellow-500/50 hover:bg-yellow-500/5 transition-all group">
+                    <%= form.radio_button :target, "wordpress", 
+                        class: "sr-only peer", 
+                        checked: @prompt.target == "wordpress" %>
+                    <div class="flex items-center space-x-3 w-full">
+                      <div class="flex items-center justify-center w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded-lg group-hover:bg-blue-500/30 transition-colors">
+                        <i data-lucide="globe" class="h-4 w-4 text-blue-400"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-100">WordPress</div>
+                        <div class="text-xs text-gray-400">Blog posts & pages</div>
+                      </div>
+                    </div>
+                    <!-- Radio button indicator -->
+                    <div class="absolute top-2 right-2 w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-yellow-500 peer-checked:bg-yellow-500/20 transition-colors">
+                      <div class="w-2 h-2 bg-yellow-500 rounded-full m-0.5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                    </div>
+                  </label>
+
+                  <!-- X (Twitter) Option -->
+                  <label class="relative flex items-center p-4 border border-yellow-500/30 rounded-lg cursor-pointer hover:border-yellow-500/50 hover:bg-yellow-500/5 transition-all group">
+                    <%= form.radio_button :target, "x", 
+                        class: "sr-only peer", 
+                        checked: @prompt.target == "x" %>
+                    <div class="flex items-center space-x-3 w-full">
+                      <div class="flex items-center justify-center w-8 h-8 bg-sky-500/20 border border-sky-500/30 rounded-lg group-hover:bg-sky-500/30 transition-colors">
+                        <i data-lucide="twitter" class="h-4 w-4 text-sky-400"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-100">X (Twitter)</div>
+                        <div class="text-xs text-gray-400">Posts & threads</div>
+                      </div>
+                    </div>
+                    <!-- Radio button indicator -->
+                    <div class="absolute top-2 right-2 w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-yellow-500 peer-checked:bg-yellow-500/20 transition-colors">
+                      <div class="w-2 h-2 bg-yellow-500 rounded-full m-0.5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                    </div>
+                  </label>
+
+                  <!-- LinkedIn Option -->
+                  <label class="relative flex items-center p-4 border border-yellow-500/30 rounded-lg cursor-pointer hover:border-yellow-500/50 hover:bg-yellow-500/5 transition-all group">
+                    <%= form.radio_button :target, "linkedin", 
+                        class: "sr-only peer", 
+                        checked: @prompt.target == "linkedin" %>
+                    <div class="flex items-center space-x-3 w-full">
+                      <div class="flex items-center justify-center w-8 h-8 bg-indigo-500/20 border border-indigo-500/30 rounded-lg group-hover:bg-indigo-500/30 transition-colors">
+                        <i data-lucide="linkedin" class="h-4 w-4 text-indigo-400"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-100">LinkedIn</div>
+                        <div class="text-xs text-gray-400">Professional posts</div>
+                      </div>
+                    </div>
+                    <!-- Radio button indicator -->
+                    <div class="absolute top-2 right-2 w-4 h-4 border-2 border-gray-400 rounded-full peer-checked:border-yellow-500 peer-checked:bg-yellow-500/20 transition-colors">
+                      <div class="w-2 h-2 bg-yellow-500 rounded-full m-0.5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                    </div>
+                  </label>
+                </div>
+                <p class="mt-2 text-xs text-gray-400">Select the platform this prompt will be used for</p>
+              </div>
               
               <!-- User Prompt Field -->
               <div>

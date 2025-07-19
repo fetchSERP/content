@@ -1,0 +1,24 @@
+<div class="min-h-screen bg-[#0F172A]">
+  <main>
+    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="max-w-3xl mx-auto">
+          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+            <h1 class="font-bold text-3xl text-gray-100 mb-4">LinkedIn Post Preview</h1>
+
+            <p class="text-gray-400 mb-6"><%= @linkedin_content.created_at.strftime("%B %d, %Y") %> • Keyword: <span class="text-yellow-400"><%= @linkedin_content.keyword %></span></p>
+
+            <div class="prose prose-invert max-w-none leading-relaxed text-gray-100">
+              <%= simple_format(@linkedin_content.content) %>
+            </div>
+
+            <div class="mt-8 flex space-x-3">
+              <%= link_to "Edit", edit_app_linkedin_content_path(@linkedin_content), class: "px-6 py-2 bg-yellow-500/20 border border-yellow-500/40 rounded-lg text-yellow-300 hover:bg-yellow-500/30 transition-colors" %>
+              <%= link_to "Back", app_linkedin_contents_path, class: "px-6 py-2 bg-gray-500/10 border border-gray-500/30 rounded-lg text-gray-300 hover:bg-gray-500/20 transition-colors" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div> 

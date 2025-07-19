@@ -1,0 +1,38 @@
+<% if linkedin_prompts.any? %>
+  <div class="space-y-3">
+    <% linkedin_prompts.each do |prompt| %>
+      <div class="relative">
+        <% if defined?(form) && form %>
+          <%= form.radio_button :prompt_id, prompt.id, 
+              class: "peer sr-only", 
+              id: "prompt_#{prompt.id}" %>
+        <% else %>
+          <input type="radio" name="wordpress_content[prompt_id]" value="<%= prompt.id %>" id="prompt_<%= prompt.id %>" class="peer sr-only">
+        <% end %>
+        <label for="prompt_<%= prompt.id %>" class="flex p-4 border-2 border-yellow-500/30 rounded-lg cursor-pointer transition-all hover:border-yellow-500/50 peer-checked:border-yellow-500 peer-checked:bg-yellow-500/10 peer-checked:shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+          <div class="flex-grow">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-sm font-medium text-gray-300">LinkedIn Prompt</div>
+              <%= link_to edit_app_prompt_path(prompt), 
+                  class: "text-yellow-400 hover:text-yellow-300 transition-colors",
+                  data: { turbo_frame: "prompt_form" }, 
+                  title: "Edit" do %>
+                <i data-lucide="edit-3" class="h-4 w-4"></i>
+              <% end %>
+            </div>
+            <div class="text-xs text-green-400 font-medium mb-1">USER PROMPT</div>
+            <div class="text-sm text-gray-400 mb-2"><%= truncate(prompt.user_prompt, length: 120) %></div>
+            <div class="text-xs text-purple-400 font-medium mb-1">SYSTEM PROMPT</div>
+            <div class="text-sm text-gray-400"><%= truncate(prompt.system_prompt, length: 100) %></div>
+          </div>
+        </label>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="text-center py-6 border-2 border-dashed border-yellow-500/30 rounded-lg">
+    <i data-lucide="message-square" class="h-8 w-8 text-yellow-400 mx-auto mb-2"></i>
+    <p class="text-gray-400 text-sm">No LinkedIn prompts found</p>
+    <p class="text-gray-500 text-xs mt-1">Create a prompt to customize AI content generation</p>
+  </div>
+<% end %> 

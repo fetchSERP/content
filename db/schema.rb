@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_19_145935) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_19_184123) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,6 +43,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_145935) do
     t.bigint "domain_id", null: false
     t.index ["domain_id"], name: "index_keywords_on_domain_id"
     t.index ["keyword_id"], name: "index_keywords_on_keyword_id"
+  end
+
+  create_table "linkedin_contents", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "content"
+    t.integer "status", default: 0
+    t.string "ai_model"
+    t.bigint "prompt_id", null: false
+    t.string "cta_url"
+    t.string "keyword"
+    t.jsonb "linkedin_response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["prompt_id"], name: "index_linkedin_contents_on_prompt_id"
+    t.index ["user_id"], name: "index_linkedin_contents_on_user_id"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -117,6 +132,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_19_145935) do
   add_foreign_key "domains", "users"
   add_foreign_key "keywords", "domains"
   add_foreign_key "keywords", "keywords"
+  add_foreign_key "linkedin_contents", "prompts"
+  add_foreign_key "linkedin_contents", "users"
   add_foreign_key "pages", "keywords"
   add_foreign_key "prompts", "users"
   add_foreign_key "sessions", "users"

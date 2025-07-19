@@ -135,7 +135,7 @@
             <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-6 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] mb-6">
               <h2 class="font-bold text-xl text-gray-100">Content Management</h2>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <!-- WordPress Content -->
               <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
                 <div class="flex items-center mb-4">
@@ -175,6 +175,80 @@
                 </div>
               </div>
 
+                <!-- LinkedIn Content -->
+                <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
+                  <div class="flex-1">
+                    <div class="flex items-center mb-4">
+                      <div class="p-3 bg-sky-500/20 rounded-lg">
+                        <i data-lucide="linkedin" class="h-6 w-6 text-sky-400"></i>
+                      </div>
+                      <h3 class="text-lg font-semibold text-gray-100 ml-3">LinkedIn Content</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Create and manage your LinkedIn posts</p>
+                    <div class="space-y-3">
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-300">Total Posts:</span>
+                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
+                      </div>
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-300">Published:</span>
+                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
+                      </div>
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-300">Drafts:</span>
+                        <span class="text-yellow-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'draft').count %></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-2">
+                    <%= link_to app_linkedin_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
+                      <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
+                      Manage Posts
+                    <% end %>
+                    <%= link_to new_app_linkedin_content_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
+                      <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
+                      Create Post
+                    <% end %>
+                  </div>
+                </div>
+
+                <!-- X Content -->
+                <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
+                  <div class="flex-1">
+                    <div class="flex items-center mb-4">
+                      <div class="p-3 bg-sky-500/20 rounded-lg">
+                        <i data-lucide="x" class="h-6 w-6 text-sky-400"></i>
+                      </div>
+                      <h3 class="text-lg font-semibold text-gray-100 ml-3">X (Twitter) Content</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Create and manage your X posts</p>
+                    <div class="space-y-3">
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-300">Total Posts:</span>
+                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
+                      </div>
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-300">Published:</span>
+                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
+                      </div>
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-300">Drafts:</span>
+                        <span class="text-yellow-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'draft').count %></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-2">
+                    <%= link_to app_linkedin_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
+                      <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
+                      Manage Posts
+                    <% end %>
+                    <%= link_to new_app_linkedin_content_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
+                      <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
+                      Create Post
+                    <% end %>
+                  </div>
+                </div>
+
                 <!-- SEO Domains -->
                 <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
                   <div class="flex-1">
@@ -182,9 +256,9 @@
                       <div class="p-3 bg-purple-500/20 rounded-lg">
                         <i data-lucide="search" class="h-6 w-6 text-purple-400"></i>
                       </div>
-                      <h3 class="text-lg font-semibold text-gray-100 ml-3">SEO Domains</h3>
+                      <h3 class="text-lg font-semibold text-gray-100 ml-3">Domains</h3>
                     </div>
-                    <p class="text-gray-400 mb-4">AI-generated SEO-optimized pages for keywords</p>
+                    <p class="text-gray-400 mb-4">Create and manage your domains</p>
                     <div class="space-y-3">
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Domains:</span>
@@ -284,7 +358,7 @@
           </div>
 
           <!-- Account Overview -->
-          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+          <div class="max-w-6xl mx-auto bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
             <h2 class="font-bold text-xl text-gray-100 mb-6">Account Overview</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

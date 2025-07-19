@@ -25,6 +25,7 @@ class App::WordpressContentsController < App::ApplicationController
   end
 
   def edit
+    @available_models = OpenrouterService.fetch_models
   end
 
   def update

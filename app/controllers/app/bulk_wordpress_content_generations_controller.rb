@@ -3,6 +3,7 @@ class App::BulkWordpressContentGenerationsController < App::ApplicationControlle
     @keywords = Keyword.joins(:domain).where(domains: { user: Current.user }).includes(:domain)
     @wordpress_prompts = Current.user.prompts.where(target: 'wordpress')
     @available_models = OpenrouterService.fetch_models
+    @model_groups = @available_models
   end
 
   def create
@@ -17,7 +18,7 @@ class App::BulkWordpressContentGenerationsController < App::ApplicationControlle
       # reload variables for form
       @keywords = Keyword.joins(:domain).where(domains: { user: Current.user }).includes(:domain)
       @wordpress_prompts = Current.user.prompts.where(target: 'wordpress')
-      @available_models   = OpenrouterService.fetch_models
+      @model_groups   = OpenrouterService.fetch_models
 
       # Preserve user selections
       @selected_keyword_ids        = keyword_ids.map(&:to_i)

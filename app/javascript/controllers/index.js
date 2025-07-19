@@ -9,9 +9,13 @@ import ModalController from "./modal_controller"
 import ModalOpenerController from "./modal_opener_controller"
 import NotificationController from "./notification_controller"
 import PublishFormController from "./publish_form_controller"
+import BulkGenerationController from "./bulk_generation_controller"
+import ChoicesSelectController from "./choices_select_controller"
 
 application.register("hello", HelloController)
 application.register("modal", ModalController)
 application.register("modal-opener", ModalOpenerController)
 application.register("notification", NotificationController)
 application.register("publish-form", PublishFormController)
+application.register("bulk-generation", BulkGenerationController)
+application.register("choices-select", ChoicesSelectController)

@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :prompts, only: [ :index, :show, :new, :create, :edit, :update ]
     resources :domains, only: [ :index, :new, :create, :destroy ]
     resources :keywords, only: [ :index ]
+    resources :bulk_wordpress_content_generations, only: [ :new, :create ]
     root "dashboard#index"
   end
 

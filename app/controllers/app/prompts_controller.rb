@@ -32,7 +32,7 @@ class App::PromptsController < App::ApplicationController
     Rails.logger.debug "Turbo frame request?: #{turbo_frame_request?}"
     
     respond_to do |format|
-      if @prompt.save
+    if @prompt.save
         Rails.logger.debug "Prompt saved successfully"
         format.html { 
           if turbo_frame_request?
@@ -48,11 +48,11 @@ class App::PromptsController < App::ApplicationController
               redirect_to app_prompts_path, notice: "Prompt created successfully"
             end
           else
-            redirect_to app_prompts_path, notice: "Prompt created successfully"
+      redirect_to app_prompts_path, notice: "Prompt created successfully"
           end
         }
         format.json { render json: { success: true, prompt: @prompt } }
-      else
+    else
         Rails.logger.debug "Failed to save prompt: #{@prompt.errors.full_messages}"
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: { success: false, errors: @prompt.errors.full_messages }, status: :unprocessable_entity }
@@ -68,7 +68,7 @@ class App::PromptsController < App::ApplicationController
 
   def update
     respond_to do |format|
-      if @prompt.update(prompt_params)
+    if @prompt.update(prompt_params)
         format.html { 
           if turbo_frame_request?
             # Check if we're coming from the WordPress content page or the edit page
@@ -83,11 +83,11 @@ class App::PromptsController < App::ApplicationController
               redirect_to app_prompts_path, notice: "Prompt updated successfully"
             end
           else
-            redirect_to app_prompts_path, notice: "Prompt updated successfully"
+      redirect_to app_prompts_path, notice: "Prompt updated successfully"
           end
         }
         format.json { render json: { success: true, prompt: @prompt } }
-      else
+    else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: { success: false, errors: @prompt.errors.full_messages }, status: :unprocessable_entity }
       end

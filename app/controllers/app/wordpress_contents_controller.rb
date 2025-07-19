@@ -17,6 +17,7 @@ class App::WordpressContentsController < App::ApplicationController
     @wordpress_content = Current.user.wordpress_contents.build(wordpress_content_params)
     
     if @wordpress_content.save
+      @wordpress_content.generate_content!
       redirect_to app_wordpress_contents_path, notice: "WordPress content created successfully"
     else
       render :new

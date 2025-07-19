@@ -168,6 +168,10 @@
                     <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
                     Create New Post
                   <% end %>
+                  <%= link_to new_app_bulk_wordpress_content_generation_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
+                    <i data-lucide="zap" class="h-4 w-4 inline mr-2"></i>
+                    Bulk Generate
+                  <% end %>
                 </div>
               </div>
 
@@ -233,11 +237,11 @@
                   <%= link_to app_prompts_path, class: "block w-full px-4 py-2 bg-orange-500/10 border border-orange-500/30 rounded-lg text-orange-400 hover:bg-orange-500/20 transition-colors text-center" do %>
                     <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                     Manage Prompts
-                  <% end %>
+<% end %>
                   <%= link_to new_app_prompt_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
                     <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
                     Create New Prompt
-                  <% end %>
+<% end %>
                 </div>
               </div>
 
@@ -268,7 +272,7 @@
                     <%= link_to app_keywords_path, class: "block w-full px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-blue-400 hover:bg-blue-500/20 transition-colors text-center" do %>
                       <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                       View Keywords
-                    <% end %>
+<% end %>
                     <button class="block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center">
                       <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
                       Add Keyword

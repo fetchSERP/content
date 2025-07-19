@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_18_192951) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_19_095419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,6 +24,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_192951) do
     t.index ["user_id"], name: "index_authentication_providers_on_user_id"
   end
 
+  create_table "domains", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_domains_on_user_id"
+  end
+
   create_table "keywords", force: :cascade do |t|
     t.string "name"
     t.boolean "is_long_tail"
@@ -31,6 +40,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_192951) do
     t.integer "search_intent", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "domain_id", null: false
+    t.index ["domain_id"], name: "index_keywords_on_domain_id"
     t.index ["keyword_id"], name: "index_keywords_on_keyword_id"
   end
 
@@ -102,6 +113,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_192951) do
   end
 
   add_foreign_key "authentication_providers", "users"
+  add_foreign_key "domains", "users"
+  add_foreign_key "keywords", "domains"
   add_foreign_key "keywords", "keywords"
   add_foreign_key "pages", "keywords"
   add_foreign_key "prompts", "users"

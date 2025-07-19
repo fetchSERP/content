@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :wordpress_websites, dependent: :destroy
   has_many :wordpress_contents, dependent: :destroy
   has_many :prompts, dependent: :destroy
+  has_many :domains, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 end

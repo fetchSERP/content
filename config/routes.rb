@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     end
     resources :authentication_providers, only: [ :destroy ]
     resources :prompts, only: [ :index, :show, :new, :create, :edit, :update ]
+    resources :domains, only: [ :index, :new, :create, :destroy ]
+    resources :keywords, only: [ :index ]
     root "dashboard#index"
   end
 

@@ -28,6 +28,7 @@ gem "omniauth-rails_csrf_protection"
 gem "omniauth-linkedin-openid"
 gem "omniauth-twitter2"
 gem "x"
+gem "fetchserp"
 
 gem "pry"
 gem "pry-rails"

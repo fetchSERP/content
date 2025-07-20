@@ -17,6 +17,7 @@ class App::LinkedinContentsController < App::ApplicationController
     @linkedin_content = LinkedinContent.new(linkedin_content_params)
     @linkedin_content.user = Current.user
     if @linkedin_content.save
+      @linkedin_content.generate!
       redirect_to app_linkedin_contents_path, notice: "LinkedIn content created successfully"
     else
       @linkedin_prompts = Current.user.prompts.where(target: 'linkedin')

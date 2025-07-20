@@ -1,0 +1,113 @@
+
+<div id="modal" class="fixed inset-0 backdrop-blur-sm bg-gray-900/30 flex items-center justify-center z-50"
+     data-controller="modal"
+     data-action="keydown.esc->modal#close click->modal#closeOnBackgroundClick"
+     tabindex="-1">
+  <div class="bg-[#1E293B] rounded-xl p-6 max-w-lg w-full mx-4 border border-yellow-500/20 shadow-2xl relative z-10">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-gray-100">Publish to LinkedIn</h3>
+      <button data-action="modal#close" class="text-gray-400 hover:text-gray-300">
+        <i data-lucide="x" class="h-5 w-5"></i>
+      </button>
+    </div>
+    
+    <p class="text-gray-400 text-sm mb-4">Select which LinkedIn profile you'd like to publish this content to:</p>
+    
+    <% if @authentication_providers.any? %>
+      <%= form_with url: publish_app_linkedin_content_path(@linkedin_content), method: :patch, local: true, class: "space-y-4", data: { controller: "publish-form", action: "submit->publish-form#submit" } do |form| %>
+        <div class="space-y-3">
+          <% @authentication_providers.each_with_index do |authentication_provider, index| %>
+            <div class="relative">
+              <%= form.radio_button :authentication_provider_id, authentication_provider.id, 
+                  class: "sr-only", 
+                  id: "authentication_provider_#{authentication_provider.id}",
+                  checked: index == 0 %>
+              <label for="authentication_provider_<%= authentication_provider.id %>" 
+                  class="radio-label flex items-center p-4 bg-slate-950/50 border rounded-lg cursor-pointer hover:border-yellow-500/50 transition-colors <%= index == 0 ? 'border-purple-500 bg-purple-500/10' : 'border-yellow-500/30' %>"
+                  onclick="selectRadio(this, '<%= authentication_provider.id %>')">
+                <div class="flex-1">
+                  <div class="font-medium text-gray-100"><%= authentication_provider.username %></div>
+                </div>
+                <div class="ml-4 relative">
+                  <div class="radio-outer w-4 h-4 border-2 rounded-full transition-colors <%= index == 0 ? 'border-purple-500' : 'border-gray-400' %>"></div>
+                  <div class="radio-inner w-2 h-2 bg-purple-500 rounded-full absolute top-1 left-1 transition-transform <%= index == 0 ? 'scale-100' : 'scale-0' %>"></div>
+                </div>
+              </label>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="flex space-x-3 pt-4">
+          <%= form.submit "Publish Content", 
+              class: "flex-1 px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]" %>
+          <button type="button" data-action="modal#close"
+              class="px-4 py-2 bg-transparent border-2 border-gray-500/30 rounded-lg font-semibold transition-all duration-200 hover:border-gray-500/60 hover:bg-gray-500/10 text-white">
+            Cancel
+          </button>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-6">
+        <div class="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-yellow-500/20">
+          <i data-lucide="globe" class="h-8 w-8 text-yellow-400"></i>
+        </div>
+        <h4 class="text-lg font-medium text-gray-300 mb-2">No LinkedIn Profiles</h4>
+        <p class="text-gray-400 mb-4">You need to connect a LinkedIn profile before you can publish content.</p>
+        <%= link_to "Connect LinkedIn Profile", new_app_authentication_provider_path(provider: 'linkedin'), 
+            class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+// Initialize Lucide icons
+if (window.lucide) lucide.createIcons();
+
+function selectRadio(label, authenticationProviderId) {
+  // Reset all labels to unselected state
+  document.querySelectorAll('.radio-label').forEach(function(el) {
+    // Remove selected classes
+    el.classList.remove('border-purple-500', 'bg-purple-500/10');
+    el.classList.add('border-yellow-500/30');
+    
+    // Reset outer circle
+    const outer = el.querySelector('.radio-outer');
+    if (outer) {
+      outer.classList.remove('border-purple-500');
+      outer.classList.add('border-gray-400');
+    }
+    
+    // Reset inner circle
+    const inner = el.querySelector('.radio-inner');
+    if (inner) {
+      inner.classList.remove('scale-100');
+      inner.classList.add('scale-0');
+    }
+  });
+
+  // Set clicked label as selected
+  label.classList.remove('border-yellow-500/30');
+  label.classList.add('border-purple-500', 'bg-purple-500/10');
+  
+  // Set outer circle as selected
+  const outer = label.querySelector('.radio-outer');
+  if (outer) {
+    outer.classList.remove('border-gray-400');
+    outer.classList.add('border-purple-500');
+  }
+  
+  // Set inner circle as selected
+  const inner = label.querySelector('.radio-inner');
+  if (inner) {
+    inner.classList.remove('scale-0');
+    inner.classList.add('scale-100');
+  }
+
+  // Check the radio button
+  const radio = document.getElementById(`authentication_provider_${authenticationProviderId}`);
+  if (radio) {
+    radio.checked = true;
+  }
+}
+</script> 

@@ -33,7 +33,12 @@ Rails.application.routes.draw do
     resources :domains, only: [ :index, :new, :create, :destroy ]
     resources :keywords, only: [ :index ]
     resources :bulk_wordpress_content_generations, only: [ :new, :create ]
-    resources :linkedin_contents
+    resources :linkedin_contents do
+      member do
+        patch :publish
+        get :publish_modal
+      end
+    end
     root "dashboard#index"
   end
 

@@ -1,10 +1,20 @@
 class App::AuthenticationProvidersController < App::ApplicationController
   def create
     auth_hash = request.env["omniauth.auth"]
+    username = case auth_hash.provider
+    when 'twitter2'
+      auth_hash.dig(:extra, :raw_info, :data, :username)
+    when 'linkedin'
+      auth_hash.dig(:extra, :raw_info, :name)
+    else
+      "Unknown"
+    end
+    
     Current.user.authentication_providers.find_or_create_by(
       provider: auth_hash.provider,
       uid: auth_hash.uid,
-      token: auth_hash.credentials.token
+      token: auth_hash.credentials.token,
+      username: username
     )
     redirect_to app_root_path, notice: "Authentication provider created"
   end

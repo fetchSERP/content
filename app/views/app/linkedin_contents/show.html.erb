@@ -14,6 +14,15 @@
 
             <div class="mt-8 flex space-x-3">
               <%= link_to "Edit", edit_app_linkedin_content_path(@linkedin_content), class: "px-6 py-2 bg-yellow-500/20 border border-yellow-500/40 rounded-lg text-yellow-300 hover:bg-yellow-500/30 transition-colors" %>
+              <% if @linkedin_content.status == 'draft' %>
+                <button type="button" class="px-6 py-2 bg-purple-500/20 border border-purple-500/40 rounded-lg text-purple-300 hover:bg-purple-500/30 transition-colors" 
+                  data-controller="modal-opener" 
+                  data-action="click->modal-opener#open" 
+                  data-modal-opener-url-value="<%= publish_modal_app_linkedin_content_path(@linkedin_content) %>">
+                  <i data-lucide="send" class="h-4 w-4 inline mr-2"></i>
+                  Publish
+                </button>
+              <% end %>
               <%= link_to "Back", app_linkedin_contents_path, class: "px-6 py-2 bg-gray-500/10 border border-gray-500/30 rounded-lg text-gray-300 hover:bg-gray-500/20 transition-colors" %>
             </div>
           </div>

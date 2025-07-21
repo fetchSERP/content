@@ -126,6 +126,7 @@
               <!-- Submit -->
               <div class="pt-4">
                 <%= f.submit "Generate WordPress Content", class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] disabled:opacity-50", data: { bulk_generation_target: "submit" } %>
+                <%= link_to "Cancel", app_root_path, class: "px-6 py-4 bg-gray-500/10 border border-gray-500/30 rounded-lg text-gray-300 hover:bg-gray-500/20" %>
               </div>
             <% end %>
           </div>

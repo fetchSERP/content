@@ -5,7 +5,7 @@
     </svg>
     <span class="ml-2 text-lg font-bold bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent">
       <% credits = user.fetchserp_credits %>
-      <%= credits.present? ? number_with_delimiter(credits) : "–" %> Credits
+      <%= credits.present? ? number_with_delimiter(credits.to_f.round(2)) : "–" %> Credits
     </span>
   <% end %>
 </div>

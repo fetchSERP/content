@@ -13,5 +13,6 @@ class FetchKeywordsJob < ApplicationJob
       partial: "app/domains/domain",
       locals: { domain: domain }
     )
+    broadcast_credit(domain.user)
   end
 end

@@ -4,12 +4,26 @@
       <div class="container mx-auto px-4 relative">
         <div class="max-w-2xl mx-auto">
           <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-            <h1 class="font-bold text-2xl text-gray-100 mb-2">Create LinkedIn Post</h1>
-            <p class="text-sm text-gray-400 mb-6">Generate an engaging LinkedIn post with AI.</p>
+            <h1 class="font-bold text-2xl text-gray-100 mb-2">Create Social Media Post</h1>
+            <p class="text-sm text-gray-400 mb-6">Generate an engaging social media post with AI.</p>
 
             <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
 
-            <%= form_with model: [:app, @linkedin_content], class: "space-y-6" do |f| %>
+            <%= form_with model: [:app, @social_media_content], class: "space-y-6" do |f| %>
+              <!-- Platform  -->
+              <div class="flex space-x-4">
+                <label class="flex items-center space-x-2 cursor-pointer text-sm text-gray-200">
+                  <%= f.radio_button :platform, :linkedin, checked: @social_media_content.platform == "linkedin", class: "accent-blue-500" %>
+                  <span>LinkedIn</span>
+                </label>
+
+                <label class="flex items-center space-x-2 cursor-pointer text-sm text-gray-200">
+                  <%= f.radio_button :platform, :x, checked: @social_media_content.platform == "x", class: "accent-purple-500" %>
+                  <span>X</span>
+                </label>
+              </div>
+
+
               <!-- Keyword -->
               <div>
                 <%= f.label :keyword, "Keyword", class: "block text-sm font-medium text-gray-300 mb-2" %>
@@ -26,7 +40,7 @@
               <div>
                 <div class="flex items-center justify-between mb-3">
                   <label class="block text-sm font-medium text-gray-300">AI Prompt</label>
-                  <%= link_to new_app_prompt_path, 
+                  <%= link_to new_app_prompt_path(platform: @social_media_content.platform), 
                       class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors" do %>
                     <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
                     Create New Prompt
@@ -40,8 +54,8 @@
 
                 <!-- Existing Prompt Selection -->
                 <%= turbo_frame_tag "prompt_selection", data: { turbo_permanent: true } do %>
-                  <% linkedin_prompts = Current.user.prompts.where(target: 'linkedin') %>
-                  <%= render 'prompt_selection', linkedin_prompts: linkedin_prompts, form: f %>
+                  <% prompts = Current.user.prompts.where(target: @social_media_content.platform) %>
+                  <%= render 'prompt_selection', prompts: prompts, form: f, social_media_content: @social_media_content %>
                 <% end %>
 
                 <p class="mt-2 text-sm text-gray-400">Choose or create a prompt to customize how AI generates your content. This affects the writing style, tone, and approach.</p>

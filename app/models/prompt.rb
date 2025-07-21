@@ -1,7 +1,7 @@
 class Prompt < ApplicationRecord
   belongs_to :user
   has_many :wordpress_contents, dependent: :destroy
-  has_many :linkedin_contents, dependent: :destroy
+  has_many :social_media_contents, dependent: :destroy
   enum :target, { wordpress: 0, x: 1, linkedin: 2 }
   
   validates :target, presence: true

@@ -37,10 +37,15 @@
           <%= link_to "Playground", "https://playground.fetchserp.com/", class: "text-gray-400 hover:text-gray-200 transition-colors" %>
           <%= link_to "Documentation", "https://docs.fetchserp.com", class: "text-gray-400 hover:text-gray-200 transition-colors" %>
         </div>
-        <%= button_to session_path, method: :delete, form: {data: {turbo_confirm: 'Are you sure?'}}, class: "flex items-center px-4 py-2 bg-transparent border border-yellow-500/30 font-semibold rounded-md hover:border-yellow-500/60 hover:bg-yellow-500/10 hover:cursor-pointer transition-all duration-200" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>  
-          Logout
-        <% end %>
+        <div class="flex items-center space-x-4">
+          <div class="text-sm">
+            <%= render "shared/user_credit", user: Current.user %>
+          </div>
+          <%= button_to session_path, method: :delete, form: {data: {turbo_confirm: 'Are you sure?'}}, class: "flex items-center px-4 py-2 bg-transparent border border-yellow-500/30 font-semibold rounded-md hover:border-yellow-500/60 hover:bg-yellow-500/10 hover:cursor-pointer transition-all duration-200" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>  
+            Logout
+          <% end %>
+        </div>
       </div>
     <% else %>
       <%= link_to "Get API Key", "/app", class: "group relative px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden inline-block sm:hidden" %>

@@ -1,0 +1,11 @@
+<div class="inline-flex items-center px-2 py-2 rounded-md bg-[#1E293B]/80 border border-yellow-500/20 shadow-lg backdrop-blur-sm" id="user_credit">
+  <%= link_to Rails.env.production? ? "https://www.fetchserp.com/app" : "http://localhost:3009/app", class: "flex items-center space-x-1 hover:cursor-pointer" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M4 4h12a2 2 0 012 2v1H2V6a2 2 0 012-2zm14 4v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8h16zm-2 3a1 1 0 10-2 0 1 1 0 002 0z"/>
+    </svg>
+    <span class="ml-2 text-lg font-bold bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent">
+      <% credits = user.fetchserp_credits %>
+      <%= credits.present? ? number_with_delimiter(credits) : "–" %> Credits
+    </span>
+  <% end %>
+</div>

@@ -188,24 +188,24 @@
                     <div class="space-y-3">
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Total Posts:</span>
-                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.social_media_contents.count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Published:</span>
-                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.social_media_contents.where(status: 'published').count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Drafts:</span>
-                        <span class="text-yellow-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'draft').count %></span>
+                        <span class="text-yellow-400 font-medium"><%= Current.user.social_media_contents.where(status: 'draft').count %></span>
                       </div>
                     </div>
                   </div>
                   <div class="mt-4 space-y-2">
-                    <%= link_to app_linkedin_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
+                    <%= link_to app_social_media_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
                       <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                       Manage Posts
                     <% end %>
-                    <%= link_to new_app_linkedin_content_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
+                    <%= link_to new_app_social_media_content_path(platform: 'linkedin'), class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
                       <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
                       Create Post
                     <% end %>
@@ -225,24 +225,24 @@
                     <div class="space-y-3">
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Total Posts:</span>
-                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.social_media_contents.count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Published:</span>
-                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.social_media_contents.where(status: 'published').count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Drafts:</span>
-                        <span class="text-yellow-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'draft').count %></span>
+                        <span class="text-yellow-400 font-medium"><%= Current.user.social_media_contents.where(status: 'draft').count %></span>
                       </div>
                     </div>
                   </div>
                   <div class="mt-4 space-y-2">
-                    <%= link_to app_linkedin_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
+                    <%= link_to app_social_media_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
                       <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                       Manage Posts
                     <% end %>
-                    <%= link_to new_app_linkedin_content_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
+                    <%= link_to new_app_social_media_content_path(platform: 'x'), class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
                       <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
                       Create Post
                     <% end %>

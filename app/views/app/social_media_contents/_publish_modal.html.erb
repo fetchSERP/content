@@ -5,16 +5,16 @@
      tabindex="-1">
   <div class="bg-[#1E293B] rounded-xl p-6 max-w-lg w-full mx-4 border border-yellow-500/20 shadow-2xl relative z-10">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-semibold text-gray-100">Publish to LinkedIn</h3>
+      <h3 class="text-lg font-semibold text-gray-100">Publish to <%= social_media_content.platform.titleize %></h3>
       <button data-action="modal#close" class="text-gray-400 hover:text-gray-300">
         <i data-lucide="x" class="h-5 w-5"></i>
       </button>
     </div>
     
-    <p class="text-gray-400 text-sm mb-4">Select which LinkedIn profile you'd like to publish this content to:</p>
+    <p class="text-gray-400 text-sm mb-4">Select which <%= social_media_content.platform.titleize %> profile you'd like to publish this content to:</p>
     
     <% if @authentication_providers.any? %>
-      <%= form_with url: publish_app_linkedin_content_path(@linkedin_content), method: :patch, local: true, class: "space-y-4", data: { controller: "publish-form", action: "submit->publish-form#submit" } do |form| %>
+      <%= form_with url: publish_app_social_media_content_path(@social_media_content), method: :patch, local: true, class: "space-y-4", data: { controller: "publish-form", action: "submit->publish-form#submit" } do |form| %>
         <div class="space-y-3">
           <% @authentication_providers.each_with_index do |authentication_provider, index| %>
             <div class="relative">
@@ -51,9 +51,9 @@
         <div class="w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-yellow-500/20">
           <i data-lucide="globe" class="h-8 w-8 text-yellow-400"></i>
         </div>
-        <h4 class="text-lg font-medium text-gray-300 mb-2">No LinkedIn Profiles</h4>
-        <p class="text-gray-400 mb-4">You need to connect a LinkedIn profile before you can publish content.</p>
-        <%= link_to "Connect LinkedIn Profile", new_app_authentication_provider_path(provider: 'linkedin'), 
+        <h4 class="text-lg font-medium text-gray-300 mb-2">No <%= social_media_content.platform.titleize %> Profiles</h4>
+        <p class="text-gray-400 mb-4">You need to connect a <%= social_media_content.platform.titleize %> profile before you can publish content.</p>
+        <%= link_to "Connect #{social_media_content.platform.titleize} Profile", authentication_provider_callback_path(provider: social_media_content.platform), 
             class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors" %>
       </div>
     <% end %>

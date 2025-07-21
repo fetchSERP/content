@@ -4,26 +4,26 @@
       <div class="container mx-auto px-4 relative">
         <div class="max-w-3xl mx-auto">
           <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-            <h1 class="font-bold text-3xl text-gray-100 mb-4">LinkedIn Post Preview</h1>
+            <h1 class="font-bold text-3xl text-gray-100 mb-4"><%= @social_media_content.platform.titleize %> Post Preview</h1>
 
-            <p class="text-gray-400 mb-6"><%= @linkedin_content.created_at.strftime("%B %d, %Y") %> • Keyword: <span class="text-yellow-400"><%= @linkedin_content.keyword %></span></p>
+            <p class="text-gray-400 mb-6"><%= @social_media_content.created_at.strftime("%B %d, %Y") %> • Keyword: <span class="text-yellow-400"><%= @social_media_content.keyword %></span></p>
 
             <div class="prose prose-invert max-w-none leading-relaxed text-gray-100">
-              <%= simple_format(@linkedin_content.content) %>
+              <%= simple_format(@social_media_content.content) %>
             </div>
 
             <div class="mt-8 flex space-x-3">
-              <%= link_to "Edit", edit_app_linkedin_content_path(@linkedin_content), class: "px-6 py-2 bg-yellow-500/20 border border-yellow-500/40 rounded-lg text-yellow-300 hover:bg-yellow-500/30 transition-colors" %>
-              <% if @linkedin_content.status == 'draft' %>
+              <%= link_to "Edit", edit_app_social_media_content_path(@social_media_content), class: "px-6 py-2 bg-yellow-500/20 border border-yellow-500/40 rounded-lg text-yellow-300 hover:bg-yellow-500/30 transition-colors" %>
+              <% if @social_media_content.status == 'draft' %>
                 <button type="button" class="px-6 py-2 bg-purple-500/20 border border-purple-500/40 rounded-lg text-purple-300 hover:bg-purple-500/30 transition-colors" 
                   data-controller="modal-opener" 
                   data-action="click->modal-opener#open" 
-                  data-modal-opener-url-value="<%= publish_modal_app_linkedin_content_path(@linkedin_content) %>">
+                  data-modal-opener-url-value="<%= publish_modal_app_social_media_content_path(@social_media_content) %>">
                   <i data-lucide="send" class="h-4 w-4 inline mr-2"></i>
                   Publish
                 </button>
               <% end %>
-              <%= link_to "Back", app_linkedin_contents_path, class: "px-6 py-2 bg-gray-500/10 border border-gray-500/30 rounded-lg text-gray-300 hover:bg-gray-500/20 transition-colors" %>
+              <%= link_to "Back", app_social_media_contents_path, class: "px-6 py-2 bg-gray-500/10 border border-gray-500/30 rounded-lg text-gray-300 hover:bg-gray-500/20 transition-colors" %>
             </div>
           </div>
         </div>

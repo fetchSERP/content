@@ -14,7 +14,10 @@ class Ai::Openai::ChatGptService < BaseService
       messages: [
         { role: "system", content: system_prompt },
         { role: "user", content: user_prompt }
-      ]
+      ],
+      usage: {
+        include: true
+      }
       # temperature: 0.2
     )
 
@@ -25,7 +28,6 @@ class Ai::Openai::ChatGptService < BaseService
     content = resp.dig(:choices, 0, :message, :content) || resp.dig("choices", 0, "message", "content")
 
     return nil if content.blank?
-
     # Extract the JSON block (the assistant may wrap it in markdown/code fences).
     json_str = content[/\{.*\}/m]
     JSON.parse(json_str) if json_str.present?

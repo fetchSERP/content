@@ -5,7 +5,13 @@ class GenerateWordpressContentJob < ApplicationJob
     prompt = wordpress_content.prompt
     user_prompt = prompt.user_prompt.gsub("{{keyword}}", wordpress_content.keyword).gsub("{{cta_url}}", wordpress_content.cta_url)
     system_prompt = prompt.system_prompt
-    content = Ai::Openai::ChatGptService.new(model: wordpress_content.ai_model).call(user_prompt: user_prompt, system_prompt: system_prompt, response_schema: response_schema)
+    fetchserp_client = FetchSERP::Client.new(api_key: wordpress_content.user.fetchserp_api_key)
+    response = fetchserp_client.generate_wordpress_content(
+      user_prompt: user_prompt,
+      system_prompt: system_prompt,
+      ai_model: wordpress_content.ai_model
+    )
+    content = response.data.dig("response")
     wordpress_content.update!(title: content["title"], content: content["content"])
     if wordpress_content.publish_on_create
       WordpressPublishJob.perform_later(wordpress_content.id, wordpress_website_id)
@@ -16,6 +22,7 @@ class GenerateWordpressContentJob < ApplicationJob
       partial: "app/wordpress_contents/wordpress_content",
       locals: { wordpress_content: wordpress_content }
     )
+    broadcast_credit(wordpress_content.user)
   end
 
   def response_schema

@@ -46,21 +46,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_20_121631) do
     t.index ["keyword_id"], name: "index_keywords_on_keyword_id"
   end
 
-  create_table "linkedin_contents", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.text "content"
-    t.integer "status", default: 0
-    t.string "ai_model"
-    t.bigint "prompt_id", null: false
-    t.string "cta_url"
-    t.string "keyword"
-    t.jsonb "linkedin_response"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["prompt_id"], name: "index_linkedin_contents_on_prompt_id"
-    t.index ["user_id"], name: "index_linkedin_contents_on_user_id"
-  end
-
   create_table "pages", force: :cascade do |t|
     t.bigint "keyword_id", null: false
     t.string "slug"
@@ -91,6 +76,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_20_121631) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "social_media_contents", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "content"
+    t.integer "status", default: 0
+    t.string "ai_model"
+    t.bigint "prompt_id", null: false
+    t.string "cta_url"
+    t.string "keyword"
+    t.jsonb "social_media_response"
+    t.integer "platform", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["prompt_id"], name: "index_social_media_contents_on_prompt_id"
+    t.index ["user_id"], name: "index_social_media_contents_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -133,11 +134,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_20_121631) do
   add_foreign_key "domains", "users"
   add_foreign_key "keywords", "domains"
   add_foreign_key "keywords", "keywords"
-  add_foreign_key "linkedin_contents", "prompts"
-  add_foreign_key "linkedin_contents", "users"
   add_foreign_key "pages", "keywords"
   add_foreign_key "prompts", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "social_media_contents", "prompts"
+  add_foreign_key "social_media_contents", "users"
   add_foreign_key "wordpress_contents", "prompts"
   add_foreign_key "wordpress_contents", "users"
   add_foreign_key "wordpress_websites", "users"

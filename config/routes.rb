@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :registrations, only: [ :new, :create ]
   resources :passwords, param: :token
   get "home/index"
-  get "auth/:provider/callback", to: "app/authentication_providers#create"
+  get "auth/:provider/callback", to: "app/authentication_providers#create", as: :authentication_provider_callback
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     resources :domains, only: [ :index, :new, :create, :destroy ]
     resources :keywords, only: [ :index ]
     resources :bulk_wordpress_content_generations, only: [ :new, :create ]
-    resources :linkedin_contents do
+    resources :social_media_contents do
       member do
         patch :publish
         get :publish_modal

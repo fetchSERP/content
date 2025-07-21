@@ -33,7 +33,7 @@
               </div>
               
               <p class="text-gray-400 mb-4">
-                <%= linkedin_connected ? 'Your LinkedIn account is connected and ready to use.' : 'Connect your LinkedIn account to share content automatically.' %>
+                <%= linkedin_connected ? 'Your LinkedIn account is connected and ready to use.' : 'Connect your LinkedIn account.' %>
               </p>
               
               <% if linkedin_connected %>
@@ -73,7 +73,7 @@
               </div>
               
               <p class="text-gray-400 mb-4">
-                <%= twitter_connected ? 'Your Twitter account is connected and ready to use.' : 'Connect your Twitter account to share content automatically.' %>
+                <%= twitter_connected ? 'Your Twitter account is connected and ready to use.' : 'Connect your X account.' %>
               </p>
               
               <% if twitter_connected %>
@@ -113,7 +113,7 @@
               </div>
               
               <p class="text-gray-400 mb-4">
-                <%= wordpress_connected ? "You have #{pluralize(Current.user.wordpress_websites.count, 'WordPress site')} connected and ready to use." : 'Connect your WordPress websites to manage content automatically.' %>
+                <%= wordpress_connected ? "You have #{pluralize(Current.user.wordpress_websites.count, 'WordPress site')} connected and ready to use." : 'Connect your WordPress websites.' %>
               </p>
               
               <% if wordpress_connected %>

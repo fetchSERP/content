@@ -23,6 +23,7 @@
   </head>
 
   <body>
+    <%= turbo_stream_from "streaming_channel_#{Current.user.id}" if Current.user.present? %>
     <%= render "shared/navbar" %>
     <section class="min-h-screen bg-gray-900">
       <%= yield %>

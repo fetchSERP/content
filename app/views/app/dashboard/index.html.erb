@@ -60,10 +60,10 @@
             <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center">
-                  <div class="p-3 <%= twitter_connected ? 'bg-sky-500/20' : 'bg-gray-500/20' %> rounded-lg">
-                    <i data-lucide="twitter" class="h-6 w-6 <%= twitter_connected ? 'text-sky-400' : 'text-gray-400' %>"></i>
+                  <div class="p-3 <%= twitter_connected ? 'bg-blue-500/20' : 'bg-gray-500/20' %> rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x h-6 w-6 text-sky-400"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
                   </div>
-                  <h3 class="text-lg font-semibold text-gray-100 ml-3">Twitter</h3>
+                  <h3 class="text-lg font-semibold text-gray-100 ml-3">X</h3>
                 </div>
                 <% if twitter_connected %>
                   <span class="px-2 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-xs text-green-400 font-medium">
@@ -139,8 +139,8 @@
               <!-- WordPress Content -->
               <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
                 <div class="flex items-center mb-4">
-                  <div class="p-3 bg-green-500/20 rounded-lg">
-                    <i data-lucide="file-text" class="h-6 w-6 text-green-400"></i>
+                  <div class="p-3 bg-blue-500/20 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="globe" class="lucide lucide-globe h-6 w-6 text-blue-400"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
                   </div>
                   <h3 class="text-lg font-semibold text-gray-100 ml-3">WordPress Content</h3>
                 </div>
@@ -160,17 +160,17 @@
                   </div>
                 </div>
                 <div class="mt-4 space-y-2">
-                  <%= link_to app_wordpress_contents_path, class: "block w-full px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 hover:bg-green-500/20 transition-colors text-center" do %>
+                  <%= link_to new_app_bulk_wordpress_content_generation_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
+                    <i data-lucide="zap" class="h-4 w-4 inline mr-2"></i>
+                    Bulk Generate
+                  <% end %>
+                  <%= link_to app_wordpress_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
                     <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                     Manage Content
                   <% end %>
                   <%= link_to new_app_wordpress_content_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
                     <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
-                    Create New Post
-                  <% end %>
-                  <%= link_to new_app_bulk_wordpress_content_generation_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
-                    <i data-lucide="zap" class="h-4 w-4 inline mr-2"></i>
-                    Bulk Generate
+                    Create Post
                   <% end %>
                 </div>
               </div>
@@ -179,8 +179,8 @@
                 <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
                   <div class="flex-1">
                     <div class="flex items-center mb-4">
-                      <div class="p-3 bg-sky-500/20 rounded-lg">
-                        <i data-lucide="linkedin" class="h-6 w-6 text-sky-400"></i>
+                      <div class="p-3 bg-blue-500/20 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="linkedin" class="lucide lucide-linkedin h-6 w-6 text-sky-400"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                       </div>
                       <h3 class="text-lg font-semibold text-gray-100 ml-3">LinkedIn Content</h3>
                     </div>
@@ -188,11 +188,11 @@
                     <div class="space-y-3">
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Total Posts:</span>
-                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Published:</span>
-                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Drafts:</span>
@@ -216,20 +216,20 @@
                 <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
                   <div class="flex-1">
                     <div class="flex items-center mb-4">
-                      <div class="p-3 bg-sky-500/20 rounded-lg">
-                        <i data-lucide="x" class="h-6 w-6 text-sky-400"></i>
+                      <div class="p-3 bg-blue-500/20 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x h-6 w-6 text-sky-400"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
                       </div>
-                      <h3 class="text-lg font-semibold text-gray-100 ml-3">X (Twitter) Content</h3>
+                      <h3 class="text-lg font-semibold text-gray-100 ml-3">X Content</h3>
                     </div>
                     <p class="text-gray-400 mb-4">Create and manage your X posts</p>
                     <div class="space-y-3">
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Total Posts:</span>
-                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Published:</span>
-                        <span class="text-sky-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.linkedin_contents.where(status: 'published').count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Drafts:</span>
@@ -249,12 +249,47 @@
                   </div>
                 </div>
 
+                              <!-- AI Prompts -->
+                <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
+                  <div class="flex items-center mb-4">
+                    <div class="p-3 bg-blue-500/20 rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-square" class="lucide lucide-message-square h-6 w-6 text-blue-400"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-100 ml-3">AI Prompts</h3>
+                  </div>
+                  <p class="text-gray-400 mb-4">Customize AI prompts for better content generation</p>
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                      <span class="text-gray-300">WordPress:</span>
+                      <span class="text-green-400 font-medium"><%= Current.user.prompts.where(target: 'wordpress').count %></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                      <span class="text-gray-300">X:</span>
+                      <span class="text-green-400 font-medium"><%= Current.user.prompts.where(target: 'x').count %></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                      <span class="text-gray-300">LinkedIn:</span>
+                      <span class="text-yellow-400 font-medium"><%= Current.user.prompts.where(target: 'linkedin').count %></span>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-2">
+                    <%= link_to app_prompts_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
+                      <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
+                      Manage Prompts
+                    <% end %>
+                    <%= link_to new_app_prompt_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
+                      <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
+                      Create Prompt
+                    <% end %>
+                  </div>
+                </div>
+
                 <!-- SEO Domains -->
                 <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
                   <div class="flex-1">
                     <div class="flex items-center mb-4">
-                      <div class="p-3 bg-purple-500/20 rounded-lg">
-                        <i data-lucide="search" class="h-6 w-6 text-purple-400"></i>
+                      <div class="p-3 bg-blue-500/20 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search h-6 w-6 text-blue-400"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
                       </div>
                       <h3 class="text-lg font-semibold text-gray-100 ml-3">Domains</h3>
                     </div>
@@ -262,62 +297,28 @@
                     <div class="space-y-3">
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Domains:</span>
-                        <span class="text-purple-400 font-medium"><%= Current.user.domains.count %></span>
+                        <span class="text-green-400 font-medium"><%= Current.user.domains.count %></span>
                       </div>
                       <div class="flex justify-between items-center text-sm">
                         <span class="text-gray-300">Keywords:</span>
-                        <span class="text-purple-400 font-medium"><%= Current.user.domains.joins(:keywords).count %></span>
+                        <span class="text-yellow-400 font-medium"><%= Current.user.domains.joins(:keywords).count %></span>
                       </div>
                     </div>
                   </div>
                   <div>
                     <div class="mt-4 space-y-2">
-                      <%= link_to app_domains_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
+                      <%= link_to app_domains_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
                         <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                         Manage Domains
                       <% end %>
                       <%= link_to new_app_domain_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
                         <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
-                        Add New Domain
+                        Add Domain
                       <% end %>
                     </div>
                   </div>
                 </div>
 
-              <!-- AI Prompts -->
-              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
-                <div class="flex items-center mb-4">
-                  <div class="p-3 bg-orange-500/20 rounded-lg">
-                    <i data-lucide="message-square" class="h-6 w-6 text-orange-400"></i>
-                  </div>
-                  <h3 class="text-lg font-semibold text-gray-100 ml-3">AI Prompts</h3>
-                </div>
-                <p class="text-gray-400 mb-4">Customize AI prompts for better content generation</p>
-                <div class="space-y-3">
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-300">WordPress:</span>
-                    <span class="text-blue-400 font-medium"><%= Current.user.prompts.where(target: 'wordpress').count %></span>
-                  </div>
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-300">X (Twitter):</span>
-                    <span class="text-sky-400 font-medium"><%= Current.user.prompts.where(target: 'x').count %></span>
-                  </div>
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-300">LinkedIn:</span>
-                    <span class="text-blue-600 font-medium"><%= Current.user.prompts.where(target: 'linkedin').count %></span>
-                  </div>
-                </div>
-                <div class="mt-4 space-y-2">
-                  <%= link_to app_prompts_path, class: "block w-full px-4 py-2 bg-orange-500/10 border border-orange-500/30 rounded-lg text-orange-400 hover:bg-orange-500/20 transition-colors text-center" do %>
-                    <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
-                    Manage Prompts
-<% end %>
-                  <%= link_to new_app_prompt_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
-                    <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
-                    Create New Prompt
-<% end %>
-                </div>
-              </div>
 
                 <!-- Keywords -->
                 <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
@@ -325,7 +326,7 @@
                     <div class="p-3 bg-blue-500/20 rounded-lg">
                       <i data-lucide="search" class="h-6 w-6 text-blue-400"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-100 ml-3">SEO Keywords</h3>
+                    <h3 class="text-lg font-semibold text-gray-100 ml-3">Keywords</h3>
                   </div>
                   <p class="text-gray-400 mb-4">Track and analyze keyword opportunities across domains</p>
                   <div class="space-y-3">
@@ -343,7 +344,7 @@
                     </div>
                   </div>
                   <div class="mt-4 space-y-2">
-                    <%= link_to app_keywords_path, class: "block w-full px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-lg text-blue-400 hover:bg-blue-500/20 transition-colors text-center" do %>
+                    <%= link_to app_keywords_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
                       <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                       View Keywords
 <% end %>

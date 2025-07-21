@@ -3,10 +3,16 @@ class GenerateLinkedinContentJob < ApplicationJob
 
   def perform(linkedin_content)
     prompt = linkedin_content.prompt
-    user_prompt = prompt.user_prompt.gsub('{{keyword}}', linkedin_content.keyword).gsub('{{cta_url}}', linkedin_content.cta_url)
+    user_prompt = prompt.user_prompt.gsub("{{keyword}}", linkedin_content.keyword).gsub("{{cta_url}}", linkedin_content.cta_url)
     system_prompt = prompt.system_prompt
     content = Ai::Openai::ChatGptService.new(model: linkedin_content.ai_model).call(user_prompt: user_prompt, system_prompt: system_prompt, response_schema: response_schema)
     linkedin_content.update!(content: content["content"])
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "streaming_channel_#{linkedin_content.user_id}",
+      target: "linkedin_content_#{linkedin_content.id}",
+      partial: "app/linkedin_contents/linkedin_content",
+      locals: { linkedin_content: linkedin_content }
+    )
   end
 
   def response_schema
@@ -23,7 +29,7 @@ class GenerateLinkedinContentJob < ApplicationJob
           }
         },
         "additionalProperties": false,
-        "required": ["content"]
+        "required": [ "content" ]
       }
     }
   end

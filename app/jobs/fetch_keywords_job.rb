@@ -7,5 +7,11 @@ class FetchKeywordsJob < ApplicationJob
     keywords["data"]["keywords_suggestions"].each do |keyword|
       domain.keywords.create(name: keyword["keyword"])
     end
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "streaming_channel_#{domain.user_id}",
+      target: "domain_#{domain.id}",
+      partial: "app/domains/domain",
+      locals: { domain: domain }
+    )
   end
 end

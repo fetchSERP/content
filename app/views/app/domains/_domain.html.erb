@@ -1,0 +1,52 @@
+<div class="bg-[#1E293B]/60 border border-yellow-500/30 rounded-lg p-6 hover:border-yellow-500/50 hover:shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-all" id="domain_<%= domain.id %>">
+  <div class="flex justify-between items-start mb-4">
+    <div class="flex items-center">
+      <div class="p-3 bg-purple-500/20 border border-purple-500/30 rounded-lg mr-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="globe" class="lucide lucide-globe h-6 w-6 text-purple-400"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-100"><%= domain.name %></h3>
+        <p class="text-sm text-gray-400">
+          <i data-lucide="map-pin" class="h-3 w-3 inline mr-1"></i>
+          <%= domain.country&.upcase || 'US' %>
+        </p>
+      </div>
+    </div>
+    <div class="flex space-x-2">
+      <%= button_to app_domain_path(domain), method: :delete, 
+          confirm: "Are you sure you want to delete this domain? This will also delete all associated keywords.",
+          class: "text-red-400 hover:text-red-300 transition-colors",
+          title: "Delete Domain" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="space-y-3">
+    <div class="flex justify-between items-center text-sm">
+      <span class="text-gray-300">Total Keywords:</span>
+      <span class="text-purple-400 font-medium"><%= domain.keywords.count %></span>
+    </div>
+    <div class="flex justify-between items-center text-sm">
+      <span class="text-gray-300">Long-tail Keywords:</span>
+      <span class="text-green-400 font-medium"><%= domain.keywords.where(is_long_tail: true).count %></span>
+    </div>
+    <div class="flex justify-between items-center text-sm">
+      <span class="text-gray-300">Commercial Intent:</span>
+      <span class="text-yellow-400 font-medium"><%= domain.keywords.where(search_intent: 'commercial').count %></span>
+    </div>
+  </div>
+  
+  <div class="mt-4 pt-4 border-t border-yellow-500/20">
+    <div class="flex justify-between items-center">
+      <span class="text-xs text-gray-500">
+        Added <%= time_ago_in_words(domain.created_at) %> ago
+      </span>
+      <div class="flex space-x-2">
+        <span class="px-2 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full text-xs text-purple-400 font-medium">
+          SEO Domain
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

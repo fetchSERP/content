@@ -56,7 +56,7 @@
                 checked: @prompt.target == "x" %>
             <div class="flex items-center space-x-3 w-full">
               <div class="flex items-center justify-center w-8 h-8 bg-sky-500/20 border border-sky-500/30 rounded-lg group-hover:bg-sky-500/30 transition-colors">
-                <i data-lucide="twitter" class="h-4 w-4 text-sky-400"></i>
+                <i data-lucide="x" class="h-4 w-4 text-sky-400"></i>
               </div>
               <div class="flex-1">
                 <div class="text-sm font-medium text-gray-100">X (Twitter)</div>
@@ -105,7 +105,7 @@
       <div>
         <%= form.label :system_prompt, "System Prompt", class: "block text-sm font-medium text-purple-400 mb-2" %>
         <%= form.text_area :system_prompt, required: true, rows: 4, 
-            placeholder: "You are a marketing assistant specializing in creating professional LinkedIn posts. Your goal is to create engaging, concise, and informative posts that highlight the key features, benefits, and unique selling points of a product. Your tone should be professional, approachable, and friendly. Focus on providing value to a business-oriented audience, ensuring that every post includes an actionable link and relevant, industry-specific hashtags. Aim to encourage discussion, connection, and further interaction with the product.", 
+            placeholder: "You are a marketing assistant specializing in creating professional social media posts.", 
             class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/50 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-y" %>
         <p class="mt-1 text-xs text-gray-400">Define the AI's role, expertise, and behavioral characteristics.</p>
       </div>

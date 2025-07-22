@@ -26,8 +26,15 @@ class GenerateSocialMediaContentJob < ApplicationJob
     Turbo::StreamsChannel.broadcast_replace_to(
       "streaming_channel_#{social_media_content.user_id}",
       target: "content_editor",
-      partial: "app/social_media_contents/content_editor_content",
-      locals: { social_media_content: social_media_content }
+      partial: "app/social_media_contents/content_editor",
+      locals: { social_media_content: social_media_content, form: nil }
+    )
+    
+    # Show success notification
+    Turbo::StreamsChannel.broadcast_append_to(
+      "streaming_channel_#{social_media_content.user_id}",
+      target: "body",
+      html: "<div id='generation-notification' style='position: fixed; top: 20px; right: 20px; background: #10B981; color: white; padding: 16px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 99999; font-weight: 500;'>✨ Content generated successfully!</div><script>setTimeout(() => { const el = document.getElementById('generation-notification'); if (el) el.remove(); }, 4000);</script>"
     )
     
     broadcast_credit(social_media_content.user)

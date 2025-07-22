@@ -1,11 +1,18 @@
 <div id="content_editor" class="p-6">
   <!-- Content Textarea -->
   <div class="space-y-4">
-    <%= form.text_area :content, 
-        required: true,
-        rows: 12,
-        class: "block w-full px-4 py-4 rounded-lg bg-[#0F172A]/70 border border-blue-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-y font-medium leading-relaxed",
-        placeholder: "Write your #{social_media_content.platform.titleize} post content..." %>
+    <% if local_assigns[:form] %>
+      <%= form.text_area :content, 
+          required: true,
+          rows: 12,
+          class: "block w-full px-4 py-4 rounded-lg bg-[#0F172A]/70 border border-blue-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-y font-medium leading-relaxed",
+          placeholder: "Write your #{social_media_content.platform.titleize} post content..." %>
+    <% else %>
+      <textarea name="social_media_content[content]" 
+          rows="12"
+          class="block w-full px-4 py-4 rounded-lg bg-[#0F172A]/70 border border-blue-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-y font-medium leading-relaxed"
+          placeholder="Write your <%= social_media_content.platform.titleize %> post content..."><%= social_media_content.content %></textarea>
+    <% end %>
 
     <!-- Meta Info -->
     <div class="flex items-center justify-between py-3 px-4 bg-[#0F172A]/50 border border-gray-500/20 rounded-lg">
@@ -15,7 +22,7 @@
       </div>
       <div class="flex items-center text-sm text-gray-400">
         <i data-lucide="type" class="h-4 w-4 mr-2"></i>
-        <span id="character-count">0</span> characters
+        <span id="character-count"><%= social_media_content.content&.length || 0 %></span> characters
       </div>
     </div>
     

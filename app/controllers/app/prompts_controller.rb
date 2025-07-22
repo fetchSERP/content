@@ -17,7 +17,11 @@ class App::PromptsController < App::ApplicationController
   end
 
   def new
-    @prompt = Prompt.new(target: params[:target] || 'wordpress')
+    @prompt = Prompt.new(
+      target: params[:target] || 'wordpress',
+      user_prompt: "Generate a {{platform}} post about {{keyword}} and include the cta url {{cta_url}}",
+      system_prompt: "You are a marketing assistant specializing in creating professional social media posts with emojis."
+    )
   end
 
   def create

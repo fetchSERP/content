@@ -130,3 +130,10 @@
   color: #9ca3af;   /* placeholder-gray-400 */
   opacity: 1;
 }
+.choices[data-type*=select-one] .choices__inner {
+  padding: 4px;
+  background: #121c2e;
+}
+.choices__list {
+  background: #121c2e !important;
+}

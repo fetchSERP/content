@@ -42,6 +42,10 @@ Rails.application.routes.draw do
         patch :publish
         get :publish_modal
         patch :regenerate
+        get :update_prompts
+      end
+      collection do
+        get :update_prompts_for_new
       end
     end
     root "dashboard#index"

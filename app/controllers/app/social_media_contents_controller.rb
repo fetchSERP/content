@@ -1,5 +1,5 @@
 class App::SocialMediaContentsController < App::ApplicationController
-  before_action :set_social_media_content, only: [:show, :edit, :update, :destroy, :publish_modal, :publish, :regenerate]
+  before_action :set_social_media_content, only: [:show, :edit, :update, :destroy, :publish_modal, :publish, :regenerate, :update_prompts]
 
   def index
     @social_media_contents = Current.user.social_media_contents
@@ -37,9 +37,14 @@ class App::SocialMediaContentsController < App::ApplicationController
 
   def update
     @social_media_content = SocialMediaContent.find(params[:id])
+    
     respond_to do |format|
       if @social_media_content.update(social_media_content_params)
-        format.turbo_stream { redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Social media content updated successfully" }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("action-buttons", "<div id='update-notification' style='background: #10B981; color: white; padding: 12px 16px; border-radius: 8px; margin-left: 12px; display: inline-flex; align-items: center; font-weight: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>✅ Updated successfully!</div><script>setTimeout(() => { const el = document.getElementById('update-notification'); if (el) el.remove(); }, 3000);</script>")
+          ]
+        end
         format.html { redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Social media content updated successfully" }
       else
         @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform).reload
@@ -88,6 +93,31 @@ class App::SocialMediaContentsController < App::ApplicationController
       # Just regenerate with existing settings
       @social_media_content.generate!
       redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Content is being regenerated. This may take a few moments."
+    end
+  end
+
+  def update_prompts_for_new
+    platform = params[:platform]
+    prompts = Current.user.prompts.enabled.where(target: platform)
+    
+    # Create a temporary object for the partial
+    social_media_content = SocialMediaContent.new(platform: platform)
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("prompt_selection_area", partial: "prompt_selection_area", locals: { prompts: prompts, social_media_content: social_media_content })
+      end
+    end
+  end
+
+  def update_prompts
+    platform = params[:platform]
+    prompts = Current.user.prompts.enabled.where(target: platform)
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("prompt_selection_area", partial: "prompt_selection_area", locals: { prompts: prompts, social_media_content: @social_media_content })
+      end
     end
   end
 

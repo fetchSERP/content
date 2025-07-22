@@ -21,7 +21,7 @@ class App::SocialMediaContentsController < App::ApplicationController
     
     if @social_media_content.save
       @social_media_content.generate!
-      redirect_to app_social_media_contents_path, notice: "Social media content created successfully"
+      redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Social media content is being generated. This may take a few moments."
     else
       @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform)
       @model_groups = OpenrouterService.fetch_models

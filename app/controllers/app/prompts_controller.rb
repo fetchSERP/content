@@ -32,8 +32,7 @@ class App::PromptsController < App::ApplicationController
               partial: "app/social_media_contents/prompt_selection", 
               locals: { 
                 prompts: Current.user.prompts.enabled.where(target: @prompt.target),
-                form: nil,
-                social_media_content: SocialMediaContent.new(platform: @prompt.target)
+                form: nil
               }
             )
           ]
@@ -68,8 +67,7 @@ class App::PromptsController < App::ApplicationController
               partial: "app/social_media_contents/prompt_selection", 
               locals: { 
                 prompts: Current.user.reload.prompts.enabled.where(target: platform),
-                form: nil,
-                social_media_content: SocialMediaContent.new(platform: platform)
+                form: nil
               }
             )
           ]

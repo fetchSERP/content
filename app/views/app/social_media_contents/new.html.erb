@@ -65,7 +65,7 @@
 
                 <!-- Existing Prompt Selection -->
                 <% prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform) %>
-                <%= render 'prompt_selection', prompts: prompts, form: f, social_media_content: @social_media_content %>
+                <%= render 'prompt_selection', prompts: prompts, form: f %>
 
                 <p class="mt-2 text-sm text-gray-400">Choose or create a prompt to customize how AI generates your content. This affects the writing style, tone, and approach.</p>
               </div>
@@ -76,7 +76,7 @@
                 <%= f.select :ai_model, grouped_options_for_select(@model_groups, @social_media_content.ai_model), { include_blank: "Select Model" }, { data: { controller: "choices-select" } } %>
               </div>
 
-              <div class="pt-2">
+              <div class="pt-2 mt-4">
                 <%= f.submit "Generate Post", class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold hover:shadow-lg" %>
                 <%= link_to "Cancel", app_social_media_contents_path, class: "px-6 py-4 bg-gray-500/10 border border-gray-500/30 rounded-lg text-gray-300 hover:bg-gray-500/20" %>
               </div>

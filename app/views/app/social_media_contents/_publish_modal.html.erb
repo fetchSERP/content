@@ -53,8 +53,12 @@
         </div>
         <h4 class="text-lg font-medium text-gray-300 mb-2">No <%= social_media_content.platform.titleize %> Profiles</h4>
         <p class="text-gray-400 mb-4">You need to connect a <%= social_media_content.platform.titleize %> profile before you can publish content.</p>
-        <%= link_to "Connect #{social_media_content.platform.titleize} Profile", authentication_provider_callback_path(provider: social_media_content.platform), 
-            class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors" %>
+        <%= form_tag("/auth/#{social_media_content.platform}", method: 'post', data: {turbo: false}, class: 'w-full') do %>
+                    <button type='submit' class="w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] flex items-center justify-center">
+                      <i data-lucide="<%= social_media_content.platform %>" class="h-4 w-4 mr-2"></i>
+                      Connect <%= social_media_content.platform.titleize %>
+                    </button>
+                  <% end %>
       </div>
     <% end %>
   </div>

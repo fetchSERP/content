@@ -17,8 +17,8 @@
             <!-- LinkedIn Connection -->
             <% linkedin_provider = Current.user.authentication_providers.find_by(provider: 'linkedin') %>
             <% linkedin_connected = linkedin_provider.present? %>
-            <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
-              <div class="flex items-center justify-between mb-4">
+            <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
+              <div class="flex items-center justify-between mb-4 flex-1">
                 <div class="flex items-center">
                   <div class="p-3 <%= linkedin_connected ? 'bg-blue-500/20' : 'bg-gray-500/20' %> rounded-lg">
                     <i data-lucide="linkedin" class="h-6 w-6 <%= linkedin_connected ? 'text-blue-400' : 'text-gray-400' %>"></i>
@@ -32,33 +32,35 @@
                 <% end %>
               </div>
               
-              <p class="text-gray-400 mb-4">
-                <%= linkedin_connected ? 'Your LinkedIn account is connected and ready to use.' : 'Connect your LinkedIn account.' %>
-              </p>
-              
-              <% if linkedin_connected %>
-                <%= button_to app_authentication_provider_path(linkedin_provider), 
-                    method: :delete, 
-                    confirm: "Are you sure you want to remove your LinkedIn connection?",
-                    class: "w-full px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 hover:bg-red-500/20 transition-colors flex items-center justify-center" do %>
-                  <i data-lucide="unlink" class="h-4 w-4 mr-2"></i>
-                  Remove Connection
+              <div>
+                <p class="text-gray-400 mb-4">
+                  <%= linkedin_connected ? 'Your LinkedIn account is connected and ready to use.' : 'Connect your LinkedIn account.' %>
+                </p>
+                
+                <% if linkedin_connected %>
+                  <%= button_to app_authentication_provider_path(linkedin_provider), 
+                      method: :delete, 
+                      confirm: "Are you sure you want to remove your LinkedIn connection?",
+                      class: "w-full px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 hover:bg-red-500/20 transition-colors flex items-center justify-center" do %>
+                    <i data-lucide="unlink" class="h-4 w-4 mr-2"></i>
+                    Remove Connection
+                  <% end %>
+                <% else %>
+                  <%= form_tag('/auth/linkedin', method: 'post', data: {turbo: false}, class: 'w-full') do %>
+                    <button type='submit' class="w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] flex items-center justify-center">
+                      <i data-lucide="linkedin" class="h-4 w-4 mr-2"></i>
+                      Connect LinkedIn
+                    </button>
+                  <% end %>
                 <% end %>
-              <% else %>
-                <%= form_tag('/auth/linkedin', method: 'post', data: {turbo: false}, class: 'w-full') do %>
-                  <button type='submit' class="w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] flex items-center justify-center">
-                    <i data-lucide="linkedin" class="h-4 w-4 mr-2"></i>
-                    Connect LinkedIn
-                  </button>
-                <% end %>
-              <% end %>
+              </div>
             </div>
 
             <!-- Twitter Connection -->
             <% twitter_provider = Current.user.authentication_providers.find_by(provider: 'twitter2') %>
             <% twitter_connected = twitter_provider.present? %>
-            <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
-              <div class="flex items-center justify-between mb-4">
+            <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
+              <div class="flex items-center justify-between mb-4 flex-1">
                 <div class="flex items-center">
                   <div class="p-3 <%= twitter_connected ? 'bg-blue-500/20' : 'bg-gray-500/20' %> rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x h-6 w-6 text-sky-400"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
@@ -71,27 +73,30 @@
                   </span>
                 <% end %>
               </div>
+
+              <div>
               
-              <p class="text-gray-400 mb-4">
-                <%= twitter_connected ? 'Your Twitter account is connected and ready to use.' : 'Connect your X account.' %>
-              </p>
-              
-              <% if twitter_connected %>
-                <%= button_to app_authentication_provider_path(twitter_provider), 
-                    method: :delete, 
-                    confirm: "Are you sure you want to remove your Twitter connection?",
-                    class: "w-full px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 hover:bg-red-500/20 transition-colors flex items-center justify-center" do %>
-                  <i data-lucide="unlink" class="h-4 w-4 mr-2"></i>
-                  Remove Connection
+                <p class="text-gray-400 mb-4">
+                  <%= twitter_connected ? 'Your Twitter account is connected and ready to use.' : 'Connect your X account.' %>
+                </p>
+                
+                <% if twitter_connected %>
+                  <%= button_to app_authentication_provider_path(twitter_provider), 
+                      method: :delete, 
+                      confirm: "Are you sure you want to remove your Twitter connection?",
+                      class: "w-full px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 hover:bg-red-500/20 transition-colors flex items-center justify-center" do %>
+                    <i data-lucide="unlink" class="h-4 w-4 mr-2"></i>
+                    Remove Connection
+                  <% end %>
+                <% else %>
+                  <%= form_tag('/auth/twitter2', method: 'post', data: {turbo: false}, class: 'w-full') do %>
+                    <button type='submit' class="w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x h-4 w-4 text-white"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                      Connect X
+                    </button>
+                  <% end %>
                 <% end %>
-              <% else %>
-                <%= form_tag('/auth/twitter2', method: 'post', data: {turbo: false}, class: 'w-full') do %>
-                  <button type='submit' class="w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] flex items-center justify-center">
-                    <i data-lucide="twitter" class="h-4 w-4 mr-2"></i>
-                    Connect Twitter
-                  </button>
-                <% end %>
-              <% end %>
+              </div>
             </div>
 
             <!-- WordPress Connection -->

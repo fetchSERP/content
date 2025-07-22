@@ -1,6 +1,6 @@
 class App::PromptsController < App::ApplicationController
   before_action :set_prompt, only: [:show, :edit, :update]
-  layout -> { request.headers["Turbo-Frame"] ? false : "app_application" }
+  layout -> { turbo_frame_request? ? false : "app_application" }
 
   def index
     @prompts = Current.user.prompts
@@ -17,43 +17,31 @@ class App::PromptsController < App::ApplicationController
   end
 
   def new
-    @prompt = Prompt.new(target: 'wordpress')
-    
-    respond_to do |format|
-      format.html { render layout: !turbo_frame_request? }
-    end
+    @prompt = Prompt.new(target: params[:target] || 'wordpress')
   end
 
   def create
     @prompt = Current.user.prompts.build(prompt_params)
     
-    Rails.logger.debug "Creating prompt with params: #{prompt_params.inspect}"
-    Rails.logger.debug "Request format: #{request.format}"
-    Rails.logger.debug "Turbo frame request?: #{turbo_frame_request?}"
-    
     respond_to do |format|
-    if @prompt.save
-        Rails.logger.debug "Prompt saved successfully"
-        format.html { 
-          if turbo_frame_request?
-            # Check if we're coming from the WordPress content page or the new page
-            if params[:context] == 'inline' || request.referer&.include?('wordpress_contents')
-              # This is inline creation from WordPress content page
-              render turbo_stream: [
-                turbo_stream.update("prompt_form", ""),
-                turbo_stream.replace("prompt_selection", partial: "app/wordpress_contents/prompt_selection", locals: { wordpress_prompts: Current.user.prompts.where(target: 'wordpress'), form: nil })
-              ]
-            else
-              # This is from the dedicated new page, redirect back to prompts index
-              redirect_to app_prompts_path, notice: "Prompt created successfully"
-            end
-          else
-      redirect_to app_prompts_path, notice: "Prompt created successfully"
-          end
-        }
+      if @prompt.save
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update("prompt_form", ""),
+            turbo_stream.replace("prompt_selection", 
+              partial: "app/social_media_contents/prompt_selection", 
+              locals: { 
+                prompts: Current.user.prompts.reload.where(target: @prompt.target),
+                form: nil,
+                social_media_content: SocialMediaContent.new(platform: @prompt.target)
+              }
+            )
+          ]
+        end
+        format.html { redirect_to app_prompts_path, notice: "Prompt created successfully" }
         format.json { render json: { success: true, prompt: @prompt } }
-    else
-        Rails.logger.debug "Failed to save prompt: #{@prompt.errors.full_messages}"
+      else
+        format.turbo_stream { render :new, status: :unprocessable_entity }
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: { success: false, errors: @prompt.errors.full_messages }, status: :unprocessable_entity }
       end
@@ -61,33 +49,37 @@ class App::PromptsController < App::ApplicationController
   end
 
   def edit
-    respond_to do |format|
-      format.html
-    end
+    # No respond_to needed - just render the view
   end
 
   def update
     respond_to do |format|
-    if @prompt.update(prompt_params)
-        format.html { 
-          if turbo_frame_request?
-            # Check if we're coming from the WordPress content page or the edit page
-            if params[:context] == 'inline' || request.referer&.include?('wordpress_contents')
-              # This is inline editing from WordPress content page
-              render turbo_stream: [
-                turbo_stream.update("prompt_form", ""),
-                turbo_stream.replace("prompt_selection", partial: "app/wordpress_contents/prompt_selection", locals: { wordpress_prompts: Current.user.prompts.where(target: 'wordpress'), form: nil })
-              ]
-            else
-              # This is from the dedicated edit page, redirect back to prompts index
-              redirect_to app_prompts_path, notice: "Prompt updated successfully"
-            end
-          else
-      redirect_to app_prompts_path, notice: "Prompt updated successfully"
-          end
-        }
+      if @prompt.update(prompt_params)
+        @prompt.reload # Ensure data is fresh from DB
+        
+        # Get the current platform from the referer URL
+        platform = request.referer&.match(/platform=([^&]+)/)&.captures&.first || @prompt.target
+        prompts = Current.user.prompts.where(target: platform)
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update("prompt_form", ""),
+            turbo_stream.replace(
+              "prompt_selection",
+              partial: "app/social_media_contents/prompt_selection",
+              locals: {
+                prompts: prompts,
+                form: nil,
+                social_media_content: SocialMediaContent.new(platform: platform)
+              }
+            )
+          ]
+        end
+
+        format.html { redirect_to app_prompts_path, notice: "Prompt updated successfully" }
         format.json { render json: { success: true, prompt: @prompt } }
-    else
+      else
+        format.turbo_stream { render :edit, status: :unprocessable_entity }
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: { success: false, errors: @prompt.errors.full_messages }, status: :unprocessable_entity }
       end

@@ -29,7 +29,11 @@ Rails.application.routes.draw do
       end
     end
     resources :authentication_providers, only: [ :destroy ]
-    resources :prompts, only: [ :index, :show, :new, :create, :edit, :update ]
+    resources :prompts, only: [ :index, :show, :new, :create, :edit, :update ] do
+      member do
+        patch :disable
+      end
+    end
     resources :domains, only: [ :index, :new, :create, :destroy ]
     resources :keywords, only: [ :index ]
     resources :bulk_wordpress_content_generations, only: [ :new, :create ]

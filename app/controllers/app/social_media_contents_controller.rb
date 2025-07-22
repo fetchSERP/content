@@ -7,7 +7,7 @@ class App::SocialMediaContentsController < App::ApplicationController
 
   def new
     @social_media_content = SocialMediaContent.new(platform: params[:platform] || 'linkedin')
-    @social_media_prompts = Current.user.prompts.where(target: params[:platform] || 'linkedin')
+    @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
     @model_groups = OpenrouterService.fetch_models
   end
 
@@ -18,30 +18,36 @@ class App::SocialMediaContentsController < App::ApplicationController
   def create
     @social_media_content = SocialMediaContent.new(social_media_content_params)
     @social_media_content.user = Current.user
+    
     if @social_media_content.save
       @social_media_content.generate!
       redirect_to app_social_media_contents_path, notice: "Social media content created successfully"
     else
-      @social_media_prompts = Current.user.prompts.where(target: params[:platform] || 'linkedin')
+      @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
       @model_groups = OpenrouterService.fetch_models
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
     @social_media_content = SocialMediaContent.find(params[:id])
-    @social_media_prompts = Current.user.prompts.where(target: params[:platform] || 'linkedin')
+    @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
     @model_groups = OpenrouterService.fetch_models
   end
 
   def update
     @social_media_content = SocialMediaContent.find(params[:id])
-    if @social_media_content.update(social_media_content_params)
-      redirect_to app_social_media_contents_path, notice: "Social media content updated successfully"
-    else
-      @social_media_prompts = Current.user.prompts.where(target: params[:platform] || 'linkedin')
-      @model_groups = OpenrouterService.fetch_models
-      render :edit
+    respond_to do |format|
+      if @social_media_content.update(social_media_content_params)
+        format.turbo_stream { redirect_to app_social_media_contents_path, notice: "Social media content updated successfully" }
+        format.html { redirect_to app_social_media_contents_path, notice: "Social media content updated successfully" }
+      else
+        @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
+        @model_groups = OpenrouterService.fetch_models
+        
+        format.turbo_stream { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -69,7 +75,6 @@ class App::SocialMediaContentsController < App::ApplicationController
     if provider_id.blank?
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.replace("modal_container", partial: "publish_modal_error", locals: { error: "Please select a #{@social_media_content.platform} account" }) }
-        format.html { redirect_to app_social_media_content_path(@social_media_content), alert: "Please select a #{@social_media_content.platform} account" }
       end
       return
     end
@@ -87,12 +92,10 @@ class App::SocialMediaContentsController < App::ApplicationController
           turbo_stream.append("body", partial: "shared/notification", locals: { type: "success", message: success_message, duration: 6000 })
         ]
       end
-      format.html { redirect_to app_social_media_contents_path, notice: success_message }
     end
   rescue ActiveRecord::RecordNotFound
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.replace("modal_container", partial: "publish_modal_error", locals: { error: "#{@social_media_content.platform} account not found" }) }
-      format.html { redirect_to app_social_media_contents_path, alert: "#{@social_media_content.platform} account not found" }
     end
   end
 

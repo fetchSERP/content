@@ -1,4 +1,5 @@
 class Prompt < ApplicationRecord
+  default_scope { where(disabled: false) }
   belongs_to :user
   has_many :wordpress_contents, dependent: :destroy
   has_many :social_media_contents, dependent: :destroy

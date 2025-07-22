@@ -1,5 +1,5 @@
 class App::PromptsController < App::ApplicationController
-  before_action :set_prompt, only: [:show, :edit, :update]
+  before_action :set_prompt, only: [:show, :edit, :update, :disable]
   layout -> { turbo_frame_request? ? false : "app_application" }
 
   def index
@@ -84,6 +84,11 @@ class App::PromptsController < App::ApplicationController
         format.json { render json: { success: false, errors: @prompt.errors.full_messages }, status: :unprocessable_entity }
       end
     end
+  end
+
+  def disable
+    @prompt.update!(disabled: true)
+    redirect_back(fallback_location: app_prompts_path, notice: "Prompt disabled successfully")
   end
 
   private

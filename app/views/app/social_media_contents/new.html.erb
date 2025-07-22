@@ -75,7 +75,7 @@
               <!-- AI model -->
               <div>
                 <label class="block text-sm font-medium text-gray-300 mb-2">AI Model</label>
-                <%= f.select :ai_model, grouped_options_for_select(@model_groups), { include_blank: "Select Model" }, { data: { controller: "choices-select" } } %>
+                <%= f.select :ai_model, grouped_options_for_select(@model_groups, @social_media_content.ai_model), { include_blank: "Select Model" }, { data: { controller: "choices-select" } } %>
               </div>
 
               <div class="pt-2">

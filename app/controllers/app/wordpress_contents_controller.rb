@@ -1,5 +1,5 @@
 class App::WordpressContentsController < App::ApplicationController
-  before_action :set_wordpress_content, only: [:show, :edit, :update, :destroy, :publish, :publish_modal]
+  before_action :set_wordpress_content, only: [:show, :edit, :update, :destroy, :publish, :publish_modal, :regenerate]
 
   def index
     @wordpress_contents = Current.user.wordpress_contents.includes(:prompt)
@@ -10,7 +10,7 @@ class App::WordpressContentsController < App::ApplicationController
 
   def new
     @wordpress_content = WordpressContent.new
-    @available_models = OpenrouterService.fetch_models
+    @model_groups = OpenrouterService.fetch_models
   end
 
   def create
@@ -18,21 +18,64 @@ class App::WordpressContentsController < App::ApplicationController
     
     if @wordpress_content.save
       @wordpress_content.generate_content!
-      redirect_to app_wordpress_contents_path, notice: "WordPress content created successfully"
+      redirect_to edit_app_wordpress_content_path(@wordpress_content), notice: "WordPress content created successfully"
     else
+      @model_groups = OpenrouterService.fetch_models
       render :new
     end
   end
 
   def edit
-    @available_models = OpenrouterService.fetch_models
+    @model_groups = OpenrouterService.fetch_models
   end
 
   def update
-    if @wordpress_content.update(wordpress_content_params)
-      redirect_to app_wordpress_contents_path, notice: "WordPress content updated successfully"
+    respond_to do |format|
+      if @wordpress_content.update(wordpress_content_params)
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("action-buttons", "<div id='update-notification' style='background: #10B981; color: white; padding: 12px 16px; border-radius: 8px; margin-left: 12px; display: inline-flex; align-items: center; font-weight: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>✅ Updated successfully!</div><script>setTimeout(() => { const el = document.getElementById('update-notification'); if (el) el.remove(); }, 3000);</script>")
+          ]
+        end
+        format.html { redirect_to edit_app_wordpress_content_path(@wordpress_content), notice: "WordPress content updated successfully" }
+      else
+        @model_groups = OpenrouterService.fetch_models
+        format.turbo_stream { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def regenerate
+    # Handle regenerate_only parameter for the content editor button
+    if params[:regenerate_only] == "true"
+      respond_to do |format|
+        format.turbo_stream do
+          # Show loading animation first
+          render turbo_stream: turbo_stream.replace("wordpress_content_editor", partial: "generating_content")
+        end
+        format.html { redirect_to edit_app_wordpress_content_path(@wordpress_content) }
+      end
+      
+      # Start the regeneration in the background
+      @wordpress_content.generate_content!
+      return
+    end
+    
+    # Update the wordpress content with any new params
+    if params[:wordpress_content].present?
+      if @wordpress_content.update(wordpress_content_params)
+        # Regenerate the content with updated settings
+        @wordpress_content.generate_content!
+        redirect_to edit_app_wordpress_content_path(@wordpress_content), notice: "Content is being regenerated with updated settings. This may take a few moments."
+      else
+        @model_groups = OpenrouterService.fetch_models
+        render :edit, status: :unprocessable_entity
+      end
     else
-      render :edit
+      # Just regenerate with existing settings
+      @wordpress_content.generate_content!
+      redirect_to edit_app_wordpress_content_path(@wordpress_content), notice: "Content is being regenerated. This may take a few moments."
     end
   end
 

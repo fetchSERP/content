@@ -1,130 +1,229 @@
 <div class="min-h-screen bg-[#0F172A]">
   <main>
-    <!-- Edit WordPress Content Section -->
-    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+    <section class="py-8 sm:py-12 bg-[#0F172A] text-white relative overflow-hidden">
       <div class="container mx-auto px-4 relative">
-        <div class="max-w-4xl mx-auto">
-          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-            <div class="flex justify-between items-start mb-6">
-              <div>
-                <h1 class="text-2xl font-bold text-gray-100">Edit WordPress Content</h1>
-                <p class="text-sm text-gray-400 mt-1">Update your title and content before publishing</p>
-              </div>
-              <%= link_to app_wordpress_contents_path, 
-                  class: "text-gray-400 hover:text-gray-300 transition-colors" do %>
-                <i data-lucide="x" class="h-5 w-5"></i>
-              <% end %>
-            </div>
-
-            <!-- Flash Messages -->
-            <div id="flash">
-              <%= render "shared/flash" if flash[:notice] || flash[:alert] %>
-            </div>
-
-            <!-- Content Metadata -->
-            <div class="mb-6 p-4 bg-[#0F172A]/50 border border-yellow-500/20 rounded-lg">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+        <div class="max-w-7xl mx-auto">
+          
+          <!-- Header -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <%= link_to app_wordpress_contents_path, 
+                    class: "flex items-center justify-center w-10 h-10 bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600/50 rounded-lg transition-colors" do %>
+                  <i data-lucide="arrow-left" class="h-4 w-4 text-gray-400"></i>
+                <% end %>
                 <div>
-                  <span class="text-gray-400">Keyword:</span>
-                  <span class="text-green-400 font-medium ml-2"><%= @wordpress_content.keyword %></span>
+                  <h1 class="font-bold text-3xl text-gray-100">Edit WordPress Content</h1>
+                  <p class="text-gray-400 mt-1">Update content settings and regenerate if needed</p>
                 </div>
-                <div>
-                  <span class="text-gray-400">Status:</span>
-                  <% if @wordpress_content.status == 'publish' %>
-                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-900/50 text-green-300 border border-green-600/50 ml-2">
-                      <i data-lucide="check-circle" class="h-3 w-3 mr-1"></i>Published
-                    </span>
-                  <% else %>
-                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-900/50 text-yellow-300 border border-yellow-600/50 ml-2">
-                      <i data-lucide="edit-3" class="h-3 w-3 mr-1"></i>Draft
-                    </span>
-                  <% end %>
-                </div>
-                <div>
-                  <span class="text-gray-400">Word Count:</span>
-                  <span class="text-purple-400 font-medium ml-2"><%= @wordpress_content.content ? @wordpress_content.content.split.size : 0 %> words</span>
-                </div>
-              </div>
-            </div>
-
-            <% if @wordpress_content.errors.any? %>
-              <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-                <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
-                <ul class="list-disc list-inside text-red-300 space-y-1">
-                  <% @wordpress_content.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-
-            <%= form_with model: [:app, @wordpress_content], class: "space-y-6", data: { turbo: false } do |form| %>
-              <!-- Title Field -->
-              <div>
-                <%= form.label :title, "Title", class: "block text-sm font-medium text-blue-400 mb-2" %>
-                <%= form.text_field :title, required: true, 
-                    class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/50 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors" %>
-                <p class="mt-1 text-xs text-gray-400">Update the title to make it more compelling and SEO-friendly.</p>
               </div>
               
-              <!-- Content Field -->
-              <div>
-                <%= form.label :content, "Content", class: "block text-sm font-medium text-green-400 mb-2" %>
-                <%= form.text_area :content, required: true, rows: 20, 
-                    class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/50 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-y font-mono text-sm leading-relaxed" %>
-                <p class="mt-1 text-xs text-gray-400">Edit the generated content. Make sure to keep SEO best practices in mind.</p>
+              <!-- Status Badge -->
+              <div class="flex items-center space-x-3">
+                <span class="px-3 py-1.5 bg-blue-500/20 border-blue-500/30 text-blue-400 border rounded-full text-sm font-medium">
+                  <i data-lucide="globe" class="h-3 w-3 mr-1.5"></i>
+                  WordPress
+                </span>
+                <span class="px-3 py-1.5 <%= @wordpress_content.status == 'publish' ? 'bg-green-500/20 border-green-500/30 text-green-400' : 'bg-gray-500/20 border-gray-500/30 text-gray-400' %> border rounded-full text-sm font-medium">
+                  <i data-lucide="<%= @wordpress_content.status == 'publish' ? 'check-circle' : 'edit-3' %>" class="h-3 w-3 mr-1.5"></i>
+                  <%= @wordpress_content.status == 'publish' ? 'Published' : 'Draft' %>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flash Messages -->
+          <% if flash[:alert] || flash[:notice] %>
+            <div class="mb-6">
+              <% if flash[:alert] %>
+                <div class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 mb-4">
+                  <div class="flex items-center">
+                    <i data-lucide="alert-circle" class="h-4 w-4 mr-2 flex-shrink-0"></i>
+                    <%= flash[:alert] %>
+                  </div>
+                </div>
+              <% end %>
+              
+              <% if flash[:notice] %>
+                <div class="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400">
+                  <div class="flex items-center">
+                    <i data-lucide="check-circle" class="h-4 w-4 mr-2 flex-shrink-0"></i>
+                    <%= flash[:notice] %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- Main Content -->
+          <%= form_with model: [:app, @wordpress_content], class: "space-y-8" do |f| %>
+            <div class="max-w-7xl mx-auto space-y-6">
+              
+              <!-- Content Settings -->
+              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
+                <div class="bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 border-b border-yellow-500/20 px-6 py-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="flex items-center justify-center w-8 h-8 bg-yellow-500/20 border border-yellow-500/30 rounded-lg mr-3">
+                        <i data-lucide="settings" class="h-4 w-4 text-yellow-400"></i>
+                      </div>
+                      <div>
+                        <h2 class="text-lg font-semibold text-gray-100">Content Settings</h2>
+                        <p class="text-sm text-gray-400">Configure the parameters for your WordPress content</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <!-- Keyword -->
+                  <div>
+                    <%= f.label :keyword, "Target Keyword", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                    <%= f.text_field :keyword, required: true, placeholder: "e.g., best SEO tools, digital marketing strategy", class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
+                    <p class="mt-1 text-sm text-gray-400">The main keyword to target in the content</p>
+                  </div>
+
+                  <!-- CTA URL -->
+                  <div>
+                    <%= f.label :cta_url, "Call-to-Action URL", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                    <%= f.url_field :cta_url, required: true, placeholder: "https://yourwebsite.com/product", class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
+                    <p class="mt-1 text-sm text-gray-400">The URL to include in your call-to-action</p>
+                  </div>
+
+                  <!-- AI Model -->
+                  <div>
+                    <%= f.label :ai_model, "AI Model", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                    <%= f.select :ai_model, grouped_options_for_select(@model_groups, @wordpress_content.ai_model), { include_blank: "Select Model" }, { 
+                        data: { controller: "choices-select" },
+                        class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                    } %>
+                    <p class="mt-1 text-sm text-gray-400">Choose the AI model for content generation</p>
+                  </div>
+
+                  <!-- Content Metadata -->
+                  <div class="flex items-center p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                    <i data-lucide="file-text" class="h-5 w-5 text-purple-400 mr-3 flex-shrink-0"></i>
+                    <div class="text-sm">
+                      <p class="font-medium text-purple-300">Content Info</p>
+                      <p class="text-purple-200"><%= @wordpress_content.content ? @wordpress_content.content.split.size : 0 %> words • <%= @wordpress_content.status == 'publish' ? 'Published' : 'Draft' %></p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Prompt Selection -->
+                <div class="px-6 pb-6">
+                  <div class="flex items-center justify-between mb-3">
+                    <label class="block text-sm font-medium text-gray-300">AI Prompt</label>
+                    <%= link_to new_app_prompt_path(target: 'wordpress'), 
+                        class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
+                        data: { turbo_frame: "prompt_form" } do %>
+                      <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                      Create New Prompt
+                    <% end %>
+                  </div>
+
+                  <!-- Turbo Frame for prompt creation/editing -->
+                  <%= turbo_frame_tag "prompt_form" do %>
+                    <!-- This will be replaced when creating/editing prompts -->
+                  <% end %>
+
+                  <!-- Existing Prompt Selection -->
+                  <%= turbo_frame_tag "prompt_selection_area" do %>
+                    <% prompts = Current.user.prompts.enabled.where(target: 'wordpress') %>
+                    <%= render 'app/social_media_contents/prompt_selection', prompts: prompts, form: f %>
+                  <% end %>
+
+                  <p class="mt-2 text-sm text-gray-400">Choose or create a prompt to customize how AI generates your content</p>
+                </div>
               </div>
 
-              <!-- SEO Tips -->
-              <div class="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                <div class="flex items-start">
-                  <i data-lucide="search" class="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0"></i>
-                  <div class="text-sm text-blue-300">
-                    <p class="font-medium mb-1">SEO Editing Tips</p>
-                    <ul class="space-y-1 text-blue-200">
-                      <li>• Keep your target keyword "<strong><%= @wordpress_content.keyword %></strong>" naturally integrated</li>
-                      <li>• Use headings (H2, H3) to structure your content</li>
-                      <li>• Include your keyword in the first 100 words</li>
-                      <li>• Add internal and external links where relevant</li>
-                      <li>• Maintain a conversational, engaging tone</li>
-                    </ul>
+              <!-- Content Editor -->
+              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-blue-500/20 rounded-xl shadow-[0_0_30px_rgba(59,130,246,0.1)] overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-blue-500/10 border-b border-blue-500/20 px-6 py-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="flex items-center justify-center w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded-lg mr-3">
+                        <i data-lucide="edit-3" class="h-4 w-4 text-blue-400"></i>
+                      </div>
+                      <div>
+                        <h2 class="text-lg font-semibold text-gray-100">Content Editor</h2>
+                        <p class="text-sm text-gray-400">Edit your WordPress content manually</p>
+                      </div>
+                    </div>
+                    <div class="flex space-x-3">
+                      <%= link_to regenerate_app_wordpress_content_path(@wordpress_content, regenerate_only: true), 
+                          method: :patch,
+                          class: "px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 inline-flex items-center",
+                          data: { 
+                            confirm: "This will regenerate the content based on current settings. Your existing content will be replaced. Continue?",
+                            turbo_method: :patch,
+                            turbo_frame: "wordpress_content_editor"
+                          } do %>
+                        <svg class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M15 4V2a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v2"></path>
+                          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                          <path d="M12 11l4-4"></path>
+                          <path d="M16 11l-4-4"></path>
+                          <circle cx="12" cy="16" r="2"></circle>
+                          <path d="m13.5 17.5 2-2"></path>
+                        </svg>
+                        Regenerate
+                      <% end %>
+                      
+                      <% if @wordpress_content.status == 'draft' %>
+                        <button type="button"
+                            class="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:scale-105 inline-flex items-center"
+                            data-controller="modal-opener"
+                            data-action="click->modal-opener#open"
+                            data-modal-opener-url-value="<%= publish_modal_app_wordpress_content_path(@wordpress_content) %>">
+                          <i data-lucide="send" class="h-4 w-4 mr-2"></i>Publish
+                        </button>
+                      <% else %>
+                        <span class="px-4 py-2 bg-green-500/20 border border-green-500/30 rounded-lg text-green-400 text-sm font-medium inline-flex items-center">
+                          <i data-lucide="check-circle" class="h-4 w-4 mr-2"></i>Published
+                        </span>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                
+                <%= turbo_frame_tag "wordpress_content_editor" do %>
+                  <%= render "content_editor", form: f, wordpress_content: @wordpress_content %>
+                <% end %>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-gray-500/20 rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex space-x-3" id="action-buttons">
+                    <%= f.submit "Update Content", 
+                        class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:scale-105" %>
+                    <%= link_to "Cancel", app_wordpress_contents_path, 
+                        class: "px-6 py-3 bg-transparent border-2 border-gray-500/30 rounded-lg font-semibold transition-all duration-200 hover:border-gray-400/50 hover:bg-gray-500/10 text-gray-300 hover:text-white" %>
+                  </div>
+                  
+                  <div class="flex space-x-3">
+                    <%= link_to app_wordpress_content_path(@wordpress_content), 
+                        class: "px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg transition-all duration-200 text-sm font-medium inline-flex items-center shadow-lg hover:shadow-blue-500/25" do %>
+                      <i data-lucide="eye" class="h-4 w-4 mr-2"></i>Preview
+                    <% end %>
+                    
+                    <%= link_to app_wordpress_contents_path, 
+                        class: "px-4 py-3 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg transition-all duration-200 text-sm font-medium inline-flex items-center shadow-lg" do %>
+                      <i data-lucide="list" class="h-4 w-4 mr-2"></i>All Content
+                    <% end %>
                   </div>
                 </div>
               </div>
-
-              <!-- Form Actions -->
-              <div class="flex items-center justify-between pt-4">
-                <div class="flex space-x-3">
-                  <%= form.submit "Update Content", class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]" %>
-                  <%= link_to "Cancel", app_wordpress_content_path(@wordpress_content), class: "px-6 py-3 bg-transparent border-2 border-gray-500/30 rounded-md font-semibold transition-all duration-200 hover:border-gray-500/60 hover:bg-gray-500/10 text-white" %>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div class="flex space-x-3">
-                  <% if @wordpress_content.status == 'draft' %>
-                    <button type="button"
-                        class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors text-sm inline-flex items-center"
-                        data-controller="modal-opener"
-                        data-action="click->modal-opener#open"
-                        data-modal-opener-url-value="<%= publish_modal_app_wordpress_content_path(@wordpress_content) %>">
-                      <i data-lucide="send" class="h-4 w-4 inline mr-1"></i>Publish
-                    </button>
-                  <% end %>
-                  
-                  <%= link_to app_wordpress_content_path(@wordpress_content), 
-                      class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm" do %>
-                    <i data-lucide="eye" class="h-4 w-4 inline mr-1"></i>Preview
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-
-            <div class="mt-6 text-center">
-              <%= link_to "Back to Content List", app_wordpress_contents_path, class: "text-gray-400 hover:text-gray-300 transition-colors text-sm" %>
             </div>
-          </div>
+          <% end %>
         </div>
       </div>
     </section>
   </main>
-</div> 
+</div>
+
+<script>
+// Initialize Lucide icons
+if (window.lucide) lucide.createIcons();
+</script> 

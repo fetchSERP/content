@@ -1,208 +1,190 @@
 <div class="min-h-screen bg-[#0F172A]">
   <main>
-    <!-- Generate WordPress Content Section -->
-    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+    <section class="py-8 sm:py-12 bg-[#0F172A] text-white relative overflow-hidden">
       <div class="container mx-auto px-4 relative">
-        <div class="max-w-4xl mx-auto">
-          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-            <div class="mb-6">
-              <h1 class="font-bold text-3xl text-gray-100">Generate WordPress Content</h1>
-              <p class="text-base text-gray-400 mt-2">
-                Let AI create SEO-optimized WordPress content for you. Just provide a keyword and CTA URL.
-              </p>
-            </div>
-
-            <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
-            <%= tag.div(flash[:notice], class: "mb-4 text-green-400") if flash[:notice] %>
-
-            <% if @wordpress_content.errors.any? %>
-              <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-                <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
-                <ul class="list-disc list-inside text-red-300 space-y-1">
-                  <% @wordpress_content.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-
-            <%= form_with model: [:app, @wordpress_content], class: "space-y-6" do |form| %>
-              <!-- Keyword Field -->
-              <div>
-                <%= form.label :keyword, "Target Keyword", class: "block text-sm font-medium text-gray-300 mb-2" %>
-                <%= form.text_field :keyword, required: true, placeholder: "e.g., best SEO tools, digital marketing strategy...", class: "block w-full px-4 py-3 rounded-lg bg-[#1E293B]/50 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
-                <p class="mt-1 text-sm text-gray-400">Enter the main keyword you want to rank for. AI will create SEO-optimized content around this keyword.</p>
-              </div>
-
-              <!-- CTA URL Field -->
-              <div>
-                <%= form.label :cta_url, "Call-to-Action URL", class: "block text-sm font-medium text-gray-300 mb-2" %>
-                <%= form.url_field :cta_url, required: true, placeholder: "https://yourwebsite.com/product", class: "block w-full px-4 py-3 rounded-lg bg-[#1E293B]/50 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
-                <p class="mt-1 text-sm text-gray-400">The URL where you want to drive traffic. AI will naturally incorporate this into the content.</p>
-              </div>
-
-              <!-- AI Model Selection -->
-              <div>
+        <div class="max-w-7xl mx-auto">
+          
+          <!-- Header -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <%= link_to app_wordpress_contents_path, 
+                    class: "flex items-center justify-center w-10 h-10 bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600/50 rounded-lg transition-colors" do %>
+                  <i data-lucide="arrow-left" class="h-4 w-4 text-gray-400"></i>
+                <% end %>
                 <div>
-                  <label class="block text-sm font-medium text-gray-300 mb-2">AI Model</label>
-                  <%= form.select :ai_model, grouped_options_for_select(@available_models, @selected_ai_model), { include_blank: "Select Model" }, { 
-                      data: { controller: "choices-select" } } %>
-                  <p class="-mt-4 text-sm text-gray-400">The AI model to use for generating the content.</p>
+                  <h1 class="font-bold text-3xl text-gray-100">Generate WordPress Content</h1>
+                  <p class="text-gray-400 mt-1">Create SEO-optimized WordPress content with AI</p>
                 </div>
-                
-                <!-- Model Selection Info -->
-                <div class="mt-3 p-4 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-cyan-500/10 border border-blue-500/30 rounded-lg">
-                  <div class="flex items-start">
-                    <i data-lucide="cpu" class="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0"></i>
-                    <div class="text-sm text-blue-300">
-                      <p class="font-medium mb-1">Model Selection Tips</p>
-                      <ul class="space-y-1 text-blue-200">
-                        <li>• <strong>OpenAI models:</strong> Best for general content creation and SEO optimization</li>
-                        <li>• <strong>Anthropic (Claude):</strong> Excellent for creative and analytical writing</li>
-                        <li>• <strong>Meta (Llama):</strong> Open-source models with good performance</li>
-                        <li>• <strong>Google (Gemini):</strong> Strong reasoning and factual accuracy</li>
-                        <li>• <strong>Mini/Fast models:</strong> Lower cost, faster generation, suitable for most content</li>
-                      </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flash Messages -->
+          <% if flash[:alert] || flash[:notice] %>
+            <div class="mb-6">
+              <% if flash[:alert] %>
+                <div class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 mb-4">
+                  <div class="flex items-center">
+                    <i data-lucide="alert-circle" class="h-4 w-4 mr-2 flex-shrink-0"></i>
+                    <%= flash[:alert] %>
+                  </div>
+                </div>
+              <% end %>
+              
+              <% if flash[:notice] %>
+                <div class="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400">
+                  <div class="flex items-center">
+                    <i data-lucide="check-circle" class="h-4 w-4 mr-2 flex-shrink-0"></i>
+                    <%= flash[:notice] %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- Error Messages -->
+          <% if @wordpress_content.errors.any? %>
+            <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+              <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
+              <ul class="list-disc list-inside text-red-300 space-y-1">
+                <% @wordpress_content.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <!-- Main Content -->
+          <%= form_with model: [:app, @wordpress_content], class: "space-y-8" do |form| %>
+            <div class="max-w-7xl mx-auto space-y-6">
+              
+              <!-- Content Settings -->
+              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
+                <div class="bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 border-b border-yellow-500/20 px-6 py-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="flex items-center justify-center w-8 h-8 bg-yellow-500/20 border border-yellow-500/30 rounded-lg mr-3">
+                        <i data-lucide="settings" class="h-4 w-4 text-yellow-400"></i>
+                      </div>
+                      <div>
+                        <h2 class="text-lg font-semibold text-gray-100">Content Settings</h2>
+                        <p class="text-sm text-gray-400">Configure the parameters for your WordPress content</p>
+                      </div>
                     </div>
                   </div>
                 </div>
                 
-                <p class="mt-2 text-sm text-gray-400">Choose the AI model that best fits your needs. Different models excel at different types of content generation.</p>
-              </div>
+                <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <!-- Keyword -->
+                  <div>
+                    <%= form.label :keyword, "Target Keyword", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                    <%= form.text_field :keyword, required: true, placeholder: "e.g., best SEO tools, digital marketing strategy", class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
+                    <p class="mt-1 text-sm text-gray-400">The main keyword you want to rank for in search engines</p>
+                  </div>
 
-              <!-- Prompt Selection -->
-              <div>
-                <div class="flex items-center justify-between mb-3">
-                  <label class="block text-sm font-medium text-gray-300">AI Prompt</label>
-                  <%= link_to new_app_prompt_path, 
-                      class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
-                      data: { turbo_frame: "prompt_form" } do %>
-                    <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
-                    Create New Prompt
-                  <% end %>
-                </div>
+                  <!-- CTA URL -->
+                  <div>
+                    <%= form.label :cta_url, "Call-to-Action URL", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                    <%= form.url_field :cta_url, required: true, placeholder: "https://yourwebsite.com/product", class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
+                    <p class="mt-1 text-sm text-gray-400">The URL where you want to drive traffic from the content</p>
+                  </div>
 
-                <!-- Turbo Frame for prompt creation/editing -->
-                <%= turbo_frame_tag "prompt_form" do %>
-                  <!-- This will be replaced when creating/editing prompts -->
-                <% end %>
+                  <!-- AI Model -->
+                  <div>
+                    <%= form.label :ai_model, "AI Model", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                    <%= form.select :ai_model, grouped_options_for_select(@model_groups, @wordpress_content.ai_model), { include_blank: "Select Model" }, { 
+                        data: { controller: "choices-select" },
+                        class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                    } %>
+                    <p class="-mt-4 text-sm text-gray-400">Choose the AI model for content generation</p>
+                  </div>
 
-                <!-- Existing Prompt Selection -->
-                <% prompts = Current.user.prompts.enabled.where(target: 'wordpress') %>
-                <%= render 'app/social_media_contents/prompt_selection', prompts: prompts, form: form %>
-
-                <p class="mt-2 text-sm text-gray-400">Choose or create a prompt to customize how AI generates your content. This affects the writing style, tone, and approach.</p>
-              </div>
-
-              <!-- AI Generation Info -->
-              <div class="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                <div class="flex items-start">
-                  <i data-lucide="sparkles" class="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0"></i>
-                  <div class="text-sm text-blue-300">
-                    <p class="font-medium mb-1">AI Content Generation</p>
-                    <p>Our AI will create a comprehensive, SEO-optimized article that includes:</p>
-                    <ul class="mt-2 space-y-1 text-blue-200">
-                      <li>• Engaging title and meta description</li>
-                      <li>• Well-structured content with headings</li>
-                      <li>• Natural keyword integration</li>
-                      <li>• Strategic call-to-action placement</li>
-                      <li>• 800-1500 words of quality content</li>
-                    </ul>
+                  <!-- WordPress Info -->
+                  <div class="flex items-center p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg h-20">
+                    <i data-lucide="globe" class="h-5 w-5 text-purple-400 mr-3 flex-shrink-0"></i>
+                    <div class="text-sm">
+                      <p class="font-medium text-purple-300">WordPress Integration</p>
+                      <% if Current.user.wordpress_websites.empty? %>
+                        <p class="text-purple-200">
+                          <%= link_to "Connect a WordPress website", new_app_wordpress_website_path, class: "underline hover:no-underline" %> to publish content
+                        </p>
+                      <% else %>
+                        <p class="text-purple-200"><%= pluralize(Current.user.wordpress_websites.count, 'website') %> connected</p>
+                      <% end %>
+                    </div>
                   </div>
                 </div>
+
+                <!-- Prompt Selection -->
+                <div class="px-6 pb-6">
+                  <div class="flex items-center justify-between mb-3">
+                    <label class="block text-sm font-medium text-gray-300">AI Prompt</label>
+                    <%= link_to new_app_prompt_path(target: 'wordpress'), 
+                        class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
+                        data: { turbo_frame: "prompt_form" } do %>
+                      <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                      Create New Prompt
+                    <% end %>
+                  </div>
+
+                  <!-- Turbo Frame for prompt creation/editing -->
+                  <%= turbo_frame_tag "prompt_form" do %>
+                    <!-- This will be replaced when creating/editing prompts -->
+                  <% end %>
+
+                  <!-- Existing Prompt Selection -->
+                  <% prompts = Current.user.prompts.enabled.where(target: 'wordpress') %>
+                  <%= render 'app/social_media_contents/prompt_selection', prompts: prompts, form: form %>
+
+                  <p class="mt-2 text-sm text-gray-400">Choose or create a prompt to customize how AI generates your content</p>
+                </div>
               </div>
 
-              <!-- WordPress Publishing Info -->
-              <div class="bg-gradient-to-r from-purple-500/10 via-red-500/10 to-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                <div class="flex items-start">
-                  <i data-lucide="globe" class="h-5 w-5 text-purple-400 mt-0.5 mr-3 flex-shrink-0"></i>
-                  <div class="text-sm text-purple-300">
-                    <p class="font-medium mb-1">WordPress Integration</p>
-                    <p>Generated content will be saved to your content library. You can review, edit, and publish it to your WordPress websites.</p>
-                    <% if Current.user.wordpress_websites.empty? %>
-                      <p class="mt-2 text-purple-200">
-                        <strong>Note:</strong> You'll need to <%= link_to "connect a WordPress website", new_app_wordpress_website_path, class: "underline hover:no-underline" %> before you can publish content.
-                      </p>
+              
+              <!-- Action Buttons -->
+              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-gray-500/20 rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex space-x-3" id="action-buttons">
+                    <%= form.submit "Generate Content", 
+                        class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:scale-105 inline-flex items-center" do %>
+                      <i data-lucide="sparkles" class="h-4 w-4 mr-2"></i>
+                      Generate Content
+                    <% end %>
+                    <%= link_to "Cancel", app_wordpress_contents_path, 
+                        class: "px-6 py-3 bg-transparent border-2 border-gray-500/30 rounded-lg font-semibold transition-all duration-200 hover:border-gray-400/50 hover:bg-gray-500/10 text-gray-300 hover:text-white" %>
+                  </div>
+                  
+                  <div class="flex space-x-3">
+                    <!-- Processing Time -->
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-400 px-4 py-3">
+                      <i data-lucide="clock" class="h-4 w-4"></i>
+                      <span>~30-60 seconds</span>
+                    </div>
+                    
+                    <%= link_to app_wordpress_contents_path, 
+                        class: "px-4 py-3 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg transition-all duration-200 text-sm font-medium inline-flex items-center shadow-lg" do %>
+                      <i data-lucide="list" class="h-4 w-4 mr-2"></i>All Content
                     <% end %>
                   </div>
                 </div>
               </div>
-
-              <!-- Form Actions -->
-              <div class="flex items-center justify-between pt-4">
-                <div class="flex space-x-3">
-                  <%= form.submit "Generate Content", class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" do %>
-                    <i data-lucide="sparkles" class="h-4 w-4 mr-2"></i>
-                    Generate Content
-                  <% end %>
-                  <%= link_to "Cancel", app_wordpress_contents_path, class: "px-6 py-3 bg-transparent border-2 border-gray-500/30 rounded-md font-semibold transition-all duration-200 hover:border-gray-500/60 hover:bg-gray-500/10 text-white" %>
-                </div>
-                
-                <!-- Processing Time -->
-                <div class="hidden md:flex items-center space-x-2 text-sm text-gray-400">
-                  <i data-lucide="clock" class="h-4 w-4"></i>
-                  <span>~30-60 seconds</span>
-                </div>
-              </div>
-            <% end %>
-
-            <div class="mt-8 text-center">
-              <%= link_to "Back to Content List", app_wordpress_contents_path, class: "text-gray-400 hover:text-gray-300 transition-colors" %>
             </div>
-          </div>
+          <% end %>
         </div>
       </div>
     </section>
 
-    <!-- Content Generation Tips -->
-    <section class="pb-16 bg-[#0F172A]">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto">
-          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-6 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-            <h3 class="font-semibold text-gray-100 mb-4 flex items-center">
-              <i data-lucide="lightbulb" class="h-5 w-5 text-yellow-400 mr-2"></i>
-              Content Generation Tips
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-400">
-              <div>
-                <h4 class="font-medium text-gray-300 mb-2">Choosing Keywords</h4>
-                <ul class="space-y-1">
-                  <li>• Use specific, long-tail keywords for better targeting</li>
-                  <li>• Consider search intent (informational, commercial, etc.)</li>
-                  <li>• Check keyword difficulty and search volume</li>
-                  <li>• Think about your audience's pain points</li>
-                </ul>
-              </div>
-              <div>
-                <h4 class="font-medium text-gray-300 mb-2">CTA Best Practices</h4>
-                <ul class="space-y-1">
-                  <li>• Use landing pages relevant to your content</li>
-                  <li>• Ensure your CTA URL loads quickly</li>
-                  <li>• Consider using UTM parameters for tracking</li>
-                  <li>• Make sure the destination provides value</li>
-                </ul>
-              </div>
-            </div>
-            
-            <div class="mt-6 p-4 bg-gradient-to-r from-green-500/10 via-yellow-500/10 to-green-500/10 border border-green-500/30 rounded-lg">
-              <div class="flex items-start">
-                <i data-lucide="zap" class="h-4 w-4 text-green-400 mt-0.5 mr-2 flex-shrink-0"></i>
-                <div class="text-sm text-green-300">
-                  <p class="font-medium mb-1">Pro Tip</p>
-                  <p>Try keywords like "best [product] for [use case]" or "how to [solve problem] with [solution]" for high-converting content.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+
   </main>
 </div>
 
 <script>
+// Initialize Lucide icons
+if (window.lucide) lucide.createIcons();
+
+// Form validation - ensure prompt is selected before submission
 document.addEventListener('DOMContentLoaded', function() {
-  // Form validation - ensure prompt is selected before submission
   const mainForm = document.querySelector('form[action*="wordpress_contents"]');
   if (mainForm) {
     mainForm.addEventListener('submit', function(e) {
@@ -213,8 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Please select or create a prompt before generating content.');
         return false;
       }
-      
-      console.log('Form submitted with prompt ID:', selectedPromptId.value); // Debug log
     });
   }
 

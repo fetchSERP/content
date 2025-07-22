@@ -1,0 +1,29 @@
+<div id="wordpress_content_editor" class="p-6 space-y-6">
+  <!-- Title Field -->
+  <div>
+    <% if local_assigns[:form] %>
+      <%= form.label :title, "Title", class: "block text-sm font-medium text-gray-300 mb-2" %>
+      <%= form.text_field :title, required: true, 
+          class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-blue-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" %>
+    <% else %>
+      <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+      <input type="text" name="wordpress_content[title]" value="<%= wordpress_content.title %>" required
+          class="block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-blue-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" />
+    <% end %>
+    <p class="mt-1 text-sm text-gray-400">Update the title to make it more compelling and SEO-friendly</p>
+  </div>
+  
+  <!-- Content Field -->
+  <div>
+    <% if local_assigns[:form] %>
+      <%= form.label :content, "Content", class: "block text-sm font-medium text-gray-300 mb-2" %>
+      <%= form.text_area :content, required: true, rows: 20, 
+          class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-blue-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-y font-mono text-sm leading-relaxed" %>
+    <% else %>
+      <label class="block text-sm font-medium text-gray-300 mb-2">Content</label>
+      <textarea name="wordpress_content[content]" required rows="20"
+          class="block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-blue-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-y font-mono text-sm leading-relaxed"><%= wordpress_content.content %></textarea>
+    <% end %>
+    <p class="mt-1 text-sm text-gray-400">Edit the generated content while keeping SEO best practices in mind</p>
+  </div>
+</div> 

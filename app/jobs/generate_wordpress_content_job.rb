@@ -13,15 +13,27 @@ class GenerateWordpressContentJob < ApplicationJob
     )
     content = response.data.dig("response")
     wordpress_content.update!(title: content["title"], content: content["content"])
+    
     if wordpress_content.publish_on_create
       WordpressPublishJob.perform_later(wordpress_content.id, wordpress_website_id)
     end
+    
+    # Broadcast to main WordPress content list
     Turbo::StreamsChannel.broadcast_replace_to(
       "streaming_channel_#{wordpress_content.user_id}",
       target: "wordpress_content_#{wordpress_content.id}",
       partial: "app/wordpress_contents/wordpress_content",
       locals: { wordpress_content: wordpress_content }
     )
+    
+    # Also broadcast to content editor on edit page (if user is on edit page)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "streaming_channel_#{wordpress_content.user_id}",
+      target: "wordpress_content_editor",
+      partial: "app/wordpress_contents/content_editor",
+      locals: { wordpress_content: wordpress_content, form: nil }
+    )
+    
     broadcast_credit(wordpress_content.user)
   end
 

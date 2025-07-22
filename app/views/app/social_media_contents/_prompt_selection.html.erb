@@ -24,11 +24,14 @@
                       <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a .5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path>
                     </svg>
                   <% end %>
-                  <%= button_to disable_app_prompt_path(prompt), 
+                  <%= link_to disable_app_prompt_path(prompt), 
                       method: :patch,
-                      class: "text-red-400 hover:text-red-300 transition-colors border-0 bg-transparent p-0 cursor-pointer",
+                      class: "text-red-400 hover:text-red-300 transition-colors",
                       title: "Disable",
-                      data: { confirm: "Are you sure you want to disable this prompt? This action cannot be undone." } do %>
+                      data: { 
+                        confirm: "Are you sure you want to disable this prompt? This action cannot be undone.",
+                        turbo_method: :patch
+                      } do %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                       <circle cx="12" cy="12" r="10"></circle>
                       <path d="M4.93 4.93l14.14 14.14"></path>

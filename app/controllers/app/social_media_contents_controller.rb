@@ -1,5 +1,5 @@
 class App::SocialMediaContentsController < App::ApplicationController
-  before_action :set_social_media_content, only: [:show, :edit, :update, :destroy, :publish_modal, :publish]
+  before_action :set_social_media_content, only: [:show, :edit, :update, :destroy, :publish_modal, :publish, :regenerate]
 
   def index
     @social_media_contents = Current.user.social_media_contents
@@ -39,8 +39,8 @@ class App::SocialMediaContentsController < App::ApplicationController
     @social_media_content = SocialMediaContent.find(params[:id])
     respond_to do |format|
       if @social_media_content.update(social_media_content_params)
-        format.turbo_stream { redirect_to app_social_media_contents_path, notice: "Social media content updated successfully" }
-        format.html { redirect_to app_social_media_contents_path, notice: "Social media content updated successfully" }
+        format.turbo_stream { redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Social media content updated successfully" }
+        format.html { redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Social media content updated successfully" }
       else
         @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform).reload
         @model_groups = OpenrouterService.fetch_models
@@ -55,6 +55,40 @@ class App::SocialMediaContentsController < App::ApplicationController
     @social_media_content = SocialMediaContent.find(params[:id])
     @social_media_content.destroy
     redirect_to app_social_media_contents_path, notice: "Social media content deleted successfully"
+  end
+
+  def regenerate
+    # Handle regenerate_only parameter for the content editor button
+    if params[:regenerate_only] == "true"
+      respond_to do |format|
+        format.turbo_stream do
+          # Show loading animation first - render the HTML partial within a turbo_stream response
+          render turbo_stream: turbo_stream.replace("content_editor", partial: "generating_content")
+        end
+        format.html { redirect_to edit_app_social_media_content_path(@social_media_content) }
+      end
+      
+      # Start the regeneration in the background
+      @social_media_content.generate!
+      return
+    end
+    
+    # Update the social media content with any new params
+    if params[:social_media_content].present?
+      if @social_media_content.update(social_media_content_params)
+        # Regenerate the content with updated settings
+        @social_media_content.generate!
+        redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Content is being regenerated with updated settings. This may take a few moments."
+      else
+        @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform).reload
+        @model_groups = OpenrouterService.fetch_models
+        render :edit, status: :unprocessable_entity
+      end
+    else
+      # Just regenerate with existing settings
+      @social_media_content.generate!
+      redirect_to edit_app_social_media_content_path(@social_media_content), notice: "Content is being regenerated. This may take a few moments."
+    end
   end
 
   # GET /publish_modal

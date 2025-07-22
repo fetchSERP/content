@@ -13,12 +13,23 @@ class GenerateSocialMediaContentJob < ApplicationJob
     )
     content = response.data.dig("response")
     social_media_content.update!(content: content["content"])
+    
+    # Broadcast to main social media content list
     Turbo::StreamsChannel.broadcast_replace_to(
       "streaming_channel_#{social_media_content.user_id}",
       target: "social_media_content_#{social_media_content.id}",
       partial: "app/social_media_contents/social_media_content",
       locals: { social_media_content: social_media_content }
     )
+    
+    # Also broadcast to content editor on edit page (if user is on edit page)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "streaming_channel_#{social_media_content.user_id}",
+      target: "content_editor",
+      partial: "app/social_media_contents/content_editor_content",
+      locals: { social_media_content: social_media_content }
+    )
+    
     broadcast_credit(social_media_content.user)
   end
 

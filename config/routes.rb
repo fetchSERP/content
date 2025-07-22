@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       member do
         patch :publish
         get :publish_modal
+        patch :regenerate
       end
     end
     root "dashboard#index"

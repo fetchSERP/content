@@ -88,10 +88,8 @@
                 <% end %>
 
                 <!-- Existing Prompt Selection -->
-                <%= turbo_frame_tag "prompt_selection", data: { turbo_permanent: true } do %>
-                  <% wordpress_prompts = Current.user.prompts.where(target: 'wordpress') %>
-                  <%= render 'prompt_selection', wordpress_prompts: wordpress_prompts, form: form %>
-                <% end %>
+                <% prompts = Current.user.prompts.enabled.where(target: 'wordpress') %>
+                <%= render 'app/social_media_contents/prompt_selection', prompts: prompts, form: form %>
 
                 <p class="mt-2 text-sm text-gray-400">Choose or create a prompt to customize how AI generates your content. This affects the writing style, tone, and approach.</p>
               </div>

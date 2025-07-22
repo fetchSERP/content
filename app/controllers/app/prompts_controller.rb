@@ -62,16 +62,12 @@ class App::PromptsController < App::ApplicationController
         prompts = Current.user.prompts.reload.where(target: platform)
 
         format.turbo_stream do
-          # Clear any cached queries
-          ActiveRecord::Base.connection.clear_query_cache
-          
           render turbo_stream: [
             turbo_stream.update("prompt_form", ""),
-            turbo_stream.replace(
-              "prompt_selection",
-              partial: "app/social_media_contents/prompt_selection",
-              locals: {
-                prompts: Current.user.prompts.enabled.where(target: platform).reload,
+            turbo_stream.replace("prompt_selection", 
+              partial: "app/social_media_contents/prompt_selection", 
+              locals: { 
+                prompts: Current.user.reload.prompts.enabled.where(target: platform),
                 form: nil,
                 social_media_content: SocialMediaContent.new(platform: platform)
               }

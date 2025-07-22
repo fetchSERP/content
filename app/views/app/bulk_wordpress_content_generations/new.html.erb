@@ -39,11 +39,11 @@
                   <!-- replaced by prompt new/edit -->
                 <% end %>
 
-                <%= turbo_frame_tag "prompt_selection", data: { turbo_permanent: true } do %>
-                  <% wordpress_prompts = Current.user.prompts.enabled.where(target: 'wordpress') %>
-                  <% if wordpress_prompts.any? %>
+                <% prompts = Current.user.prompts.enabled.where(target: 'wordpress') %>
+                <% if prompts.any? %>
+                  <%= turbo_frame_tag "prompt_selection" do %>
                     <div class="space-y-3">
-                      <% wordpress_prompts.each do |prompt| %>
+                      <% prompts.each do |prompt| %>
                         <div class="relative">
                           <input type="radio" name="prompt_id" value="<%= prompt.id %>" id="prompt_<%= prompt.id %>" class="peer sr-only" <%= 'checked' if defined?(@selected_prompt_id) && @selected_prompt_id.to_i == prompt.id %>>
                           <label for="prompt_<%= prompt.id %>" class="flex p-4 border-2 border-yellow-500/30 rounded-lg cursor-pointer transition-all hover:border-yellow-500/50 peer-checked:border-yellow-500 peer-checked:bg-yellow-500/10 peer-checked:shadow-[0_0_15px_rgba(234,179,8,0.2)]">
@@ -56,7 +56,7 @@
                                       data: { turbo_frame: "prompt_form" }, title: "Edit" do %>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
                                       <path d="M12 20h9"></path>
-                                      <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path>
+                                      <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a .5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path>
                                     </svg>
                                   <% end %>
                                   <%= button_to disable_app_prompt_path(prompt), 
@@ -80,9 +80,13 @@
                         </div>
                       <% end %>
                     </div>
-                  <% else %>
+                  <% end %>
+                <% else %>
+                  <%= turbo_frame_tag "prompt_selection" do %>
                     <div class="text-center py-6 border-2 border-dashed border-yellow-500/30 rounded-lg">
-                      <i data-lucide="message-square" class="h-8 w-8 text-yellow-400 mx-auto mb-2"></i>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-yellow-400 mx-auto mb-2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                      </svg>
                       <p class="text-gray-400 text-sm">No WordPress prompts found</p>
                       <p class="text-gray-500 text-xs mt-1">Create a prompt to customize AI content generation</p>
                     </div>

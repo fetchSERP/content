@@ -64,10 +64,8 @@
                 <% end %>
 
                 <!-- Existing Prompt Selection -->
-                <%= turbo_frame_tag "prompt_selection" do %>
-                  <% prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform) %>
-                  <%= render 'prompt_selection', prompts: prompts, form: f, social_media_content: @social_media_content %>
-                <% end %>
+                <% prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform) %>
+                <%= render 'prompt_selection', prompts: prompts, form: f, social_media_content: @social_media_content %>
 
                 <p class="mt-2 text-sm text-gray-400">Choose or create a prompt to customize how AI generates your content. This affects the writing style, tone, and approach.</p>
               </div>

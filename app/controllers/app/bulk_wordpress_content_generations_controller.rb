@@ -1,7 +1,7 @@
 class App::BulkWordpressContentGenerationsController < App::ApplicationController
   def new
     @keywords = Keyword.joins(:domain).where(domains: { user: Current.user }).includes(:domain)
-    @wordpress_prompts = Current.user.prompts.where(target: 'wordpress')
+    @wordpress_prompts = Current.user.prompts.enabled.where(target: 'wordpress')
     @available_models = OpenrouterService.fetch_models
     @model_groups = @available_models
   end
@@ -17,7 +17,7 @@ class App::BulkWordpressContentGenerationsController < App::ApplicationControlle
       flash.now[:alert] = "Please select at least one keyword, a prompt, an AI model, a CTA URL, and a WordPress website."
       # reload variables for form
       @keywords = Keyword.joins(:domain).where(domains: { user: Current.user }).includes(:domain)
-      @wordpress_prompts = Current.user.prompts.where(target: 'wordpress')
+      @wordpress_prompts = Current.user.prompts.enabled.where(target: 'wordpress')
       @model_groups   = OpenrouterService.fetch_models
 
       # Preserve user selections

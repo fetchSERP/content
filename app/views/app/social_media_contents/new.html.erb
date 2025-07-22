@@ -65,7 +65,7 @@
 
                 <!-- Existing Prompt Selection -->
                 <%= turbo_frame_tag "prompt_selection" do %>
-                  <% prompts = Current.user.prompts.where(target: @social_media_content.platform) %>
+                  <% prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform) %>
                   <%= render 'prompt_selection', prompts: prompts, form: f, social_media_content: @social_media_content %>
                 <% end %>
 

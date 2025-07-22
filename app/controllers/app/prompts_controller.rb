@@ -3,7 +3,7 @@ class App::PromptsController < App::ApplicationController
   layout -> { turbo_frame_request? ? false : "app_application" }
 
   def index
-    @prompts = Current.user.prompts
+    @prompts = Current.user.prompts.enabled
   end
 
   def show
@@ -31,7 +31,7 @@ class App::PromptsController < App::ApplicationController
             turbo_stream.replace("prompt_selection", 
               partial: "app/social_media_contents/prompt_selection", 
               locals: { 
-                prompts: Current.user.prompts.reload.where(target: @prompt.target),
+                prompts: Current.user.prompts.enabled.where(target: @prompt.target),
                 form: nil,
                 social_media_content: SocialMediaContent.new(platform: @prompt.target)
               }
@@ -59,16 +59,19 @@ class App::PromptsController < App::ApplicationController
         
         # Get the current platform from the referer URL
         platform = request.referer&.match(/platform=([^&]+)/)&.captures&.first || @prompt.target
-        prompts = Current.user.prompts.where(target: platform)
+        prompts = Current.user.prompts.reload.where(target: platform)
 
         format.turbo_stream do
+          # Clear any cached queries
+          ActiveRecord::Base.connection.clear_query_cache
+          
           render turbo_stream: [
             turbo_stream.update("prompt_form", ""),
             turbo_stream.replace(
               "prompt_selection",
               partial: "app/social_media_contents/prompt_selection",
               locals: {
-                prompts: prompts,
+                prompts: Current.user.prompts.enabled.where(target: platform).reload,
                 form: nil,
                 social_media_content: SocialMediaContent.new(platform: platform)
               }
@@ -94,7 +97,7 @@ class App::PromptsController < App::ApplicationController
   private
 
   def set_prompt
-    @prompt = Current.user.prompts.find(params[:id])
+    @prompt = Current.user.prompts.unscoped.find(params[:id])
   end
 
   def prompt_params

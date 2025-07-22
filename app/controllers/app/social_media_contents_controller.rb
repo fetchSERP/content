@@ -7,7 +7,7 @@ class App::SocialMediaContentsController < App::ApplicationController
 
   def new
     @social_media_content = SocialMediaContent.new(platform: params[:platform] || 'linkedin')
-    @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
+    @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform)
     @model_groups = OpenrouterService.fetch_models
   end
 
@@ -23,7 +23,7 @@ class App::SocialMediaContentsController < App::ApplicationController
       @social_media_content.generate!
       redirect_to app_social_media_contents_path, notice: "Social media content created successfully"
     else
-      @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
+      @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform)
       @model_groups = OpenrouterService.fetch_models
       render :new, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class App::SocialMediaContentsController < App::ApplicationController
 
   def edit
     @social_media_content = SocialMediaContent.find(params[:id])
-    @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
+    @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform)
     @model_groups = OpenrouterService.fetch_models
   end
 
@@ -42,7 +42,7 @@ class App::SocialMediaContentsController < App::ApplicationController
         format.turbo_stream { redirect_to app_social_media_contents_path, notice: "Social media content updated successfully" }
         format.html { redirect_to app_social_media_contents_path, notice: "Social media content updated successfully" }
       else
-        @social_media_prompts = Current.user.prompts.where(target: @social_media_content.platform)
+        @social_media_prompts = Current.user.prompts.enabled.where(target: @social_media_content.platform).reload
         @model_groups = OpenrouterService.fetch_models
         
         format.turbo_stream { render :edit, status: :unprocessable_entity }

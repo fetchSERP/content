@@ -40,7 +40,7 @@
                 <% end %>
 
                 <%= turbo_frame_tag "prompt_selection", data: { turbo_permanent: true } do %>
-                  <% wordpress_prompts = Current.user.prompts.where(target: 'wordpress') %>
+                  <% wordpress_prompts = Current.user.prompts.enabled.where(target: 'wordpress') %>
                   <% if wordpress_prompts.any? %>
                     <div class="space-y-3">
                       <% wordpress_prompts.each do |prompt| %>

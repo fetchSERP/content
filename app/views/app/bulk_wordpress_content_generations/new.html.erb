@@ -96,6 +96,12 @@
                         <p class="text-sm text-gray-400">Configure the parameters for your bulk WordPress content generation</p>
                       </div>
                     </div>
+                    <%= link_to new_app_prompt_path(target: 'wordpress'), 
+                        class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
+                        data: { turbo_frame: "prompt_form" } do %>
+                      <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                      Create New Prompt
+                    <% end %>
                   </div>
                 </div>
                 

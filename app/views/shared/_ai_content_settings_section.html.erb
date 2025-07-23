@@ -20,19 +20,21 @@
     </div>
   </div>
 
-  <div class="p-6 space-y-6">
+  <div class="flex items-center justify-between p-6">
     <!-- AI Model Selection -->
-    <div>
+    <div class="w-1/2 flex flex-col h-full mt-16">
       <label class="block text-sm font-medium text-gray-300 mb-2">AI Model</label>
-      <%= form.select :ai_model, grouped_options_for_select(model_groups, form.object.ai_model), { include_blank: "Select Model" }, { 
-          data: { controller: "choices-select" },
-          class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-      } %>
-      <p class="mt-1 text-sm text-gray-400">The AI model to use for generating the content.</p>
+      <div class="flex-1">
+        <%= form.select :ai_model, grouped_options_for_select(model_groups, form.object.ai_model), { include_blank: "Select Model" }, { 
+            data: { controller: "choices-select" },
+            class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+        } %>
+        <p class="-mt-4 text-sm text-gray-400">The AI model to use for generating the content.</p>
+      </div>
     </div>
 
     <!-- CTA URL Field -->
-    <div>
+    <div class="w-1/2 pl-6 mb-2">
       <div class="flex items-center justify-between mb-2">
         <label class="block text-sm font-medium text-gray-300">Call-to-Action URL</label>
         <%= link_to new_app_domain_path, 

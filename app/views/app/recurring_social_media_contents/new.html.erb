@@ -94,8 +94,21 @@
                     </div>
                   </div>
 
+                  <div class="p-6">
+                    <% 
+                      platform = f.object.platform || "linkedin"
+                      provider_name = platform == "x" ? "twitter2" : platform
+                      authentication_providers = Current.user.authentication_providers.where(provider: provider_name)
+                    %>
+                    <%= render "authentication_provider_selection_area", 
+                        authentication_providers: authentication_providers, 
+                        platform: platform,
+                        selected_provider_id: f.object.authentication_provider_id %>
+                    <p class="mt-1 text-sm text-gray-400">Select which account to use for automatic publishing</p>
+                  </div>
+
                   <!-- Frequency -->
-                  <div>
+                  <div class="-mt-6">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Posting Frequency</label>
                     <%= f.number_field :frequency, min: 15, step: 15, placeholder: "120", 
                         class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
@@ -116,33 +129,6 @@
 
               <!-- AI Content Settings (REUSE) -->
               <%= render "shared/ai_content_settings_section", form: f, model_groups: @model_groups, platform: f.object.platform || "linkedin" %>
-
-              <!-- Authentication Provider Selection -->
-              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-yellow-500/20 px-6 py-4">
-                  <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded-lg mr-3">
-                      <i data-lucide="user-check" class="h-4 w-4 text-blue-400"></i>
-                    </div>
-                    <div>
-                      <h2 class="text-lg font-semibold text-gray-100">Auto-Publishing Account</h2>
-                      <p class="text-sm text-gray-400">Select which account to use for automatic publishing</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="p-6">
-                  <% 
-                    platform = f.object.platform || "linkedin"
-                    provider_name = platform == "x" ? "twitter2" : platform
-                    authentication_providers = Current.user.authentication_providers.where(provider: provider_name)
-                  %>
-                  <%= render "authentication_provider_selection_area", 
-                      authentication_providers: authentication_providers, 
-                      platform: platform,
-                      selected_provider_id: f.object.authentication_provider_id %>
-                </div>
-              </div>
 
               <!-- Action Buttons -->
               <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-gray-500/20 rounded-xl p-6">

@@ -1,7 +1,7 @@
-<div id="bulk_keywords_list" data-controller="keyword-filter">
+<div id="bulk_keywords_list" data-bulk-generation-target="keywordsContainer">
   <% keywords = domains.flat_map(&:keywords) %>
   <% if keywords.any? %>
-    <div class="bg-[#0F172A]/50 border border-yellow-500/20 rounded-lg p-4 max-h-[600px] overflow-y-auto" data-bulk-generation-target="keywordsContainer">
+    <div class="bg-[#0F172A]/50 border border-yellow-500/20 rounded-lg p-4 max-h-[600px] overflow-y-auto">
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center">
           <input type="checkbox" id="select_all" data-bulk-generation-target="selectAll" class="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-300 rounded mr-2" data-action="change->bulk-generation#toggleSelectAll" />

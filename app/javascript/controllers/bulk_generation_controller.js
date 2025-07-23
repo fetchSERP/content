@@ -138,6 +138,9 @@ export default class extends Controller {
   }
 
   updateSelectAllCheckbox() {
+    // Only update if selectAll target exists
+    if (!this.hasSelectAllTarget) return
+    
     const allCheckboxes = this.keywordsContainerTarget.querySelectorAll('input[type="checkbox"][name="keyword_ids[]"]')
     const checkedCount = Array.from(allCheckboxes).filter(cb => cb.checked).length
     
@@ -154,6 +157,9 @@ export default class extends Controller {
   }
 
   updateSubmitState() {
+    // Only update if submit target exists
+    if (!this.hasSubmitTarget) return
+    
     const anyChecked = this.keywordsContainerTarget.querySelector('input[type="checkbox"][name="keyword_ids[]"]:checked')
     this.submitTarget.disabled = !anyChecked
   }

@@ -4,19 +4,13 @@ export default class extends Controller {
   static targets = []
 
   connect() {
-    console.log("KeywordFilter controller connected")
     this.totalKeywords = this.element.querySelectorAll('[data-keyword-item]').length
-    console.log("Total keywords found:", this.totalKeywords)
   }
 
   filter(event) {
-    console.log("Filter method called with:", event.target.value)
     const searchTerm = event.target.value.toLowerCase().trim()
     const keywordItems = this.element.querySelectorAll('[data-keyword-item]')
     const domainContainers = this.element.querySelectorAll('[data-domain-container]')
-    
-    console.log("Found keyword items:", keywordItems.length)
-    console.log("Found domain containers:", domainContainers.length)
     
     let visibleCount = 0
     const domainCounts = {}
@@ -38,8 +32,6 @@ export default class extends Controller {
         item.style.display = 'none'
       }
     })
-
-    console.log("Visible count:", visibleCount)
 
     // Update domain containers visibility and counts
     domainContainers.forEach(container => {

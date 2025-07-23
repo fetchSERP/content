@@ -8,13 +8,13 @@
           <div class="mb-8">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4">
-                <%= link_to app_recurring_social_media_contents_path, 
+                <%= link_to app_recurring_social_media_content_path(@recurring_content), 
                     class: "flex items-center justify-center w-10 h-10 bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600/50 rounded-lg transition-colors" do %>
                   <i data-lucide="arrow-left" class="h-4 w-4 text-gray-400"></i>
                 <% end %>
                 <div>
-                  <h1 class="font-bold text-3xl text-gray-100">Create Recurring Social Media Campaign</h1>
-                  <p class="text-gray-400 mt-1">Set up automated content generation for LinkedIn or X (Twitter)</p>
+                  <h1 class="font-bold text-3xl text-gray-100">Edit Recurring Social Media Campaign</h1>
+                  <p class="text-gray-400 mt-1">Update your automated content generation settings</p>
                 </div>
               </div>
             </div>
@@ -43,8 +43,20 @@
             </div>
           <% end %>
 
+          <!-- Validation Errors -->
+          <% if @recurring_content.errors.any? %>
+            <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+              <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
+              <ul class="list-disc list-inside text-red-300 space-y-1">
+                <% @recurring_content.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
           <!-- Main Content -->
-          <%= form_with model: [:app, @recurring_content], class: "space-y-8", data: { controller: "bulk-generation keyword-filter platform-selector" } do |f| %>
+          <%= form_with model: [:app, @recurring_content], class: "space-y-8", data: { controller: "bulk-generation keyword-filter platform-selector", platform_selector_content_id_value: @recurring_content.id } do |f| %>
             <div class="max-w-7xl mx-auto space-y-6">
               
               <!-- Campaign Settings -->
@@ -67,7 +79,7 @@
                     <label class="block text-sm font-medium text-gray-300 mb-3">Platform</label>
                     <div class="grid grid-cols-2 gap-4">
                       <div class="relative">
-                        <%= f.radio_button :platform, "linkedin", id: "platform_linkedin", class: "peer sr-only", checked: true, data: { action: "change->platform-selector#updatePrompts", platform_selector_new_form_value: true } %>
+                        <%= f.radio_button :platform, "linkedin", id: "platform_linkedin", class: "peer sr-only", data: { action: "change->platform-selector#updatePrompts" } %>
                         <label for="platform_linkedin" class="flex items-center p-4 border-2 border-yellow-500/30 rounded-lg cursor-pointer transition-all hover:border-yellow-500/50 peer-checked:border-yellow-500 peer-checked:bg-yellow-500/10 peer-checked:shadow-[0_0_15px_rgba(234,179,8,0.2)]">
                           <div class="flex items-center justify-center w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded mr-3">
                             <i data-lucide="linkedin" class="h-4 w-4 text-blue-400"></i>
@@ -80,7 +92,7 @@
                       </div>
                       
                       <div class="relative">
-                        <%= f.radio_button :platform, "x", id: "platform_x", class: "peer sr-only", data: { action: "change->platform-selector#updatePrompts", platform_selector_new_form_value: true } %>
+                        <%= f.radio_button :platform, "x", id: "platform_x", class: "peer sr-only", data: { action: "change->platform-selector#updatePrompts" } %>
                         <label for="platform_x" class="flex items-center p-4 border-2 border-yellow-500/30 rounded-lg cursor-pointer transition-all hover:border-yellow-500/50 peer-checked:border-yellow-500 peer-checked:bg-yellow-500/10 peer-checked:shadow-[0_0_15px_rgba(234,179,8,0.2)]">
                           <div class="flex items-center justify-center w-8 h-8 bg-gray-500/20 border border-gray-500/30 rounded mr-3">
                             <i data-lucide="twitter" class="h-4 w-4 text-gray-400"></i>
@@ -97,7 +109,7 @@
                   <!-- Frequency -->
                   <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Posting Frequency</label>
-                    <%= f.number_field :frequency, min: 15, step: 15, placeholder: "120", 
+                    <%= f.number_field :frequency, min: 15, step: 15, 
                         class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
                     <p class="mt-1 text-sm text-gray-400">Minutes between posts (e.g., 60 = hourly, 1440 = daily). Minimum 15 minutes.</p>
                   </div>
@@ -105,14 +117,14 @@
                   <!-- Activation -->
                   <div class="flex items-center p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
                     <%= f.check_box :is_active, class: "h-4 w-4 text-green-500 focus:ring-green-500 border-gray-300 rounded mr-3" %>
-                    <%= f.label :is_active, "Start campaign immediately", class: "text-sm font-medium text-green-300" %>
+                    <%= f.label :is_active, "Campaign is active", class: "text-sm font-medium text-green-300" %>
                     <p class="ml-auto text-xs text-green-400">Can be toggled later</p>
                   </div>
                 </div>
               </div>
 
               <!-- Keywords Selection (REUSE) -->
-              <%= render "shared/keywords_selection_section", domains: @domains, selected_keyword_ids: [] %>
+              <%= render "shared/keywords_selection_section", domains: @domains, selected_keyword_ids: @selected_keyword_ids %>
 
               <!-- AI Content Settings (REUSE) -->
               <%= render "shared/ai_content_settings_section", form: f, model_groups: @model_groups, platform: f.object.platform || "linkedin" %>
@@ -121,22 +133,24 @@
               <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-gray-500/20 rounded-xl p-6">
                 <div class="flex items-center justify-between">
                   <div class="flex space-x-3" id="action-buttons">
-                    <%= f.submit "Create Recurring Campaign", 
+                    <%= f.submit "Update Campaign", 
                         class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:scale-105 inline-flex items-center",
                         data: { bulk_generation_target: "submit" } do %>
-                      <i data-lucide="repeat" class="h-4 w-4 mr-2"></i>
-                      Create Recurring Campaign
+                      <i data-lucide="save" class="h-4 w-4 mr-2"></i>
+                      Update Campaign
                     <% end %>
-                    <%= link_to "Cancel", app_recurring_social_media_contents_path, 
+                    <%= link_to "Cancel", app_recurring_social_media_content_path(@recurring_content), 
                         class: "px-6 py-3 bg-transparent border-2 border-gray-500/30 rounded-lg font-semibold transition-all duration-200 hover:border-gray-400/50 hover:bg-gray-500/10 text-gray-300 hover:text-white" %>
                   </div>
                   
                   <div class="flex space-x-3">
-                    <!-- Info -->
-                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-400 px-4 py-3">
-                      <i data-lucide="info" class="h-4 w-4"></i>
-                      <span>Auto-generated content</span>
-                    </div>
+                    <!-- Delete Campaign -->
+                    <%= link_to app_recurring_social_media_content_path(@recurring_content), 
+                        data: { turbo_method: :delete, confirm: "Are you sure? This will stop the campaign but keep generated content." },
+                        class: "px-4 py-3 bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 rounded-lg text-sm font-medium transition-colors inline-flex items-center" do %>
+                      <i data-lucide="trash-2" class="h-4 w-4 mr-2"></i>
+                      Delete Campaign
+                    <% end %>
                   </div>
                 </div>
               </div>

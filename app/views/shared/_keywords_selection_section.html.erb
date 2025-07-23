@@ -28,7 +28,7 @@
       <!-- This will be replaced when creating domains -->
     <% end %>
 
-    <%= render "app/bulk_wordpress_content_generations/keywords_list", domains: domains %>
+    <%= render "app/bulk_wordpress_content_generations/keywords_list", domains: domains, selected_keyword_ids: local_assigns[:selected_keyword_ids] %>
     <p class="mt-4 text-sm text-gray-400">Selected keywords will be used randomly for content generation.</p>
   </div>
 </div> 

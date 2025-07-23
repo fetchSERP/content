@@ -105,7 +105,7 @@
                       <div class="flex items-center space-x-2">
                         <!-- Toggle Button -->
                         <%= link_to toggle_app_recurring_social_media_content_path(campaign), 
-                            method: :patch,
+                            data: { turbo_method: :patch },
                             class: "px-3 py-2 #{campaign.is_active? ? 'bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/30' : 'bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-green-500/30'} rounded text-sm font-medium transition-colors inline-flex items-center" do %>
                           <% if campaign.is_active? %>
                             <i data-lucide="pause" class="h-4 w-4 mr-1"></i>
@@ -132,9 +132,8 @@
 
                         <!-- Delete -->
                         <%= link_to app_recurring_social_media_content_path(campaign), 
-                            method: :delete,
-                            class: "px-3 py-2 bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 rounded text-sm font-medium transition-colors inline-flex items-center",
-                            data: { confirm: "Are you sure? This will stop the campaign but keep generated content." } do %>
+                            data: { turbo_method: :delete, confirm: "Are you sure? This will stop the campaign but keep generated content." },
+                            class: "px-3 py-2 bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 rounded text-sm font-medium transition-colors inline-flex items-center" do %>
                           <i data-lucide="trash-2" class="h-4 w-4 mr-1"></i>
                           Delete
                         <% end %>

@@ -1,0 +1,198 @@
+<div class="min-h-screen bg-[#0F172A]">
+  <main>
+    <section class="py-8 sm:py-12 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="max-w-7xl mx-auto">
+          
+          <!-- Header -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <%= link_to app_recurring_social_media_contents_path, 
+                    class: "flex items-center justify-center w-10 h-10 bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600/50 rounded-lg transition-colors" do %>
+                  <i data-lucide="arrow-left" class="h-4 w-4 text-gray-400"></i>
+                <% end %>
+                <div>
+                  <h1 class="font-bold text-3xl text-gray-100">
+                    <%= @recurring_content.platform.titleize %> Campaign
+                  </h1>
+                  <p class="text-gray-400 mt-1">
+                    Campaign details and generated content
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-center space-x-3">
+                <!-- Status Badge -->
+                <% if @recurring_content.is_active? %>
+                  <span class="px-3 py-2 bg-green-500/20 border border-green-500/30 rounded text-sm text-green-400 flex items-center">
+                    <i data-lucide="play" class="h-4 w-4 mr-2"></i>
+                    Active Campaign
+                  </span>
+                <% else %>
+                  <span class="px-3 py-2 bg-gray-500/20 border border-gray-500/30 rounded text-sm text-gray-400 flex items-center">
+                    <i data-lucide="pause" class="h-4 w-4 mr-2"></i>
+                    Paused Campaign
+                  </span>
+                <% end %>
+                
+                <!-- Actions -->
+                <%= link_to edit_app_recurring_social_media_content_path(@recurring_content), 
+                    class: "px-4 py-2 bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 rounded text-sm font-medium transition-colors inline-flex items-center" do %>
+                  <i data-lucide="edit" class="h-4 w-4 mr-2"></i>
+                  Edit Campaign
+                <% end %>
+                
+                <%= link_to toggle_app_recurring_social_media_content_path(@recurring_content), 
+                    data: { turbo_method: :patch },
+                    class: "px-4 py-2 #{@recurring_content.is_active? ? 'bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/30' : 'bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-green-500/30'} rounded text-sm font-medium transition-colors inline-flex items-center" do %>
+                  <% if @recurring_content.is_active? %>
+                    <i data-lucide="pause" class="h-4 w-4 mr-2"></i>
+                    Pause Campaign
+                  <% else %>
+                    <i data-lucide="play" class="h-4 w-4 mr-2"></i>
+                    Resume Campaign
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Campaign Overview -->
+          <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden mb-6">
+            <div class="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 border-b border-yellow-500/20 px-6 py-4">
+              <div class="flex items-center">
+                <div class="flex items-center justify-center w-8 h-8 <%= @recurring_content.platform == 'linkedin' ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gray-500/20 border border-gray-500/30' %> rounded-lg mr-3">
+                  <% if @recurring_content.platform == 'linkedin' %>
+                    <i data-lucide="linkedin" class="h-4 w-4 text-blue-400"></i>
+                  <% else %>
+                    <i data-lucide="twitter" class="h-4 w-4 text-gray-400"></i>
+                  <% end %>
+                </div>
+                <div>
+                  <h2 class="text-lg font-semibold text-gray-100">Campaign Overview</h2>
+                  <p class="text-sm text-gray-400">Automated content generation settings and statistics</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-[#0F172A]/50 border border-gray-600/30 rounded-lg p-4">
+                  <div class="text-sm text-gray-400 mb-1">Frequency</div>
+                  <div class="text-xl font-semibold text-white">Every <%= @recurring_content.frequency %> min</div>
+                </div>
+                <div class="bg-[#0F172A]/50 border border-gray-600/30 rounded-lg p-4">
+                  <div class="text-sm text-gray-400 mb-1">Keywords</div>
+                  <div class="text-xl font-semibold text-white"><%= @recurring_content.keywords.size %> selected</div>
+                </div>
+                <div class="bg-[#0F172A]/50 border border-gray-600/30 rounded-lg p-4">
+                  <div class="text-sm text-gray-400 mb-1">Total Generated</div>
+                  <div class="text-xl font-semibold text-white"><%= @recurring_content.total_posts_generated %> posts</div>
+                </div>
+                <div class="bg-[#0F172A]/50 border border-gray-600/30 rounded-lg p-4">
+                  <div class="text-sm text-gray-400 mb-1">Next Post</div>
+                  <div class="text-xl font-semibold text-white"><%= @recurring_content.next_post_in %></div>
+                </div>
+              </div>
+
+              <!-- Keywords List -->
+              <% if @recurring_content.keywords.any? %>
+                <div class="mt-6 pt-6 border-t border-gray-600/30">
+                  <h3 class="text-lg font-semibold text-gray-100 mb-3">Campaign Keywords</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <% @recurring_content.keywords.each do |keyword| %>
+                      <span class="px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded text-sm text-yellow-300">
+                        <%= keyword %>
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Generated Content -->
+          <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
+            <div class="bg-gradient-to-r from-green-500/10 via-teal-500/10 to-blue-500/10 border-b border-yellow-500/20 px-6 py-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="flex items-center justify-center w-8 h-8 bg-green-500/20 border border-green-500/30 rounded-lg mr-3">
+                    <i data-lucide="file-text" class="h-4 w-4 text-green-400"></i>
+                  </div>
+                  <div>
+                    <h2 class="text-lg font-semibold text-gray-100">Generated Content</h2>
+                    <p class="text-sm text-gray-400">Recent posts created by this campaign</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <% if @generated_contents.any? %>
+                <div class="space-y-4">
+                  <% @generated_contents.each do |content| %>
+                    <div class="bg-[#0F172A]/50 border border-gray-600/30 rounded-lg p-4">
+                      <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                          <div class="text-sm text-gray-400">
+                            <strong class="text-yellow-400">Keyword:</strong> <%= content.keyword %>
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            <%= content.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+                          </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                          <% case content.status %>
+                          <% when 'generated' %>
+                            <span class="px-2 py-1 bg-green-500/20 border border-green-500/30 rounded text-xs text-green-400">Generated</span>
+                          <% when 'published' %>
+                            <span class="px-2 py-1 bg-blue-500/20 border border-blue-500/30 rounded text-xs text-blue-400">Published</span>
+                          <% else %>
+                            <span class="px-2 py-1 bg-gray-500/20 border border-gray-500/30 rounded text-xs text-gray-400">Generating</span>
+                          <% end %>
+                          
+                          <%= link_to edit_app_social_media_content_path(content), 
+                              class: "text-blue-400 hover:text-blue-300 transition-colors" do %>
+                            <i data-lucide="edit" class="h-4 w-4"></i>
+                          <% end %>
+                        </div>
+                      </div>
+                      
+                      <% if content.content.present? %>
+                        <div class="bg-[#1E293B]/50 border border-gray-600/20 rounded p-3 text-gray-300 text-sm leading-relaxed">
+                          <%= simple_format(truncate(content.content, length: 300)) %>
+                        </div>
+                      <% else %>
+                        <div class="bg-gray-500/10 border border-gray-500/20 rounded p-3 text-gray-400 text-sm italic">
+                          Content is being generated...
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="text-center py-8">
+                  <i data-lucide="file-text" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
+                  <h3 class="text-lg font-medium text-gray-300 mb-2">No Content Generated Yet</h3>
+                  <p class="text-gray-400 text-sm">
+                    <% if @recurring_content.is_active? %>
+                      Content will be generated based on your frequency settings.
+                    <% else %>
+                      Resume the campaign to start generating content.
+                    <% end %>
+                  </p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// Initialize Lucide icons
+if (window.lucide) lucide.createIcons();
+</script> 

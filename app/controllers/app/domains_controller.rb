@@ -18,6 +18,7 @@ class App::DomainsController < App::ApplicationController
           @domains = Current.user.domains.includes(:keywords)
           render turbo_stream: [
             turbo_stream.update("bulk_domain_form", ""),
+            turbo_stream.update("domain_form", ""),
             turbo_stream.update("bulk_keyword_domain_form", ""),
             turbo_stream.replace("bulk_keywords_list", partial: "app/bulk_wordpress_content_generations/keywords_list", locals: { domains: @domains })
           ]

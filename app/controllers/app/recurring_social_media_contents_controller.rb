@@ -48,7 +48,8 @@ class App::RecurringSocialMediaContentsController < App::ApplicationController
     @model_groups = @available_models
     
     # Convert keywords back to selected state for form
-    @selected_keywords = @recurring_content.selected_keywords
+    selected_keywords = @recurring_content.selected_keywords
+    @selected_keyword_ids = selected_keywords.pluck(:id)
   end
 
   def update

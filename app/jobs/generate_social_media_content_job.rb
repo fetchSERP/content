@@ -1,7 +1,7 @@
 class GenerateSocialMediaContentJob < ApplicationJob
   queue_as :default
 
-  def perform(social_media_content)
+  def perform(social_media_content, auto_publish: false)
     prompt = social_media_content.prompt
     user_prompt = prompt.user_prompt.gsub("{{keyword}}", social_media_content.keyword).gsub("{{cta_url}}", social_media_content.cta_url)
     system_prompt = prompt.system_prompt
@@ -13,6 +13,11 @@ class GenerateSocialMediaContentJob < ApplicationJob
     )
     content = response.data.dig("response")
     social_media_content.update!(content: content["content"])
+    
+    if auto_publish && social_media_content.recurring_social_media_content.present?
+      authentication_provider_id = social_media_content.user.authentication_providers.where(provider: social_media_content.platform == "x" ? "twitter2" : social_media_content.platform).first.id
+      SocialMediaPublishJob.perform_later(social_media_content.id, authentication_provider_id)
+    end
     
     # Broadcast to main social media content list
     Turbo::StreamsChannel.broadcast_replace_to(

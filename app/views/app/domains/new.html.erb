@@ -1,66 +1,76 @@
-<div class="min-h-screen bg-[#0F172A]">
-  <main>
-    <!-- Add Domain Section -->
-    <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
-      <div class="container mx-auto px-4 relative">
-        <div class="max-w-2xl mx-auto">
-          <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
-            <div class="mb-6">
-              <h1 class="font-bold text-2xl text-gray-100">Add SEO Domain</h1>
-              <p class="text-base text-gray-400 mt-2">
-                Add a domain to track SEO keywords and generate content opportunities.
-              </p>
-            </div>
-
-            <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
-            <%= tag.div(flash[:notice], class: "mb-4 text-green-400") if flash[:notice] %>
-
-            <% if @domain.errors.any? %>
-              <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-                <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
-                <ul class="list-disc list-inside text-red-300 space-y-1">
-                  <% @domain.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-
-            <%= form_with model: [:app, @domain], class: "space-y-6" do |form| %>
-              <div>
-                <%= form.label :name, "Domain Name", class: "block text-sm font-medium text-gray-300 mb-2" %>
-                <%= form.text_field :name, required: true, placeholder: "example.com", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
-                <p class="mt-1 text-sm text-gray-400">Enter the domain name without https:// or www</p>
+<% if turbo_frame_request? %>
+  <%= turbo_frame_tag turbo_frame_request_id do %>
+    <% if turbo_frame_request_id.start_with?("bulk_") %>
+      <%= render "bulk_inline_form" %>
+    <% else %>
+      <%= render "inline_form" %>
+    <% end %>
+  <% end %>
+<% else %>
+  <div class="min-h-screen bg-[#0F172A]">
+    <main>
+      <!-- Add Domain Section -->
+      <section class="py-16 sm:py-24 bg-[#0F172A] text-white relative overflow-hidden">
+        <div class="container mx-auto px-4 relative">
+          <div class="max-w-2xl mx-auto">
+            <div class="bg-[#1E293B]/80 backdrop-blur-sm px-6 py-8 border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)]">
+              <div class="mb-6">
+                <h1 class="font-bold text-2xl text-gray-100">Add SEO Domain</h1>
+                <p class="text-base text-gray-400 mt-2">
+                  Add a domain to track SEO keywords and generate content opportunities.
+                </p>
               </div>
 
-              <div>
-                <%= form.label :country, "Target Country Code", class: "block text-sm font-medium text-gray-300 mb-2" %>
-                <%= form.text_field :country, required: true, placeholder: "us", value: "us", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
-                <p class="mt-1 text-sm text-gray-400">Enter the country code for SEO targeting (e.g., us, fr, es, de, gb)</p>
-              </div>
+              <%= tag.div(flash[:alert], class: "mb-4 text-red-400") if flash[:alert] %>
+              <%= tag.div(flash[:notice], class: "mb-4 text-green-400") if flash[:notice] %>
 
-              <div class="bg-gradient-to-r from-yellow-500/10 via-red-500/10 to-yellow-500/10 border border-yellow-500/40 rounded-lg backdrop-blur-sm p-4">
-                <div class="flex items-start">
-                  <i data-lucide="info" class="h-5 w-5 text-yellow-400 mt-0.5 mr-3 flex-shrink-0"></i>
-                  <div class="text-sm text-gray-300">
-                    <p class="font-medium mb-1 text-yellow-400">Keyword Research</p>
-                    <p>After adding your domain, we'll automatically discover relevant keywords and generate SEO opportunities. This process may take a few minutes.</p>
+              <% if @domain.errors.any? %>
+                <div class="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+                  <h3 class="text-red-400 font-medium mb-2">Please fix the following errors:</h3>
+                  <ul class="list-disc list-inside text-red-300 space-y-1">
+                    <% @domain.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+              <%= form_with model: [:app, @domain], class: "space-y-6" do |form| %>
+                <div>
+                  <%= form.label :name, "Domain Name", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                  <%= form.text_field :name, required: true, placeholder: "example.com", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
+                  <p class="mt-1 text-sm text-gray-400">Enter the domain name without https:// or www</p>
+                </div>
+
+                <div>
+                  <%= form.label :country, "Target Country Code", class: "block text-sm font-medium text-gray-300 mb-2" %>
+                  <%= form.text_field :country, required: true, placeholder: "us", value: "us", class: "block w-full px-4 py-3 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-colors" %>
+                  <p class="mt-1 text-sm text-gray-400">Enter the country code for SEO targeting (e.g., us, fr, es, de, gb)</p>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-500/10 via-red-500/10 to-yellow-500/10 border border-yellow-500/40 rounded-lg backdrop-blur-sm p-4">
+                  <div class="flex items-start">
+                    <i data-lucide="info" class="h-5 w-5 text-yellow-400 mt-0.5 mr-3 flex-shrink-0"></i>
+                    <div class="text-sm text-gray-300">
+                      <p class="font-medium mb-1 text-yellow-400">Keyword Research</p>
+                      <p>After adding your domain, we'll automatically discover relevant keywords and generate SEO opportunities. This process may take a few minutes.</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="flex items-center justify-between pt-4">
-                <%= form.submit "Add Domain", class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" %>
-                <%= link_to "Cancel", app_domains_path, class: "px-6 py-3 bg-gray-500/10 border border-gray-500/30 rounded-md font-semibold transition-all duration-200 hover:bg-gray-500/20 hover:border-gray-500/50 text-gray-300" %>
-              </div>
-            <% end %>
+                <div class="flex items-center justify-between pt-4">
+                  <%= form.submit "Add Domain", class: "group relative inline-block px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-md font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] overflow-hidden" %>
+                  <%= link_to "Cancel", app_domains_path, class: "px-6 py-3 bg-gray-500/10 border border-gray-500/30 rounded-md font-semibold transition-all duration-200 hover:bg-gray-500/20 hover:border-gray-500/50 text-gray-300" %>
+                </div>
+              <% end %>
 
-            <div class="mt-8 text-center">
-              <%= link_to "Back to Domains", app_domains_path, class: "text-gray-400 hover:text-gray-300 transition-colors" %>
+              <div class="mt-8 text-center">
+                <%= link_to "Back to Domains", app_domains_path, class: "text-gray-400 hover:text-gray-300 transition-colors" %>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
-</div> 
+      </section>
+    </main>
+  </div> 
+<% end %> 

@@ -37,7 +37,11 @@ Rails.application.routes.draw do
     end
     resources :domains, only: [ :index, :new, :create, :destroy ]
     resources :keywords, only: [ :index ]
-    resources :bulk_wordpress_content_generations, only: [ :new, :create ]
+    resources :bulk_wordpress_content_generations, only: [ :new, :create ] do
+      collection do
+        get :refresh_keywords
+      end
+    end
     resources :social_media_contents do
       member do
         patch :publish

@@ -1,9 +1,19 @@
 class App::BulkWordpressContentGenerationsController < App::ApplicationController
   def new
-    @keywords = Keyword.joins(:domain).where(domains: { user: Current.user }).includes(:domain)
+    @domains = Current.user.domains.includes(:keywords)
     @wordpress_prompts = Current.user.prompts.enabled.where(target: 'wordpress')
     @available_models = OpenrouterService.fetch_models
     @model_groups = @available_models
+  end
+
+  def refresh_keywords
+    @domains = Current.user.domains.includes(:keywords)
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("bulk_keywords_list", partial: "keywords_list", locals: { domains: @domains })
+      end
+    end
   end
 
   def create
@@ -16,7 +26,7 @@ class App::BulkWordpressContentGenerationsController < App::ApplicationControlle
     if keyword_ids.empty? || prompt_id.blank? || ai_model.blank? || cta_url.blank? || wordpress_website_id.blank?
       flash.now[:alert] = "Please select at least one keyword, a prompt, an AI model, a CTA URL, and a WordPress website."
       # reload variables for form
-      @keywords = Keyword.joins(:domain).where(domains: { user: Current.user }).includes(:domain)
+      @domains = Current.user.domains.includes(:keywords)
       @wordpress_prompts = Current.user.prompts.enabled.where(target: 'wordpress')
       @model_groups   = OpenrouterService.fetch_models
 

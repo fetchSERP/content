@@ -9,10 +9,22 @@ class App::DomainsController < App::ApplicationController
 
   def create
     @domain = Current.user.domains.build(domain_params)
+    
     if @domain.save
-      redirect_to app_domains_path, notice: "Domain created successfully"
+      respond_to do |format|
+        format.html { redirect_to app_domains_path, notice: "Domain created successfully" }
+        format.turbo_stream do
+          # Refresh keywords list and clear forms
+          @domains = Current.user.domains.includes(:keywords)
+          render turbo_stream: [
+            turbo_stream.update("bulk_domain_form", ""),
+            turbo_stream.update("bulk_keyword_domain_form", ""),
+            turbo_stream.replace("bulk_keywords_list", partial: "app/bulk_wordpress_content_generations/keywords_list", locals: { domains: @domains })
+          ]
+        end
+      end
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
   

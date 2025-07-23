@@ -1,0 +1,94 @@
+<!-- AI Content Generation Settings -->
+<div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
+  <div class="bg-gradient-to-r from-green-500/10 via-teal-500/10 to-blue-500/10 border-b border-yellow-500/20 px-6 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <div class="flex items-center justify-center w-8 h-8 bg-green-500/20 border border-green-500/30 rounded-lg mr-3">
+          <i data-lucide="message-square" class="h-4 w-4 text-green-400"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold text-gray-100">AI Content Generation Settings</h2>
+          <p class="text-sm text-gray-400">Configure AI model, prompts, and CTA settings</p>
+        </div>
+      </div>
+      <%= link_to new_app_prompt_path, 
+          class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
+          data: { turbo_frame: "prompt_form" } do %>
+        <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+        Create New Prompt
+      <% end %>
+    </div>
+  </div>
+
+  <div class="p-6 space-y-6">
+    <!-- AI Model Selection -->
+    <div>
+      <label class="block text-sm font-medium text-gray-300 mb-2">AI Model</label>
+      <%= form.select :ai_model, grouped_options_for_select(model_groups, form.object.ai_model), { include_blank: "Select Model" }, { 
+          data: { controller: "choices-select" },
+          class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+      } %>
+      <p class="mt-1 text-sm text-gray-400">The AI model to use for generating the content.</p>
+    </div>
+
+    <!-- CTA URL Field -->
+    <div>
+      <div class="flex items-center justify-between mb-2">
+        <label class="block text-sm font-medium text-gray-300">Call-to-Action URL</label>
+        <%= link_to new_app_domain_path, 
+            class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
+            data: { turbo_frame: "cta_domain_form" } do %>
+          <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+          Add Domain
+        <% end %>
+      </div>
+
+      <!-- Turbo Frame for domain creation -->
+      <%= turbo_frame_tag "cta_domain_form" do %>
+        <!-- This will be replaced when creating domains -->
+      <% end %>
+
+      <!-- Quick Domain Selection -->
+      <% if Current.user.domains.any? %>
+        <div class="mb-3">
+          <p class="text-xs text-gray-400 mb-2">Quick select from your domains:</p>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <% Current.user.domains.each do |domain| %>
+              <button type="button" 
+                      onclick="document.querySelector('input[name=&quot;<%= form.object_name %>[cta_url]&quot;]').value = 'https://<%= domain.name %>/'; document.querySelector('input[name=&quot;<%= form.object_name %>[cta_url]&quot;]').focus();"
+                      class="px-3 py-2 text-xs bg-yellow-500/10 border border-yellow-500/30 rounded text-yellow-300 hover:bg-yellow-500/20 hover:border-yellow-500/50 transition-colors">
+                <i data-lucide="globe" class="h-3 w-3 inline mr-1"></i>
+                <%= domain.name %>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%= form.url_field :cta_url, placeholder: "https://yourwebsite.com/product", required: true, 
+          class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
+      <p class="mt-1 text-sm text-gray-400">
+        <% if Current.user.domains.any? %>
+          Click a domain button above to auto-fill, or enter any URL manually.
+        <% else %>
+          The URL where you want to drive traffic. AI will naturally incorporate this into each generated post.
+        <% end %>
+      </p>
+    </div>
+  </div>
+
+  <div class="p-6 border-t border-gray-600/30">
+    <%= turbo_frame_tag "prompt_form" do %>
+      <!-- replaced by prompt new/edit -->
+    <% end %>
+
+    <div id="prompt_selection_area">
+      <% prompts = Current.user.prompts.enabled.where(target: platform) %>
+      <%= render "shared/prompt_selection_content", 
+          prompts: prompts, 
+          platform: platform, 
+          form_name: form.object_name, 
+          selected_prompt_id: form.object.prompt_id %>
+    </div>
+  </div>
+</div> 

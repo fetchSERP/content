@@ -100,12 +100,16 @@ class App::SocialMediaContentsController < App::ApplicationController
     platform = params[:platform]
     prompts = Current.user.prompts.enabled.where(target: platform)
     
-    # Create a temporary object for the partial
-    social_media_content = SocialMediaContent.new(platform: platform)
-    
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("prompt_selection_area", partial: "prompt_selection_area", locals: { prompts: prompts, social_media_content: social_media_content })
+        render turbo_stream: turbo_stream.replace("prompt_selection_area", 
+          partial: "shared/prompt_selection_area_wrapper", 
+          locals: { 
+            prompts: prompts, 
+            platform: platform, 
+            form_name: "social_media_content", 
+            selected_prompt_id: nil 
+          })
       end
     end
   end
@@ -116,7 +120,14 @@ class App::SocialMediaContentsController < App::ApplicationController
     
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("prompt_selection_area", partial: "prompt_selection_area", locals: { prompts: prompts, social_media_content: @social_media_content })
+        render turbo_stream: turbo_stream.replace("prompt_selection_area", 
+          partial: "shared/prompt_selection_area_wrapper", 
+          locals: { 
+            prompts: prompts, 
+            platform: platform, 
+            form_name: "social_media_content", 
+            selected_prompt_id: @social_media_content.prompt_id 
+          })
       end
     end
   end

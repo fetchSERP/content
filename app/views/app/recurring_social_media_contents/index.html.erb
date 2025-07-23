@@ -1,0 +1,202 @@
+<div class="min-h-screen bg-[#0F172A]">
+  <main>
+    <section class="py-8 sm:py-12 bg-[#0F172A] text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 relative">
+        <div class="max-w-7xl mx-auto">
+          
+          <!-- Header -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between">
+              <div>
+                <h1 class="font-bold text-3xl text-gray-100">Recurring Social Media Campaigns</h1>
+                <p class="text-gray-400 mt-1">Automated content generation for LinkedIn and X (Twitter)</p>
+              </div>
+              <%= link_to new_app_recurring_social_media_content_path, 
+                  class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:scale-105 inline-flex items-center" do %>
+                <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                Create Campaign
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Flash Messages -->
+          <% if flash[:alert] || flash[:notice] %>
+            <div class="mb-6">
+              <% if flash[:alert] %>
+                <div class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 mb-4">
+                  <div class="flex items-center">
+                    <i data-lucide="alert-circle" class="h-4 w-4 mr-2 flex-shrink-0"></i>
+                    <%= flash[:alert] %>
+                  </div>
+                </div>
+              <% end %>
+              
+              <% if flash[:notice] %>
+                <div class="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400">
+                  <div class="flex items-center">
+                    <i data-lucide="check-circle" class="h-4 w-4 mr-2 flex-shrink-0"></i>
+                    <%= flash[:notice] %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- Campaigns List -->
+          <% if @recurring_contents.any? %>
+            <div class="space-y-4">
+              <% @recurring_contents.each do |campaign| %>
+                <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
+                  <div class="p-6">
+                    <div class="flex items-center justify-between">
+                      <!-- Campaign Info -->
+                      <div class="flex items-center space-x-4">
+                        <!-- Platform Icon -->
+                        <div class="flex items-center justify-center w-12 h-12 <%= campaign.platform == 'linkedin' ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gray-500/20 border border-gray-500/30' %> rounded-lg">
+                          <% if campaign.platform == 'linkedin' %>
+                            <i data-lucide="linkedin" class="h-6 w-6 text-blue-400"></i>
+                          <% else %>
+                            <i data-lucide="twitter" class="h-6 w-6 text-gray-400"></i>
+                          <% end %>
+                        </div>
+
+                        <!-- Campaign Details -->
+                        <div class="flex-1">
+                          <div class="flex items-center space-x-3 mb-1">
+                            <h3 class="text-lg font-semibold text-gray-100">
+                              <%= campaign.platform.titleize %> Campaign
+                            </h3>
+                            <!-- Status Badge -->
+                            <% if campaign.is_active? %>
+                              <span class="px-2 py-1 bg-green-500/20 border border-green-500/30 rounded text-xs text-green-400 flex items-center">
+                                <i data-lucide="play" class="h-3 w-3 mr-1"></i>
+                                Active
+                              </span>
+                            <% else %>
+                              <span class="px-2 py-1 bg-gray-500/20 border border-gray-500/30 rounded text-xs text-gray-400 flex items-center">
+                                <i data-lucide="pause" class="h-3 w-3 mr-1"></i>
+                                Paused
+                              </span>
+                            <% end %>
+                          </div>
+                          
+                          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm text-gray-400">
+                            <div>
+                              <span class="text-gray-500">Frequency:</span> 
+                              <span class="text-gray-300">Every <%= campaign.frequency %> min</span>
+                            </div>
+                            <div>
+                              <span class="text-gray-500">Keywords:</span> 
+                              <span class="text-gray-300"><%= campaign.keywords.size %> selected</span>
+                            </div>
+                            <div>
+                              <span class="text-gray-500">Generated:</span> 
+                              <span class="text-gray-300"><%= campaign.total_posts_generated %> posts</span>
+                            </div>
+                            <div>
+                              <span class="text-gray-500">Next post:</span> 
+                              <span class="text-gray-300"><%= campaign.next_post_in %></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Actions -->
+                      <div class="flex items-center space-x-2">
+                        <!-- Toggle Button -->
+                        <%= link_to toggle_app_recurring_social_media_content_path(campaign), 
+                            method: :patch,
+                            class: "px-3 py-2 #{campaign.is_active? ? 'bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/30' : 'bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-green-500/30'} rounded text-sm font-medium transition-colors inline-flex items-center" do %>
+                          <% if campaign.is_active? %>
+                            <i data-lucide="pause" class="h-4 w-4 mr-1"></i>
+                            Pause
+                          <% else %>
+                            <i data-lucide="play" class="h-4 w-4 mr-1"></i>
+                            Resume
+                          <% end %>
+                        <% end %>
+
+                        <!-- View Details -->
+                        <%= link_to app_recurring_social_media_content_path(campaign), 
+                            class: "px-3 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 rounded text-sm font-medium transition-colors inline-flex items-center" do %>
+                          <i data-lucide="eye" class="h-4 w-4 mr-1"></i>
+                          View
+                        <% end %>
+
+                        <!-- Edit -->
+                        <%= link_to edit_app_recurring_social_media_content_path(campaign), 
+                            class: "px-3 py-2 bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 rounded text-sm font-medium transition-colors inline-flex items-center" do %>
+                          <i data-lucide="edit" class="h-4 w-4 mr-1"></i>
+                          Edit
+                        <% end %>
+
+                        <!-- Delete -->
+                        <%= link_to app_recurring_social_media_content_path(campaign), 
+                            method: :delete,
+                            class: "px-3 py-2 bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 rounded text-sm font-medium transition-colors inline-flex items-center",
+                            data: { confirm: "Are you sure? This will stop the campaign but keep generated content." } do %>
+                          <i data-lucide="trash-2" class="h-4 w-4 mr-1"></i>
+                          Delete
+                        <% end %>
+                      </div>
+                    </div>
+
+                    <!-- Keywords Preview -->
+                    <% if campaign.keywords.any? %>
+                      <div class="mt-4 pt-4 border-t border-gray-600/30">
+                        <div class="flex items-center justify-between">
+                          <span class="text-sm text-gray-400">Selected keywords:</span>
+                          <span class="text-xs text-gray-500">Random selection for each post</span>
+                        </div>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                          <% campaign.keywords.first(5).each do |keyword| %>
+                            <span class="px-2 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded text-xs text-yellow-300">
+                              <%= keyword %>
+                            </span>
+                          <% end %>
+                          <% if campaign.keywords.size > 5 %>
+                            <span class="px-2 py-1 bg-gray-500/10 border border-gray-500/20 rounded text-xs text-gray-400">
+                              +<%= campaign.keywords.size - 5 %> more
+                            </span>
+                          <% end %>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <!-- Empty State -->
+            <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl p-12 text-center">
+              <div class="flex flex-col items-center">
+                <div class="flex items-center justify-center w-16 h-16 bg-yellow-500/20 border border-yellow-500/30 rounded-lg mb-4">
+                  <i data-lucide="repeat" class="h-8 w-8 text-yellow-400"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-100 mb-2">No Recurring Campaigns Yet</h3>
+                <p class="text-gray-400 mb-6 max-w-md">Create your first automated social media campaign to start generating content regularly.</p>
+                <%= link_to new_app_recurring_social_media_content_path, 
+                    class: "px-6 py-3 bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] hover:scale-105 inline-flex items-center" do %>
+                  <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                  Create Your First Campaign
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// Initialize Lucide icons
+if (window.lucide) lucide.createIcons();
+
+// Re-initialize Lucide icons after Turbo updates
+document.addEventListener('turbo:frame-load', function() {
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+});
+</script> 

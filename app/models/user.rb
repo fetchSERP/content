@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :prompts, dependent: :destroy
   has_many :domains, dependent: :destroy
   has_many :social_media_contents, dependent: :destroy
+  has_many :recurring_social_media_contents, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

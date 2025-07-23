@@ -53,6 +53,15 @@ Rails.application.routes.draw do
         get :update_prompts_for_new
       end
     end
+    resources :recurring_social_media_contents do
+      member do
+        patch :toggle
+        get :update_prompts
+      end
+      collection do
+        get :update_prompts_for_new
+      end
+    end
     root "dashboard#index"
   end
 

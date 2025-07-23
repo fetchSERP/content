@@ -120,7 +120,7 @@
                 <!-- Show existing long tail keywords if they exist -->
                 <% long_tail_children = keyword.children.select { |child| child.is_long_tail } %>
                 <% if long_tail_children.any? %>
-                  <%= render "long_tail_keywords", 
+                  <%= render "app/bulk_wordpress_content_generations/long_tail_keywords", 
                       pillar_keyword: keyword, 
                       long_tail_keywords: long_tail_children,
                       loading: false,

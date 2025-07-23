@@ -46,6 +46,42 @@
           <!-- Main Content -->
           <%= form_with url: app_bulk_wordpress_content_generations_path, method: :post, class: "space-y-8", data: { controller: "bulk-generation" } do |f| %>
             <div class="max-w-7xl mx-auto space-y-6">
+
+              
+              <!-- Keywords Selection -->
+              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
+                <div class="bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 border-b border-yellow-500/20 px-6 py-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <div class="flex items-center justify-center w-8 h-8 bg-yellow-500/20 border border-yellow-500/30 rounded-lg mr-3">
+                        <i data-lucide="key" class="h-4 w-4 text-yellow-400"></i>
+                      </div>
+                      <div>
+                        <h2 class="text-lg font-semibold text-gray-100">Keywords to Generate Content For</h2>
+                        <p class="text-sm text-gray-400">Select the keywords you want to generate content for</p>
+                      </div>
+                    </div>
+                    <div class="flex space-x-2">
+                      <%= link_to new_app_domain_path, 
+                          class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
+                          data: { turbo_frame: "bulk_keyword_domain_form" } do %>
+                        <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
+                        Add Domain
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-6">
+                  <!-- Turbo Frame for domain creation in keyword section -->
+                  <%= turbo_frame_tag "bulk_keyword_domain_form" do %>
+                    <!-- This will be replaced when creating domains -->
+                  <% end %>
+
+                  <%= render "keywords_list", domains: @domains %>
+                  <p class="mt-4 text-sm text-gray-400">Keywords are organized by domain and show search intent.</p>
+                </div>
+              </div>
               
               <!-- Content Settings -->
               <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
@@ -64,86 +100,17 @@
                 </div>
                 
                 <div class="p-6 space-y-6">
-                  <!-- CTA URL Field -->
+                  <!-- AI Model Selection -->
                   <div>
-                    <div class="flex items-center justify-between mb-2">
-                      <label class="block text-sm font-medium text-gray-300">Call-to-Action URL</label>
-                      <%= link_to new_app_domain_path, 
-                          class: "text-sm text-purple-400 hover:text-purple-300 transition-colors",
-                          data: { turbo_frame: "bulk_domain_form" } do %>
-                        <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
-                        Add Domain
-                      <% end %>
-                    </div>
-
-                    <!-- Turbo Frame for domain creation -->
-                    <%= turbo_frame_tag "bulk_domain_form" do %>
-                      <!-- This will be replaced when creating domains -->
-                    <% end %>
-
-                    <!-- Quick Domain Selection -->
-                    <% if Current.user.domains.any? %>
-                      <div class="mb-3">
-                        <p class="text-xs text-gray-400 mb-2">Quick select from your domains:</p>
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                          <% Current.user.domains.each do |domain| %>
-                            <button type="button" 
-                                    onclick="document.querySelector('input[name=&quot;cta_url&quot;]').value = 'https://<%= domain.name %>/'; document.querySelector('input[name=&quot;cta_url&quot;]').focus();"
-                                    class="px-3 py-2 text-xs bg-purple-500/10 border border-purple-500/30 rounded text-purple-300 hover:bg-purple-500/20 hover:border-purple-500/50 transition-colors">
-                              <i data-lucide="globe" class="h-3 w-3 inline mr-1"></i>
-                              <%= domain.name %>
-                            </button>
-                          <% end %>
-                        </div>
-                      </div>
-                    <% end %>
-
-                    <input type="url" name="cta_url" placeholder="https://yourwebsite.com/product" value="<%= @selected_cta_url %>" required class="block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" />
-                    <p class="mt-1 text-sm text-gray-400">
-                      <% if Current.user.domains.any? %>
-                        Click a domain button above to auto-fill, or enter any URL manually.
-                      <% else %>
-                        The URL where you want to drive traffic. AI will naturally incorporate this into each generated post.
-                      <% end %>
-                    </p>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">AI Model</label>
+                    <%= f.select :ai_model, grouped_options_for_select(@model_groups, @selected_ai_model), { include_blank: "Select Model" }, { 
+                        data: { controller: "choices-select" },
+                        class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                    } %>
+                    <p class="-mt-4 text-sm text-gray-400">The AI model to use for generating the content.</p>
                   </div>
 
-                </div>
-              </div>
-
-              <!-- Prompt Selection -->
-              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
-                <div class="bg-gradient-to-r from-green-500/10 via-teal-500/10 to-blue-500/10 border-b border-yellow-500/20 px-6 py-4">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <div class="flex items-center justify-center w-8 h-8 bg-green-500/20 border border-green-500/30 rounded-lg mr-3">
-                        <i data-lucide="message-square" class="h-4 w-4 text-green-400"></i>
-                      </div>
-                      <div>
-                        <h2 class="text-lg font-semibold text-gray-100">AI Prompt Selection</h2>
-                        <p class="text-sm text-gray-400">Choose or create a prompt to customize content generation</p>
-                      </div>
-                    </div>
-                    <%= link_to new_app_prompt_path, 
-                        class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
-                        data: { turbo_frame: "prompt_form" } do %>
-                      <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
-                      Create New Prompt
-                    <% end %>
-                  </div>
-                </div>
-
-                <!-- AI Model Selection -->
-                <div class="p-6">
-                  <label class="block text-sm font-medium text-gray-300 mb-2">AI Model</label>
-                  <%= f.select :ai_model, grouped_options_for_select(@model_groups, @selected_ai_model), { include_blank: "Select Model" }, { 
-                      data: { controller: "choices-select" },
-                      class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                  } %>
-                  <p class="-mt-4 text-sm text-gray-400">The AI model to use for generating the content.</p>
-                </div>
-
-                <div class="p-6">
+                  <div class="p-6 border-t border-gray-600/30">
                   <%= turbo_frame_tag "prompt_form" do %>
                     <!-- replaced by prompt new/edit -->
                   <% end %>
@@ -197,85 +164,72 @@
                     <% end %>
                   <% end %>
                 </div>
-              </div>
 
-              <!-- Keywords Selection -->
-              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
-                <div class="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 border-b border-yellow-500/20 px-6 py-4">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <div class="flex items-center justify-center w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-lg mr-3">
-                        <i data-lucide="key" class="h-4 w-4 text-purple-400"></i>
+                  <!-- CTA URL Field -->
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <label class="block text-sm font-medium text-gray-300">Call-to-Action URL</label>
+                    </div>
+
+                    <!-- Turbo Frame for domain creation -->
+                    <%= turbo_frame_tag "bulk_domain_form" do %>
+                      <!-- This will be replaced when creating domains -->
+                    <% end %>
+
+                    <!-- Quick Domain Selection -->
+                    <% if Current.user.domains.any? %>
+                      <div class="mb-3">
+                        <p class="text-xs text-gray-400 mb-2">Quick select from your domains:</p>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                          <% Current.user.domains.each do |domain| %>
+                            <button type="button" 
+                                    onclick="document.querySelector('input[name=&quot;cta_url&quot;]').value = 'https://<%= domain.name %>/'; document.querySelector('input[name=&quot;cta_url&quot;]').focus();"
+                                    class="px-3 py-2 text-xs bg-yellow-500/10 border border-yellow-500/30 rounded text-yellow-300 hover:bg-yellow-500/20 hover:border-yellow-500/50 transition-colors">
+                              <i data-lucide="globe" class="h-3 w-3 inline mr-1"></i>
+                              <%= domain.name %>
+                            </button>
+                          <% end %>
+                        </div>
                       </div>
-                      <div>
-                        <h2 class="text-lg font-semibold text-gray-100">Keywords to Generate Content For</h2>
-                        <p class="text-sm text-gray-400">Select the keywords you want to generate content for</p>
-                      </div>
-                    </div>
-                    <div class="flex space-x-2">
-                      <%= link_to new_app_domain_path, 
-                          class: "text-sm text-purple-400 hover:text-purple-300 transition-colors",
-                          data: { turbo_frame: "bulk_keyword_domain_form" } do %>
-                        <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
-                        Add Domain
-                      <% end %>
-                      <%= link_to refresh_keywords_app_bulk_wordpress_content_generations_path, 
-                          class: "text-sm text-green-400 hover:text-green-300 transition-colors",
-                          data: { turbo_method: :get, turbo_stream: true } do %>
-                        <i data-lucide="refresh-cw" class="h-4 w-4 inline mr-1"></i>
-                        Refresh Keywords
-                      <% end %>
-                    </div>
-                  </div>
-                </div>
+                    <% end %>
 
-                <div class="p-6">
-                  <!-- Turbo Frame for domain creation in keyword section -->
-                  <%= turbo_frame_tag "bulk_keyword_domain_form" do %>
-                    <!-- This will be replaced when creating domains -->
-                  <% end %>
-
-                  <%= render "keywords_list", domains: @domains %>
-                  <p class="mt-4 text-sm text-gray-400">Keywords are organized by domain and show search intent.</p>
-                </div>
-              </div>
-
-              <!-- WordPress Website Selection -->
-              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
-                <div class="bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-indigo-500/10 border-b border-yellow-500/20 px-6 py-4">
-                  <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 bg-cyan-500/20 border border-cyan-500/30 rounded-lg mr-3">
-                      <i data-lucide="globe" class="h-4 w-4 text-cyan-400"></i>
-                    </div>
-                    <div>
-                      <h2 class="text-lg font-semibold text-gray-100">WordPress Website</h2>
-                      <p class="text-sm text-gray-400">Choose where to publish the generated content</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="p-6">
-                  <%= f.select :wordpress_website_id, options_for_select(Current.user.wordpress_websites.map { |w| [w.url, w.id] }, @selected_wordpress_website_id), { include_blank: "Select Website" }, { 
-                      class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                  } %>
-                  <p class="mt-2 text-sm text-gray-400">The WordPress website where the generated content will be published.</p>
-
-                  <!-- WordPress Info -->
-                  <div class="mt-4 flex items-center p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-                    <i data-lucide="globe" class="h-5 w-5 text-purple-400 mr-3 flex-shrink-0"></i>
-                    <div class="text-sm">
-                      <p class="font-medium text-purple-300">WordPress Integration</p>
-                      <% if Current.user.wordpress_websites.empty? %>
-                        <p class="text-purple-200">
-                          <%= link_to "Connect a WordPress website", new_app_wordpress_website_path, class: "underline hover:no-underline" %> to publish content
-                        </p>
+                    <input type="url" name="cta_url" placeholder="https://yourwebsite.com/product" value="<%= @selected_cta_url %>" required class="block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" />
+                    <p class="mt-1 text-sm text-gray-400">
+                      <% if Current.user.domains.any? %>
+                        Click a domain button above to auto-fill, or enter any URL manually.
                       <% else %>
-                        <p class="text-purple-200"><%= pluralize(Current.user.wordpress_websites.count, 'website') %> connected</p>
+                        The URL where you want to drive traffic. AI will naturally incorporate this into each generated post.
                       <% end %>
+                    </p>
+                  </div>
+
+                  <!-- WordPress Website Selection -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">WordPress Website</label>
+                    <%= f.select :wordpress_website_id, options_for_select(Current.user.wordpress_websites.map { |w| [w.url, w.id] }, @selected_wordpress_website_id), { include_blank: "Select Website" }, { 
+                        class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                    } %>
+                    <p class="mt-1 text-sm text-gray-400">The WordPress website where the generated content will be published.</p>
+
+                    <!-- WordPress Info -->
+                    <div class="mt-3 flex items-center p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
+                      <i data-lucide="globe" class="h-4 w-4 text-green-400 mr-3 flex-shrink-0"></i>
+                      <div class="text-sm">
+                        <p class="font-medium text-green-300">WordPress Integration</p>
+                        <% if Current.user.wordpress_websites.empty? %>
+                          <p class="text-green-200">
+                            <%= link_to "Connect a WordPress website", new_app_wordpress_website_path, class: "underline hover:no-underline" %> to publish content
+                          </p>
+                        <% else %>
+                          <p class="text-green-200"><%= pluralize(Current.user.wordpress_websites.count, 'website') %> connected</p>
+                        <% end %>
+                      </div>
                     </div>
                   </div>
                 </div>
+
               </div>
+
 
               <!-- Action Buttons -->
               <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-gray-500/20 rounded-xl p-6">

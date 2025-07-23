@@ -1,0 +1,110 @@
+<div id="long_tail_<%= pillar_keyword.id %>" class="p-4">
+  <% if local_assigns[:loading] %>
+    <!-- Loading State -->
+    <div class="bg-gradient-to-r from-yellow-500/5 via-orange-500/5 to-red-500/5 border border-yellow-500/20 rounded-lg p-4">
+      <div class="flex items-center justify-center space-x-3">
+        <div class="relative">
+          <div class="w-5 h-5 border-2 border-yellow-500/30 rounded-full"></div>
+          <div class="absolute inset-0 w-5 h-5 border-2 border-transparent border-t-yellow-500 rounded-full animate-spin"></div>
+        </div>
+        <span class="text-sm text-yellow-300 font-medium">Generating long tail keywords...</span>
+      </div>
+      <div class="mt-2 text-center">
+        <p class="text-xs text-gray-400">Using FetchSERP API to discover related keywords</p>
+        <p class="text-xs text-gray-500 mt-1">Keywords will appear automatically when generation completes</p>
+      </div>
+    </div>
+  <% elsif local_assigns[:error] %>
+    <!-- Error State -->
+    <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+      <div class="flex items-center space-x-2">
+        <i data-lucide="alert-triangle" class="h-4 w-4 text-red-400"></i>
+        <span class="text-sm text-red-400 font-medium">Failed to generate long tail keywords</span>
+      </div>
+      <p class="text-xs text-red-300 mt-1"><%= error %></p>
+      <button type="button" 
+              onclick="this.closest('[data-turbo-frame]').querySelector('form').requestSubmit()"
+              class="mt-2 px-2 py-1 bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 rounded text-xs text-red-300 transition-colors">
+        <i data-lucide="refresh-cw" class="h-3 w-3 inline mr-1"></i>
+        Retry
+      </button>
+    </div>
+  <% elsif long_tail_keywords&.any? %>
+    <!-- Generated Long Tail Keywords -->
+    <div class="bg-gradient-to-r from-yellow-500/5 via-orange-500/5 to-red-500/5 border border-yellow-500/20 rounded-lg p-4">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="zap" class="h-4 w-4 text-yellow-400"></i>
+          <span class="text-sm font-medium text-yellow-300">Long Tail Keywords</span>
+          <span class="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/30 rounded text-xs text-yellow-400">
+            <%= pluralize(long_tail_keywords.size, 'keyword') %> generated
+          </span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <input type="checkbox" 
+                 id="select_all_longtail_<%= pillar_keyword.id %>"
+                 data-action="change->bulk-generation#toggleLongTailGroup"
+                 data-pillar-keyword-id="<%= pillar_keyword.id %>"
+                 class="h-3 w-3 text-yellow-500 focus:ring-yellow-500 border-gray-300 rounded" />
+          <label for="select_all_longtail_<%= pillar_keyword.id %>" class="text-xs text-yellow-300">Select All</label>
+        </div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <% long_tail_keywords.each_with_index do |lt_keyword, index| %>
+          <div class="flex items-center py-1.5 px-2 bg-[#0F172A]/30 border border-yellow-500/20 rounded hover:bg-[#0F172A]/50 transition-colors">
+            <input type="checkbox" 
+                   name="keyword_ids[]" 
+                   value="longtail_<%= pillar_keyword.id %>_<%= index %>" 
+                   id="lt_<%= pillar_keyword.id %>_<%= index %>" 
+                   data-pillar-keyword-id="<%= pillar_keyword.id %>"
+                   data-long-tail-keyword="<%= lt_keyword.respond_to?(:name) ? lt_keyword.name : lt_keyword %>"
+                   class="h-3 w-3 text-yellow-500 focus:ring-yellow-500 border-gray-300 rounded mr-2" 
+                   data-action="change->bulk-generation#toggleLongTailKeyword" />
+            <label for="lt_<%= pillar_keyword.id %>_<%= index %>" class="text-xs text-gray-200 flex-1 cursor-pointer">
+              <%= lt_keyword.respond_to?(:name) ? lt_keyword.name : lt_keyword %>
+            </label>
+            <div class="flex space-x-1 ml-2">
+              <span class="px-1.5 py-0.5 bg-green-500/20 border border-green-500/30 rounded text-xs text-green-400">LT</span>
+              <% if lt_keyword.respond_to?(:search_intent) %>
+                <% case lt_keyword.search_intent %>
+                <% when 'commercial' %>
+                  <span class="px-1.5 py-0.5 bg-yellow-500/20 border border-yellow-500/30 rounded text-xs text-yellow-400">Com</span>
+                <% when 'transactional' %>
+                  <span class="px-1.5 py-0.5 bg-red-500/20 border border-red-500/30 rounded text-xs text-red-400">Trans</span>
+                <% when 'navigational' %>
+                  <span class="px-1.5 py-0.5 bg-blue-500/20 border border-blue-500/30 rounded text-xs text-blue-400">Nav</span>
+                <% else %>
+                  <span class="px-1.5 py-0.5 bg-gray-500/20 border border-gray-500/30 rounded text-xs text-gray-400">Info</span>
+                <% end %>
+              <% else %>
+                <span class="px-1.5 py-0.5 bg-yellow-500/20 border border-yellow-500/30 rounded text-xs text-yellow-400">Generated</span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="mt-3 pt-3 border-t border-yellow-500/20 flex items-center justify-between">
+        <div class="text-xs text-yellow-300/70">
+          <i data-lucide="info" class="h-3 w-3 inline mr-1"></i>
+          Generated from: <strong><%= pillar_keyword.name %></strong>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <!-- Empty State -->
+    <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+      <div class="flex items-center space-x-2">
+        <i data-lucide="search-x" class="h-4 w-4 text-yellow-400"></i>
+        <span class="text-sm text-yellow-400 font-medium">No long tail keywords found</span>
+      </div>
+      <p class="text-xs text-yellow-300 mt-1">Try a different keyword or check your FetchSERP API configuration</p>
+    </div>
+  <% end %>
+</div>
+
+<script>
+// Initialize Lucide icons for this content
+if (window.lucide) lucide.createIcons();
+</script> 

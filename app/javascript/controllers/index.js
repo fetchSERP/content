@@ -4,20 +4,29 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-import ModalController from "./modal_controller"
-import ModalOpenerController from "./modal_opener_controller"
-import NotificationController from "./notification_controller"
-import PublishFormController from "./publish_form_controller"
 import BulkGenerationController from "./bulk_generation_controller"
-import ChoicesSelectController from "./choices_select_controller"
-import PlatformSelectorController from "./platform_selector_controller"
-
-application.register("hello", HelloController)
-application.register("modal", ModalController)
-application.register("modal-opener", ModalOpenerController)
-application.register("notification", NotificationController)
-application.register("publish-form", PublishFormController)
 application.register("bulk-generation", BulkGenerationController)
+
+import ChoicesSelectController from "./choices_select_controller"
 application.register("choices-select", ChoicesSelectController)
+
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
+
+import KeywordFilterController from "./keyword_filter_controller"
+application.register("keyword-filter", KeywordFilterController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
+import ModalOpenerController from "./modal_opener_controller"
+application.register("modal-opener", ModalOpenerController)
+
+import NotificationController from "./notification_controller"
+application.register("notification", NotificationController)
+
+import PlatformSelectorController from "./platform_selector_controller"
 application.register("platform-selector", PlatformSelectorController)
+
+import PublishFormController from "./publish_form_controller"
+application.register("publish-form", PublishFormController)

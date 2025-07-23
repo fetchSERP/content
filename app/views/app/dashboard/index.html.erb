@@ -141,44 +141,7 @@
               <h2 class="font-bold text-xl text-gray-100">Content Management</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <!-- WordPress Content -->
-              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
-                <div class="flex items-center mb-4">
-                  <div class="p-3 bg-blue-500/20 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="globe" class="lucide lucide-globe h-6 w-6 text-blue-400"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
-                  </div>
-                  <h3 class="text-lg font-semibold text-gray-100 ml-3">WordPress Content</h3>
-                </div>
-                <p class="text-gray-400 mb-4">Create, edit, and manage your WordPress posts and pages</p>
-                <div class="space-y-3">
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-300">Total Content:</span>
-                    <span class="text-green-400 font-medium"><%= Current.user.wordpress_contents.count %></span>
-                  </div>
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-300">Published:</span>
-                    <span class="text-green-400 font-medium"><%= Current.user.wordpress_contents.where(status: 'publish').count %></span>
-                  </div>
-                  <div class="flex justify-between items-center text-sm">
-                    <span class="text-gray-300">Drafts:</span>
-                    <span class="text-yellow-400 font-medium"><%= Current.user.wordpress_contents.where(status: 'draft').count %></span>
-                  </div>
-                </div>
-                <div class="mt-4 space-y-2">
-                  <%= link_to new_app_bulk_wordpress_content_generation_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
-                    <i data-lucide="zap" class="h-4 w-4 inline mr-2"></i>
-                    Bulk Generate
-                  <% end %>
-                  <%= link_to app_wordpress_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
-                    <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
-                    Manage Content
-                  <% end %>
-                  <%= link_to new_app_wordpress_content_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
-                    <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
-                    Create Post
-                  <% end %>
-                </div>
-              </div>
+
 
                 <!-- LinkedIn Content -->
                 <div class="flex flex-col h-full bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
@@ -248,6 +211,45 @@
                       Manage Posts
                     <% end %>
                     <%= link_to new_app_social_media_content_path(platform: 'x'), class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
+                      <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
+                      Create Post
+                    <% end %>
+                  </div>
+                </div>
+
+                <!-- WordPress Content -->
+                <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] p-6 hover:border-yellow-500/40 transition-colors">
+                  <div class="flex items-center mb-4">
+                    <div class="p-3 bg-blue-500/20 rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="globe" class="lucide lucide-globe h-6 w-6 text-blue-400"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-100 ml-3">WordPress Content</h3>
+                  </div>
+                  <p class="text-gray-400 mb-4">Create, edit, and manage your WordPress posts and pages</p>
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                      <span class="text-gray-300">Total Content:</span>
+                      <span class="text-green-400 font-medium"><%= Current.user.wordpress_contents.count %></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                      <span class="text-gray-300">Published:</span>
+                      <span class="text-green-400 font-medium"><%= Current.user.wordpress_contents.where(status: 'publish').count %></span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                      <span class="text-gray-300">Drafts:</span>
+                      <span class="text-yellow-400 font-medium"><%= Current.user.wordpress_contents.where(status: 'draft').count %></span>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-2">
+                    <%= link_to new_app_bulk_wordpress_content_generation_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
+                      <i data-lucide="zap" class="h-4 w-4 inline mr-2"></i>
+                      Bulk Generate
+                    <% end %>
+                    <%= link_to app_wordpress_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
+                      <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
+                      Manage Content
+                    <% end %>
+                    <%= link_to new_app_wordpress_content_path, class: "block w-full px-4 py-2 bg-gradient-to-r from-yellow-500 to-red-500 text-white rounded-lg font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(234,179,8,0.3)] text-center" do %>
                       <i data-lucide="plus" class="h-4 w-4 inline mr-2"></i>
                       Create Post
                     <% end %>

@@ -39,7 +39,7 @@ Rails.application.routes.draw do
     resources :keywords, only: [ :index ]
     resources :bulk_wordpress_content_generations, only: [ :new, :create ] do
       collection do
-        get :refresh_keywords
+        post :generate_long_tail_keywords
       end
     end
     resources :social_media_contents do

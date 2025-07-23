@@ -67,7 +67,7 @@
                     <label class="block text-sm font-medium text-gray-300 mb-3">Platform</label>
                     <div class="grid grid-cols-2 gap-4">
                       <div class="relative">
-                        <%= f.radio_button :platform, "linkedin", id: "platform_linkedin", class: "peer sr-only", checked: true, data: { action: "change->platform-selector#updatePrompts", platform_selector_new_form_value: true } %>
+                        <%= f.radio_button :platform, "linkedin", id: "platform_linkedin", class: "peer sr-only", data: { action: "change->platform-selector#updatePrompts", platform_selector_new_form_value: true } %>
                         <label for="platform_linkedin" class="flex items-center p-4 border-2 border-yellow-500/30 rounded-lg cursor-pointer transition-all hover:border-yellow-500/50 peer-checked:border-yellow-500 peer-checked:bg-yellow-500/10 peer-checked:shadow-[0_0_15px_rgba(234,179,8,0.2)]">
                           <div class="flex items-center justify-center w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded mr-3">
                             <i data-lucide="linkedin" class="h-4 w-4 text-blue-400"></i>
@@ -117,6 +117,33 @@
               <!-- AI Content Settings (REUSE) -->
               <%= render "shared/ai_content_settings_section", form: f, model_groups: @model_groups, platform: f.object.platform || "linkedin" %>
 
+              <!-- Authentication Provider Selection -->
+              <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-yellow-500/20 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.1)] overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-b border-yellow-500/20 px-6 py-4">
+                  <div class="flex items-center">
+                    <div class="flex items-center justify-center w-8 h-8 bg-blue-500/20 border border-blue-500/30 rounded-lg mr-3">
+                      <i data-lucide="user-check" class="h-4 w-4 text-blue-400"></i>
+                    </div>
+                    <div>
+                      <h2 class="text-lg font-semibold text-gray-100">Auto-Publishing Account</h2>
+                      <p class="text-sm text-gray-400">Select which account to use for automatic publishing</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="p-6">
+                  <% 
+                    platform = f.object.platform || "linkedin"
+                    provider_name = platform == "x" ? "twitter2" : platform
+                    authentication_providers = Current.user.authentication_providers.where(provider: provider_name)
+                  %>
+                  <%= render "authentication_provider_selection_area", 
+                      authentication_providers: authentication_providers, 
+                      platform: platform,
+                      selected_provider_id: f.object.authentication_provider_id %>
+                </div>
+              </div>
+
               <!-- Action Buttons -->
               <div class="bg-[#1E293B]/80 backdrop-blur-sm border border-gray-500/20 rounded-xl p-6">
                 <div class="flex items-center justify-between">
@@ -153,12 +180,21 @@
 if (window.lucide) lucide.createIcons();
 
 // Form validation
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
   const mainForm = document.querySelector('form[data-controller*="bulk-generation"]');
   if (mainForm) {
+    // Trigger platform updates on page load if platform is pre-selected
+    const selectedPlatform = document.querySelector('input[name="recurring_social_media_content[platform]"]:checked');
+    if (selectedPlatform) {
+      // Trigger the platform selector to update prompts and auth providers
+      const event = new Event('change', { bubbles: true });
+      selectedPlatform.dispatchEvent(event);
+    }
+
     mainForm.addEventListener('submit', function(e) {
       const selectedPlatform = document.querySelector('input[name="recurring_social_media_content[platform]"]:checked');
       const selectedKeywords = document.querySelectorAll('input[name="keyword_ids[]"]:checked');
+      const selectedAuthProvider = document.querySelector('input[name="recurring_social_media_content[authentication_provider_id]"]:checked');
       const frequency = document.querySelector('input[name="recurring_social_media_content[frequency]"]').value;
       
       if (!selectedPlatform) {
@@ -178,14 +214,20 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Please select at least one keyword for content generation.');
         return false;
       }
+
+      if (!selectedAuthProvider) {
+        e.preventDefault();
+        alert('Please select an authentication provider for auto-publishing.');
+        return false;
+      }
     });
   }
+});
 
-  // Re-initialize Lucide icons after Turbo updates
-  document.addEventListener('turbo:frame-load', function() {
-    if (window.lucide) {
-      lucide.createIcons();
-    }
-  });
+// Re-initialize Lucide icons after Turbo updates
+document.addEventListener('turbo:frame-load', function() {
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 });
 </script> 

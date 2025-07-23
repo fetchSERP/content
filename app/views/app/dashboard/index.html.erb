@@ -169,6 +169,10 @@
                     </div>
                   </div>
                   <div class="mt-4 space-y-2">
+                    <%= link_to new_app_recurring_social_media_content_path, class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
+                      <i data-lucide="zap" class="h-4 w-4 inline mr-2"></i>
+                      Create Recurring Post
+                    <% end %>
                     <%= link_to app_social_media_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
                       <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                       Manage Posts
@@ -206,6 +210,10 @@
                     </div>
                   </div>
                   <div class="mt-4 space-y-2">
+                    <%= link_to new_app_recurring_social_media_content_path(platform: 'x'), class: "block w-full px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-purple-500/20 transition-colors text-center" do %>
+                      <i data-lucide="zap" class="h-4 w-4 inline mr-2"></i>
+                      Create Recurring Post
+                    <% end %>
                     <%= link_to app_social_media_contents_path, class: "block w-full px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-400 hover:bg-sky-500/20 transition-colors text-center" do %>
                       <i data-lucide="list" class="h-4 w-4 inline mr-2"></i>
                       Manage Posts

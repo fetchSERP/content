@@ -11,7 +11,7 @@
           <p class="text-sm text-gray-400">Configure AI model, prompts, and CTA settings</p>
         </div>
       </div>
-      <%= link_to new_app_prompt_path, 
+      <%= link_to new_app_prompt_path(target: platform), 
           class: "text-sm text-yellow-400 hover:text-yellow-300 transition-colors",
           data: { turbo_frame: "prompt_form" } do %>
         <i data-lucide="plus" class="h-4 w-4 inline mr-1"></i>
@@ -82,13 +82,11 @@
       <!-- replaced by prompt new/edit -->
     <% end %>
 
-    <div id="prompt_selection_area">
-      <% prompts = Current.user.prompts.enabled.where(target: platform) %>
-      <%= render "shared/prompt_selection_content", 
-          prompts: prompts, 
-          platform: platform, 
-          form_name: form.object_name, 
-          selected_prompt_id: form.object.prompt_id %>
-    </div>
+    <% prompts = Current.user.prompts.enabled.where(target: platform) %>
+    <%= render "shared/prompt_selection_content", 
+        prompts: prompts, 
+        platform: platform, 
+        form_name: form.object_name, 
+        selected_prompt_id: form.object.prompt_id %>
   </div>
 </div> 

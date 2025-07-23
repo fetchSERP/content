@@ -57,9 +57,11 @@ Rails.application.routes.draw do
       member do
         patch :toggle
         get :update_prompts
+        get :update_authentication_providers
       end
       collection do
         get :update_prompts_for_new
+        get :update_authentication_providers_for_new
       end
     end
     root "dashboard#index"

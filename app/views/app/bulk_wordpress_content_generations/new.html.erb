@@ -272,7 +272,7 @@
 if (window.lucide) lucide.createIcons();
 
 // Form validation - ensure prompt is selected and keywords are selected before submission
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
   const mainForm = document.querySelector('form[data-controller="bulk-generation"]');
   if (mainForm) {
     mainForm.addEventListener('submit', function(e) {

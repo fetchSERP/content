@@ -14,9 +14,14 @@ class GenerateSocialMediaContentJob < ApplicationJob
     content = response.data.dig("response")
     social_media_content.update!(content: content["content"])
     
+    # Auto-publish if requested (for recurring content)
     if auto_publish && social_media_content.recurring_social_media_content.present?
-      authentication_provider_id = social_media_content.user.authentication_providers.where(provider: social_media_content.platform == "x" ? "twitter2" : social_media_content.platform).first.id
-      SocialMediaPublishJob.perform_later(social_media_content.id, authentication_provider_id)
+      authentication_provider_id = social_media_content.recurring_social_media_content.authentication_provider_id
+      if authentication_provider_id.present?
+        SocialMediaPublishJob.perform_later(social_media_content.id, authentication_provider_id)
+      else
+        Rails.logger.warn "No authentication provider configured for recurring campaign #{social_media_content.recurring_social_media_content.id}"
+      end
     end
     
     # Broadcast to main social media content list

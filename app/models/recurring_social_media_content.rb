@@ -1,6 +1,7 @@
 class RecurringSocialMediaContent < ApplicationRecord
   belongs_to :user
   belongs_to :prompt
+  belongs_to :authentication_provider, optional: true
   has_many :social_media_contents, dependent: :destroy
 
   enum :platform, { linkedin: 0, x: 1 }
@@ -11,6 +12,7 @@ class RecurringSocialMediaContent < ApplicationRecord
   validates :cta_url, presence: true, format: { with: URI.regexp }
   validates :frequency, presence: true, numericality: { greater_than: 0 }
   validates :platform, presence: true
+  validates :authentication_provider_id, presence: true, on: :create
 
   scope :active_campaigns, -> { where(is_active: true) }
 

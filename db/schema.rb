@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_23_142512) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_23_162950) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -83,6 +83,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_142512) do
     t.boolean "is_active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "authentication_provider_id"
+    t.index ["authentication_provider_id"], name: "idx_on_authentication_provider_id_40aa59fe93"
     t.index ["prompt_id"], name: "index_recurring_social_media_contents_on_prompt_id"
     t.index ["user_id"], name: "index_recurring_social_media_contents_on_user_id"
   end
@@ -156,6 +158,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_23_142512) do
   add_foreign_key "keywords", "keywords"
   add_foreign_key "pages", "keywords"
   add_foreign_key "prompts", "users"
+  add_foreign_key "recurring_social_media_contents", "authentication_providers"
   add_foreign_key "recurring_social_media_contents", "prompts"
   add_foreign_key "recurring_social_media_contents", "users"
   add_foreign_key "sessions", "users"

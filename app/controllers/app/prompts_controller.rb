@@ -17,10 +17,30 @@ class App::PromptsController < App::ApplicationController
   end
 
   def new
+    target = params[:target] || 'wordpress'
+    
+    # Platform-specific default prompts
+    default_prompts = {
+      'linkedin' => {
+        user_prompt: "Generate a LinkedIn post (max 1300 characters) about {{keyword}} and include the CTA URL {{cta_url}}. Use emojis and professional tone.",
+        system_prompt: "You are a marketing assistant specializing in creating professional LinkedIn posts with emojis, hashtags, and engaging professional content."
+      },
+      'x' => {
+        user_prompt: "Generate an X (Twitter) post (max 280 characters) about {{keyword}} and include the CTA URL {{cta_url}}. Use hashtags and engaging tone.",
+        system_prompt: "You are a marketing assistant specializing in creating viral X (Twitter) posts with emojis, hashtags, and concise, engaging content."
+      },
+      'wordpress' => {
+        user_prompt: "Generate a WordPress blog post about {{keyword}} and include the CTA URL {{cta_url}}. Include SEO-optimized content.",
+        system_prompt: "You are a marketing assistant specializing in creating SEO-optimized WordPress blog posts with engaging content."
+      }
+    }
+    
+    defaults = default_prompts[target] || default_prompts['wordpress']
+    
     @prompt = Prompt.new(
-      target: params[:target] || 'wordpress',
-      user_prompt: "Generate a {{platform}} post about {{keyword}} and include the cta url {{cta_url}}",
-      system_prompt: "You are a marketing assistant specializing in creating professional social media posts with emojis."
+      target: target,
+      user_prompt: defaults[:user_prompt],
+      system_prompt: defaults[:system_prompt]
     )
   end
 
@@ -29,14 +49,25 @@ class App::PromptsController < App::ApplicationController
     
     respond_to do |format|
       if @prompt.save
+        # Determine form name from referer
+        form_name = if request.referer&.include?('recurring_social_media_contents')
+                      'recurring_social_media_content'
+                    elsif request.referer&.include?('wordpress_contents')
+                      'wordpress_content'
+                    else
+                      'social_media_content'
+                    end
+        
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update("prompt_form", ""),
-            turbo_stream.replace("prompt_selection", 
-              partial: "app/social_media_contents/prompt_selection", 
+            turbo_stream.replace("prompt_selection_area", 
+              partial: "shared/prompt_selection_content", 
               locals: { 
                 prompts: Current.user.prompts.enabled.where(target: @prompt.target),
-                form: nil
+                platform: @prompt.target,
+                form_name: form_name, 
+                selected_prompt_id: @prompt.id
               }
             )
           ]
@@ -63,15 +94,26 @@ class App::PromptsController < App::ApplicationController
         # Get the current platform from the referer URL
         platform = request.referer&.match(/platform=([^&]+)/)&.captures&.first || @prompt.target
         prompts = Current.user.prompts.reload.where(target: platform)
+        
+        # Determine form name from referer
+        form_name = if request.referer&.include?('recurring_social_media_contents')
+                      'recurring_social_media_content'
+                    elsif request.referer&.include?('wordpress_contents')
+                      'wordpress_content'
+                    else
+                      'social_media_content'
+                    end
 
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update("prompt_form", ""),
-            turbo_stream.replace("prompt_selection", 
-              partial: "app/social_media_contents/prompt_selection", 
+            turbo_stream.replace("prompt_selection_area", 
+              partial: "shared/prompt_selection_content", 
               locals: { 
                 prompts: Current.user.reload.prompts.enabled.where(target: platform),
-                form: nil
+                platform: platform,
+                form_name: form_name, 
+                selected_prompt_id: @prompt.id
               }
             )
           ]

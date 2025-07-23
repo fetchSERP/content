@@ -6,7 +6,8 @@ class App::RecurringSocialMediaContentsController < App::ApplicationController
   end
 
   def new
-    @recurring_content = RecurringSocialMediaContent.new(platform: 'linkedin')
+    platform = params[:platform] || 'linkedin'
+    @recurring_content = RecurringSocialMediaContent.new(platform: platform)
     
     # Reuse exact same logic as bulk WordPress
     @domains = Current.user.domains.includes(keywords: :children)
@@ -128,6 +129,42 @@ class App::RecurringSocialMediaContentsController < App::ApplicationController
     end
   end
 
+  def update_authentication_providers_for_new
+    platform = params[:platform]
+    provider_name = platform == "x" ? "twitter2" : platform
+    authentication_providers = Current.user.authentication_providers.where(provider: provider_name)
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("authentication_provider_selection_area", 
+          partial: "authentication_provider_selection_area", 
+          locals: { 
+            authentication_providers: authentication_providers, 
+            platform: platform,
+            selected_provider_id: nil
+          })
+      end
+    end
+  end
+
+  def update_authentication_providers
+    platform = params[:platform]
+    provider_name = platform == "x" ? "twitter2" : platform
+    authentication_providers = Current.user.authentication_providers.where(provider: provider_name)
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace("authentication_provider_selection_area", 
+          partial: "authentication_provider_selection_area", 
+          locals: { 
+            authentication_providers: authentication_providers, 
+            platform: platform,
+            selected_provider_id: @recurring_content.authentication_provider_id
+          })
+      end
+    end
+  end
+
   private
 
   def set_recurring_content
@@ -136,7 +173,7 @@ class App::RecurringSocialMediaContentsController < App::ApplicationController
 
   def recurring_content_params
     params.require(:recurring_social_media_content).permit(
-      :platform, :frequency, :prompt_id, :ai_model, :cta_url, :is_active
+      :platform, :frequency, :prompt_id, :ai_model, :cta_url, :is_active, :authentication_provider_id
     )
   end
 

@@ -7,6 +7,7 @@ class SocialMediaPublishJob < ApplicationJob
     if social_media_content.platform == "linkedin"
       Social::Linkedin::PostService.new(authentication_provider).call(social_media_content.content)
     elsif social_media_content.platform == "x"
+      authentication_provider.refresh_x_token!
       Social::X::PostService.new(authentication_provider).call(social_media_content.content)
     end
     social_media_content.update(status: "published")

@@ -79,7 +79,7 @@
                   <!-- Keyword -->
                   <div>
                     <%= form.label :keyword, "Target Keyword", class: "block text-sm font-medium text-gray-300 mb-2" %>
-                    <%= form.text_field :keyword, required: true, placeholder: "e.g., best SEO tools, digital marketing strategy", class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200" %>
+                    <%= form.text_field :keyword, required: true, placeholder: "e.g., best SEO tools, digital marketing strategy", class: "block w-full px-4 py-3 rounded-lg bg-[#0F172A]/70 border border-yellow-500/30 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200", value: params[:keyword] %>
                     <p class="mt-1 text-sm text-gray-400">The main keyword you want to rank for in search engines</p>
                   </div>
 

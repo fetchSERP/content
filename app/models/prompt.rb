@@ -7,6 +7,6 @@ class Prompt < ApplicationRecord
   scope :enabled, -> { where(disabled: false) }
   
   validates :target, presence: true
-  validates :user_prompt, presence: true, length: { minimum: 10, maximum: 5000 }
-  validates :system_prompt, presence: true, length: { minimum: 10, maximum: 2000 }
+  validates :user_prompt, presence: true, length: { minimum: 10, maximum: 10000 }
+  validates :system_prompt, presence: true, length: { minimum: 10, maximum: 10000 }
 end

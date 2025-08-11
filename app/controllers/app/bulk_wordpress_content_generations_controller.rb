@@ -103,30 +103,20 @@ class App::BulkWordpressContentGenerationsController < App::ApplicationControlle
       end
     end
 
-    # Combine all selected keywords
-    all_keywords = regular_keywords + long_tail_keywords.compact
-    prompt = Current.user.prompts.find_by(id: prompt_id)
+    # Enqueue bulk generation job with delays to prevent API rate limiting
+    BulkGenerateWordpressContentJob.perform_later(
+      keyword_ids,
+      prompt_id,
+      ai_model,
+      cta_url,
+      wordpress_website_id,
+      Current.user.id
+    )
 
-    created = 0
-    all_keywords.each do |keyword|
-      # Use the actual keyword name for title and content
-      keyword_name = keyword.name
-      
-      wc = Current.user.wordpress_contents.create!(
-        title: keyword_name.titleize,
-        keyword: keyword_name,
-        status: 'draft',
-        prompt: prompt,
-        ai_model: ai_model,
-        cta_url: cta_url,
-        publish_on_create: true
-      )
-
-      # Enqueue generation job (implement job separately)
-      GenerateWordpressContentJob.perform_later(wc, wordpress_website_id)
-      created += 1
-    end
-
-    redirect_to app_wordpress_contents_path, notice: "#{created} WordPress content items queued for generation (including #{long_tail_keywords.size} long tail keywords)."
+    # Calculate total keywords for the notice
+    total_keywords = regular_keyword_ids.size + long_tail_keyword_ids.size
+    long_tail_count = long_tail_keyword_ids.size
+    
+    redirect_to app_wordpress_contents_path, notice: "#{total_keywords} WordPress content items queued for generation (including #{long_tail_count} long tail keywords). Generation will proceed with delays to prevent API rate limiting."
   end
 end 

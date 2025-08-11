@@ -34,7 +34,7 @@ class BulkGenerateWordpressContentJob < ApplicationJob
     prompt = user.prompts.find_by(id: prompt_id)
 
     created = 0
-    all_keywords.each do |keyword|
+    all_keywords.each_with_index do |keyword, index|
       # Use the actual keyword name for title and content
       keyword_name = keyword.name
       
@@ -53,7 +53,7 @@ class BulkGenerateWordpressContentJob < ApplicationJob
       created += 1
       
       # Sleep 20 seconds between each to prevent API rate limiting
-      sleep(20) unless keyword == all_keywords.last
+      sleep(20 + (index * 20)) unless keyword == all_keywords.last
     end
 
     Rails.logger.info "Bulk generation completed: #{created} WordPress content items queued for generation (including #{long_tail_keywords.size} long tail keywords)."

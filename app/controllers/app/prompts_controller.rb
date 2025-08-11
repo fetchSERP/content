@@ -30,7 +30,7 @@ class App::PromptsController < App::ApplicationController
         system_prompt: "You are a marketing assistant specializing in creating viral X (Twitter) posts with emojis, hashtags, and concise, engaging content."
       },
       'wordpress' => {
-        user_prompt: "Generate a WordPress blog post about {{keyword}} and include the CTA URL {{cta_url}}. Include SEO-optimized content.",
+        user_prompt: "Generate a WordPress blog post about {{keyword}} and include the following CTA URL link tag : <a href='{{cta_url}}'>{{cta_url}}</a>. Include SEO-optimized content.",
         system_prompt: "You are a marketing assistant specializing in creating SEO-optimized WordPress blog posts with engaging content."
       }
     }

@@ -72,10 +72,34 @@ class App::PromptsController < App::ApplicationController
             )
           ]
         end
-        format.html { redirect_to app_prompts_path, notice: "Prompt created successfully" }
+        format.html do
+          # If coming from a content creation page, use turbo stream response to stay on page
+          if request.referer&.include?('wordpress_contents') || 
+             request.referer&.include?('social_media_contents') || 
+             request.referer&.include?('recurring_social_media_contents')
+            render turbo_stream: [
+              turbo_stream.update("prompt_form", ""),
+              turbo_stream.replace("prompt_selection_area", 
+                partial: "shared/prompt_selection_content", 
+                locals: { 
+                  prompts: Current.user.prompts.enabled.where(target: @prompt.target),
+                  platform: @prompt.target,
+                  form_name: form_name, 
+                  selected_prompt_id: @prompt.id
+                }
+              )
+            ]
+          else
+            redirect_to app_prompts_path, notice: "Prompt created successfully"
+          end
+        end
         format.json { render json: { success: true, prompt: @prompt } }
       else
-        format.turbo_stream { render :new, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("prompt_form", 
+            partial: "form"
+          ), status: :unprocessable_entity
+        end
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: { success: false, errors: @prompt.errors.full_messages }, status: :unprocessable_entity }
       end
@@ -122,7 +146,11 @@ class App::PromptsController < App::ApplicationController
         format.html { redirect_to app_prompts_path, notice: "Prompt updated successfully" }
         format.json { render json: { success: true, prompt: @prompt } }
       else
-        format.turbo_stream { render :edit, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("prompt_form", 
+            partial: "form"
+          ), status: :unprocessable_entity
+        end
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: { success: false, errors: @prompt.errors.full_messages }, status: :unprocessable_entity }
       end
